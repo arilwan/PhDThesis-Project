@@ -1,0 +1,89 @@
+\section{Research Context and Motivation}
+%Rapid urbanisation and population growth have led to increasing challenges in urban transportation systems worldwide. Population growth has continued to be a major concern globally. By 2050, the world population is estimated to reach around 9.7 billion people, with nearly 70\% of the population projected to live in urban areas \cite{UN2019Population}. With this alarming figure, knowledge of people’s transportation behaviour at urban-scale is therefore crucial for urban planning in order to constructively understand citizens’ travel behaviour and assess transportation-related policies and actions. Understanding the dynamics of urban transportation is crucial for addressing these challenges. Knowledge of people's travel behaviour, including mode choice and travel patterns, is essential for informed decision-making in urban planning, transportation policy, and infrastructure investment. By analysing travel behaviour, policymakers can identify bottlenecks, optimise transportation networks, and promote sustainable mobility options.
+
+
+\chapter{Experimental Set-up} \label{chp:exp}
+This chapter describes the GPS trajectory datasets for this study:
+
+\section{Dataset Description}
+%Two real-world GPS trajectory datasets gathered from different cities: the \emph{SenseMyFEUP} \cite{rodrigues2016opportunistic, rodrigues2014sensemycity, rodrigues2017impact, aguiar2022sensemycity} and the \emph{Geolife} \cite{zheng2008understanding, zheng2008learning, zheng2010geolife, zheng2010understanding} are used. These dataset are described  below. 
+
+\subsection{The SenseMyFEUP (SMF2016) dataset}
+%The \emph{SenseMyFEUP (SMF2016)} dataset is a private GPS trajectory dataset of 227 users collected in Porto, Portugal for a period of one month \cite{rodrigues2017impact}. It contains timestamped location coordinates, instantaneous GPS speed, altitude,  point bearing and GPS accuracy. 
+%Our location data $L_i$ contains the tuple:
+%    \begin{equation}
+%            L_i = <timestamp,lat,lon,alt,speed,bearing, gps\_acc>\label{eq_loc}
+%    \end{equation}
+
+%The SMF2016 dataset is densely represented at about 1 sample per second or approximately every 5 metres. The data was gathered through an Android-based mobile application installed on the participants' smartphones. The application was designed to automatically record location data whenever user movement is detected. Moreover, the user's mode of travel information is collected through an end-of-trip survey questionnaire within the mobile application. It prompts the user to indicate the more of travel used to cover the trip (see \Cref{fig:survey}). We use this user response as our ground truth. Five different transportation modes are present, including \textit{foot, bike, bus, car,} and \textit{metro}.
+%\begin{figure}[hbtp]
+%    \centering
+%    \includegraphics[height=8.cm, width=5cm]{sensemyfeup.jpeg} %[width=0.5\linewidth]
+%    \caption{The SenseMyFEUP end of trip survey}
+%    \label{fig:survey}
+%\end{figure}
+
+\subsection{The Geolife dataset}
+%We used the publicly available Geolife dataset, which was published by Microsoft Research Asia \cite{zheng2008understanding}, to assess the reliability of our method.  It is also a GPS trajectory dataset collected by 182 users over five years, mainly in Beijing, China. Each user trajectory is a timestamped sequence of location coordinates (lat/lon) and altitude. Locations were logged at spatio-temporal granularity of about 1-5 seconds or 5-10 metres per point.
+%According to the Geolife user guide \cite{zheng2011geolife}, 73 users have labelled their trajectories with travel mode information. From the raw data, however, we found 69 users having trajectories annotated with transportation mode. There are about 10 different transportation modes \textit{(walk, bike, bus, car, taxi, train, subway, motorcycle, aeroplane, boat, run)} available in the dataset. %\looseness=-1
+
+%Our focus is solely on land transportation systems. We consider trajectories labelled as \textit{taxi} or \textit{car} simply as car, following the recommendations in the user guide. Similarly, we considered the rail-based systems (\textit{train, subway}) as metro, in order to align with the SMF2016 transportation mode labels. The motorcycle mode is disregarded due to the limited availability of data points. \Cref{tab:datasets} summarises the attributes of these datasets.
+\begin{table}[tbhp]
+    \caption{Datasets' Characteristics}
+    \label{tab:datasets}
+    \centering
+    \begin{tabularx}{\columnwidth}{@{}XXX@{}}
+        \toprule
+        & SMF2016  &  Geolife                     \\
+        \midrule
+        Data collection:    & 1 month (April 2016)  & 5 years (2007-2012)   \\
+        Number of users:         &          227          &   182 \\
+        Transportation modes:    &           5           &    10  \\
+        Sampling rate:           &     1 second          &  3-5 seconds \\
+        Number of trajectories:  &       13,212          &  18,670   \\
+        Number of points:        &    9,657,405          &  24,876,978  \\
+        Total distance:          &   229,564 km          &  1,292,951 km \\
+        Total duration:          &  5,082 hours          &  50,176 hours   \\
+        Effective days:          &        30             &  11,129    \\
+        Accessibility:           &     private           &  public  \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+%\section{Exploratory Analysis}
+
+\section{Classification Algorithms }
+
+\section{Data Pre-Processing}
+\begin{figure}[t]%[!hbtp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{point-bearing.pdf}
+    \caption{An illustration of point's bearing in a trajectory}
+    \label{fig:point-bearing}
+\end{figure}
+Our approach involves computing four motion attributes for each location point in the time domain. Unlike SMF2016, the Geolife dataset lacks GPS speed information for individual location. Thus, we calculate the \textit{speed} value of each point using \cref{eq_spd} for any two consecutive data points, $\varname{P_m,P_n}$. Furthermore, we calculate the \textit{acceleration, jerk}, and \textit{bearing rate} from the bearing (illustrated in \cref{fig:point-bearing}) of each data point using \cref{eq_acc,eq_jk,eq_br}, respectively.
+\begin{gather}
+    S_{P_m} = \frac{\varname{Vincenty({P_m},{P_n})}}{\Delta t} \label{eq_spd} \\
+    A_{P_m} = \frac{S_{P_n} - S_{P_m}}{\Delta t} \label{eq_acc} \\
+    J_{P_m}  = \frac{A_{P_n} - A_{P_m}}{\Delta t}  \label{eq_jk} \\
+   BR_{P_m} = |\varname{bearing}(P_n) - \varname{bearing}(P_m)|  \label{eq_br}  \\
+   y = \varname{sin}[P_n(\varname{lon})-P_m(\varname{lon})] \times \varname{cos}[P_n(\varname{lat})] \label{geo_br1}  \\
+   x = \varname{cos}[P_m(\varname{lat})] \times \varname{sin}[P_n(\varname{lat})] - \varname{sin}[P_m(\varname{lat})] \times \nonumber \label{geo_br2} \\ 
+     \varname{cos}[P_n(\varname{lat})] \times \varname{cos}[P_n(\varname{lon}) - P_m(\varname{lon})] \label{geo_br3} \\
+   \varname{bearing}(P_m) = \varname{arctan(y,x)}  \label{geo_br4} 
+\end{gather}
+
+It is noteworthy to mention also that the Geolife dataset does not include information on the bearing of location points. Therefore, in order to use \cref{eq_br}, we first derive \cref{geo_br1,geo_br3,geo_br4} to calculate this missing information. Ultimately, each location point in a segment is represented by a vector consisting of four attributes, namely $<S_{P_i}, A_{P_i}, J_{P_i},  BR_{P_i}>$. 
+
+\section{Data Split}
+We divided each segment into instances of $N=100$ time steps. To develop the model, we split the resulting instances into train-test sets based on the period of data collection. This approach was motivated by the fact that the datasets represent a time series of user GPS records, with the objective of predicting future modes of transportation using historical data. Moreover, we opted to deviate from the conventional 80-20 data split to mitigate the potential issue of model overfit \cite{muhammad2021transportation}. %\looseness=-1
+
+In the case of SMF2016, we allocated three weeks of data for model training and one week for the test set. Similarly, for Geolife, the dataset from April 2007 to November 2008 was used for model training, and the dataset beyond November 2008 was reserved for the test set. The distribution of instances by transportation mode is presented in \Cref{tab:instances} as a result of this process.
+
+\section{Establishing Baseline }
+\begin{figure}[htbp]
+    \centering
+    \centerline{\includegraphics[height=8.cm, width=15cm]{concept.pdf}} %height=6.cm, width=17.5cm - width=0.95\linewidth
+    \caption{Conceptual framework of the proposed methodology.}
+    \label{fig:framework}
+\end{figure}

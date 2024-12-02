@@ -1,0 +1,113 @@
+\chapter{Introduction}
+This chapter establishes the context and motivation for the research presented in this thesis. We outline the key scientific contributions of this work and provide an overview of the document's structure.
+
+\section{Research Context and Motivation}
+Rapid urbanisation and population growth have led to increasing challenges in urban transportation systems worldwide. Population growth remains a major global concern. By 2050, the world population is estimated to reach around 9.7 billion people, with nearly 70\% projected to live in urban areas \cite{UN2019Population}. Given this alarming figure, understanding urban-scale people's transportation behaviour is crucial for urban planning. This understanding is essential for constructively interpreting citizens' travel behaviour and assessing transportation-related policies and actions. Knowledge of people's travel behaviour, including mode choice and travel patterns, is essential for informed decision-making in urban planning, transportation policy, and infrastructure investment. By analysing travel behaviour, policymakers can identify bottlenecks, optimise transportation networks, and promote sustainable mobility options. Moreover, understanding travel behaviour can help to predict future transportation demands, which can inform long-term planning and investment decisions. Additionally, analysing travel behaviour patterns can help to identify emerging trends and challenges, such as the increasing use of ride-sharing services and the growing popularity of electric vehicles.
+
+A land transportation network encompasses a variety of infrastructure and modes of transport that facilitate movement of people from one location to another. Transportation mode refers to the specific means of transport used by individuals, such as cars, buses, trains, bicycles, or walking. Understanding the distribution of transportation modes is crucial for effective urban planning, traffic management, and the development of sustainable transportation policies. By analysing these modal distributions, researchers and policymakers can gain valuable insights into travel behaviour patterns, identify trends, and inform evidence-based decision-making. For instance, understanding the factors influencing the choice of transportation mode can help to promote sustainable transportation options, such as public transit and cycling, and reduce reliance on private vehicles. Additionally, analysing the distribution of transportation modes can help to identify areas with high levels of traffic congestion and inform strategies to alleviate congestion, such as investing in public transportation infrastructure or implementing traffic management measures.
+
+Despite the advantages of mobility and accessibility offered by transportation networks, urban areas continue to face significant challenges in urban planning and transportation management. Traditional methods for collecting transportation data, such as household surveys and interviews, are often time-consuming, costly, and prone to low response rates and incomplete information \cite{dabiri2018inferring}. Moreover, these methods often rely on self-reported data, which can be subject to recall bias. To address these limitations and gain a more accurate understanding of urban mobility patterns, there is a pressing need for efficient and reliable methods for collecting and analysing large-scale transportation data \cite{biljecki2010automatic}.
+
+Fortunately, the proliferation of smartphones and mobile devices equipped with various sensors has opened up new opportunities for collecting large-scale, fine-grained mobility data through crowdsensing (or participatory sensing) \cite{rodrigues2011mobile, rodrigues2014sensemycity, santos2018portolivinglab}. By leveraging the collective sensing capabilities of mobile devices, researchers and policymakers can gather real-time, location-based information on transportation, traffic congestion, and other relevant factors. This data can include GPS trajectories, accelerometer data, Wi-Fi logs, and Bluetooth signals, providing a rich source of information for analysing urban mobility patterns. However, while crowdsensing offers valuable data, it does not directly provide information about the mode of transportation used by individuals.
+
+To extract transportation mode information from GPS trajectories, advanced data mining and machine learning techniques are required. However, accurate and reliable transportation mode detection remains a challenging task due to factors such as noisy and incomplete data, diverse urban environments, and privacy concerns.
+Extracting meaningful features from GPS trajectories and developing robust machine learning models to classify transportation modes are crucial steps towards understanding urban mobility patterns and informing transportation policies. 
+
+This thesis aims to address these challenges by developing robust machine learning models to accurately classify transportation modes from real-world GPS trajectory data. This research will employ supervised machine learning techniques to classify transportation modes directly from GPS trajectory data, without relying on external data sources.
+
+\section{Thesis Statement}
+%Can machine learning techniques be effectively applied to GPS trajectory data to extract relevant features and accurately classify transportation modes (walking, cycling, car, bus, metro) in urban scenario?
+Can machine learning techniques be effectively applied to real-world GPS trajectory data to accurately classify transportation modes (walking, cycling, car, bus, metro) in urban scenario, relying solely on the trajectory data itself?
+
+\section{Research Objectives}
+This thesis aims to investigate the effectiveness of machine learning techniques in accurately classifying transportation modes (walking, cycling, car, bus, train) from GPS trajectory data, thereby contributing to a better understanding of urban mobility patterns. Accordingly, this study aims to achieve the following objectives:
+
+\begin{itemize}
+    \item Develop and evaluate feature selection and classification techniques to improve the accuracy of transportation mode detection, particularly for challenging classes with overlapping characteristics. This objective is detailed in  \Cref{chap4}.
+
+    \item Investigate the effectiveness of hierarchical classification approaches for improving the accuracy of transportation mode detection, considering the challenges posed by real-world GPS trajectory data. This objective is addressed in detail in \Cref{chap5}.
+
+    \item Research the challenges of learning a TMD classifier in the presence of classification difficulty factors such as class imbalance and overlap. This is detailed in \Cref{chap6}.
+\end{itemize}
+
+
+
+\section{Research Contributions}
+This research makes significant contributions to the field of TMD, specifically addressing the challenges of accurately identifying modes of transportation from noisy and incomplete GPS data. The key contributions of this thesis are:
+    \begin{itemize}
+        \item We proposed a novel class-subspace feature selection method for TMD. This method uniquely captures the most relevant features for individual transportation modes by identifying discriminative subspaces within the feature space. By focusing on these informative subspaces, the proposed method improves the accuracy of mode detection, especially in challenging scenarios with overlapping class distributions (\Cref{chap4}, publication \cite{muhammad2025subspace}).
+
+        \item We proposed \emph{HiClass4MD} hierarchical classifier for TMD. \emph{HiClass4MD} leverages misclassification error of standard flat classifier to learn the class between different transportation mode. The detailed algorithm is presented in \Cref{chap5} (publication \cite{muhammad2024hierarchical}). 
+
+        \item Investigated the impact of class imbalance and overlap on TMD classifiers. This work is discussed in \Cref{chap6}. Part of this work is published in \cite{muhammad2025imbalance}.
+
+        \item A comprehensive evaluation of the proposed methods on two real-world GPS trajectory datasets, and comparison with existing state-of-the-art techniques.
+    \end{itemize}
+
+\section{List of Publications}
+The research presented in this thesis has led to the following publications.
+
+\noindent
+\textbf{Conference proceedings}
+    \begin{enumerate}
+        \item Akilu Rilwan Muhammad, Ana Aguiar, and João Mendes-Moreira. Transportation mode detection from gps data: A data science benchmark study. In 2021 IEEE International Intelligent Transportation Systems Conference (ITSC), pages 3726–3731. IEEE, 2021.
+
+%        \item Muhammad, A.R., Aguiar, A. and Mendes-Moreira, J., 2021, September. Transportation mode detection from gps data: A data science benchmark study. In 2021 IEEE International Intelligent Transportation Systems Conference (ITSC) (pp. 3726-3731). IEEE.
+
+        \item Akilu Rilwan Muhammad, Ana Aguiar, and João Mendes-Moreira. Inferring transportation mode using pooled features from time and frequency domains. In 2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC), pages 3985–3990. IEEE, 2023.
+
+%        \item Muhammad, A.R., Aguiar, A. and Mendes-Moreira, J., 2023, September. Inferring Transportation Mode Using Pooled Features from Time and Frequency Domains. In 2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC) (pp. 3985-3990). IEEE.
+
+%        \item Muhammad, A.R., Aguiar, A. and Mendes-Moreira, J., 2024, September. \textit{HiClass4MD}: A Hierarchical Classifier for Transportation Mode Detection. In 2024 IEEE 27th International Conference on Intelligent Transportation Systems (ITSC) (pp. -). IEEE.
+
+        \item Akilu Rilwan Muhammad, Ana Aguiar, and João Mendes-Moreira. \textit{HiClass4MD}: A hierarchical classifier for transportation mode detection. In 2024 IEEE 27th International Conference on Intelligent Transportation Systems (ITSC), pages –. IEEE, 2024.
+
+%        \item Muhammad, A.R., Aguiar, A., Mendes-Moreira, J. (2025). Characterising Class Imbalance in Transportation Mode Detection: An Experimental Study. In: Julian, V., et al. Intelligent Data Engineering and Automated Learning – IDEAL 2024. IDEAL 2024. Lecture Notes in Computer Science, vol 15347. Springer, Cham. https://doi.org/10.1007/978-3-031-77738-7\_6
+
+        \item Akilu Rilwan Muhammad, Ana Aguiar, and João Mendes-Moreira. "Characterising class imbalance in transportation mode detection: An experimental study," in Intelligent Data Engineering and Automated Learning – IDEAL 2024, V. Julian, et al., Eds., vol. 15347, Lecture Notes in Computer Science. Cham, Switzerland: Springer, 2025, pp. 123-130. doi: 10.1007/978-3-031-77738-7\_6.
+
+    \end{enumerate}
+
+\noindent
+\textbf{Journal (to be submitted)}
+\begin{enumerate}
+    \item A. R. Muhammad, A. Aguiar, and J. Mendes-Moreira, "From attribution to selection: harnessing SHAP values for class-subspace feature selection in transportation mode detection" [to be submitted to Applied Intelligence Journal].
+
+\end{enumerate}
+
+
+\section{Thesis Outline}
+The rest of this thesis is structured as follows. \\
+
+\noindent
+%\textbf{ \Cref{chap2}} 
+\textbf{Chapter 2} \\
+This chapter presents a comprehensive review of state of the art techniques in TMD. We discuss various data types used in TMD studies, their advantages and limitations, and the methodologies employed to identify modes of transportation from GPS trajectory data. Additionally, we critically analyse existing approaches, highlighting their strengths, weaknesses, and limitations. \\
+
+
+\noindent
+%\textbf{ \Cref{chap3}}
+\textbf{Chapter 3} \\
+This chapter characterises the datasets used throughout this thesis and details the preprocessing techniques employed. We also present a benchmark study to evaluate the performance of different TMD algorithms on the dataset. \\
+
+\noindent
+\textbf{ \Cref{chap4}} \\
+This chapter presents a novel class-subspace feature selection method to enhance the accuracy of TMD classifiers. By employing game-theoretic principles, the method identifies discriminative subspaces within the feature space, pinpointing the most relevant features for each transportation mode. This targeted approach aim to address challenges such as overlapping class distributions and limited discriminative features in minority classes. By focusing on these informative subspaces, the method improves the classification performance, particularly in complex scenarios where traditional methods struggle. \\
+
+\noindent
+\textbf{ \Cref{chap5}} \\
+This chapter introduces the \emph{HiClass4MD}, a hierarchical classification framework designed to improve the predictive models of TMD systems. This methods builds upon the misclassification errors of standard flat classifiers to construct a hierarchical structure that effectively discriminates between transportation modes. By strategically learning and refining the class hierarchy, \emph{HiClass4MD} enhances classification performance, particularly in scenarios with overlapping class distribution and imbalance. The chapter provides a detailed explanation of the algorithm, its design rationale, and its application to real-world GPS trajectory datasets. Comprehensive evaluations demonstrate the framework’s ability to improve performance overall.  \\
+
+\noindent
+\textbf{ \Cref{chap6}} \\
+\Cref{chap6} investigates the impact of class imbalance and overlapping feature distributions on the performance of TMD classifiers. This chapter delves into how these challenges affect classification accuracy and explores strategies to mitigate their effects. By analysing real-world GPS trajectory datasets, the chapter provides insights into the behaviour of classifiers under these conditions and evaluates techniques to improve their robustness. \\
+
+\noindent
+\textbf{ \Cref{chap7}}  \\
+\Cref{chap7} concludes the thesis by summarizing the key findings and contributions of the research. It also discusses potential future research directions building upon the work presented in this thesis.
+
+% Add a blank page with page number and running head
+\newpage
+\mbox{} % Inserts an empty box to create a blank page
+%\newpage
+
