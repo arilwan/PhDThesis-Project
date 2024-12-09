@@ -76,6 +76,7 @@ Two real-world GPS trajectory datasets are employed in this thesis, which are de
     \label{fig:main-trip-distrib}
 \end{figure}
 
+
 %\section{Exploratory Analysis}
 
 
@@ -147,8 +148,7 @@ Notably, the trips exhibiting unstopped user sessions originated from trips surp
     To extract meaningful insights, we compute point-level motion attributes for each point in every trajectory, including speed, acceleration, jerk (rate of change of acceleration), and bearing rate. While the SMF2016 dataset provides instantaneous GPS speed for each location point, the Geolife dataset lacks this information. To address this limitation, we estimate speed for Geolife trajectories by calculating the relative geographical distance between consecutive GPS points using the using the Vincenty Formula \cite{vincenty1975direct}  and dividing it by the time elapsed. 
     
     \begin{figure}%[htbp]
-        \centering
-        \includegraphics[width=0.75\linewidth]{figures/point-bearing.pdf}
+        \centering     \includegraphics[width=0.75\linewidth]{figures/point-bearing.pdf}
         \caption{Visual representation of bearing between successive GPS points in a trajectory.}
         \label{fig:point-bearing}
     \end{figure}
@@ -167,29 +167,64 @@ Notably, the trips exhibiting unstopped user sessions originated from trips surp
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/smf2016-speed.pdf} %
-        \caption{SMF2016  speed distribution per transportation mode.}
+        \caption{SMF2016 speed distribution per transportation mode.}
         \label{fig:smf2016-speed-per-mode}
     \end{minipage}
    \hspace{1em} %\hfill
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/geolife-speed.pdf} %
-        \caption{Geolife speed distribution per transportatio mode.}
+        \caption{Geolife speed distribution per transportation mode.}
         \label{fig:geolife-speed-per-mode}
     \end{minipage}
    % \caption{A main caption describing both figures.}
     \label{fig:main-speed-distrib}
     \end{figure}
     To calculate point-level acceleration ($A_{P_m}$) and jerk ($J_{P_m}$) at point $P_m$, we utilise \cref{eq_acc,eq_jk} respectively as follows:
-    
+%    
     \begin{equation}
         A_{P_m} = \frac{S_{P_n} - S_{P_m}}{\Delta t} \label{eq_acc}
     \end{equation}
-    
+%    
     \begin{equation}
         J_{P_m} = \frac{A_{P_n} - A_{P_m}}{\Delta t} \label{eq_jk}
     \end{equation}
-
+    Figures \ref{fig:smf2016-acceleration} through \ref{fig:geolife-jerk} show the distributions of the acceleration and jerk in both datasets.
+    
+    \begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/smf2016-acceleration.png}
+        \caption{SMF2016 acceleration distribution.}
+        \label{fig:smf2016-acceleration}
+    \end{minipage}
+    \hspace{1em} % Space between columns
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/geolife-acceleration.png}
+        \caption{Geolife acceleration distribution.}
+        \label{fig:geolife-acceleration}
+    \end{minipage}
+    
+    \vspace{1em} % Space between rows
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/smf2016-jerk.png}
+        \caption{SMF2016 jerk distribution.}
+        \label{fig:smf2016-jerk}
+    \end{minipage}
+    \hspace{1em} % Space between columns
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/geolife-jerk.png}
+        \caption{Geolife jerk distribution.}
+        \label{fig:geolife-jerk}
+    \end{minipage}
+    \caption{The distributions of acceleration and jerk in both SMF2016 and Geolife datasets.}
+    \label{fig:combined-distrib}
+\end{figure}
+  
     Different transportation modes exhibit varying rates of change in direction. For example, pedestrians and cyclists frequently change their direction, while cars and metro trains tend to follow a more straight (linear) paths. The bearing, which quantifies the angular deviation from the true north \cite{dabiri2018inferring}, of the straight line connecting two consecutive GPS points  (as illustrated in Figure \ref{fig:point-bearing}), provides a measure of the directional change. We calculate the bearing rate between adjacent GPS points by determining the absolute difference between their respective bearings.
     
     The SMF2016 dataset provides point-level bearing information. To calculate the bearing rate, we use the following equation (\ref{eq_br}):
@@ -208,14 +243,361 @@ Notably, the trips exhibiting unstopped user sessions originated from trips surp
      \vn{bearing}(P_m) &= \vn{arctan(y,x)}  \label{geo_br4}
     \end{align}
 
-    Ultimately, each location point in a segment is now represented by a vector consisting of four attributes, namely $<S_{P_i}, A_{P_i}, J_{P_i},  BR_{P_i}>$. 
+    \subsection{Outlier Removal}
+    Data quality is of paramount importance for accurate and meaningful analysis. To ensure data quality, we define and apply outlier detection criteria for point-level motion characteristics. 
+    Recognising that GPS data can be susceptible to noise and errors, we carefully examined each data point within each trip segment for evidence of physically unrealistic movement in urban scenarios. Building upon the literature \cite{ivan2012motor,vogel2002characterizes}, we defined metric thresholds to identify and remove anomalous data points. Specifically, we considered data points exhibiting speeds higher than 50 m/s \cite{dabiri2018inferring,schuessler2009processing} as outliers. Furthermore, we removed data points with acceleration values falling outside the range of -10 m/s² (deceleration) to 10 m/s² as these values are considered improbable \cite{frej2023experimental,wang2004normal} for typical movement in urban settings. %This outlier detection process resulted in the removal of 69,330 location points, constituting 0.72\% of the total data points within the SMF2016 dataset.
+
+    Following the calculation of motion characteristics, each location point $P_i$ within a segment is now represented by a vector comprising four attributes: speed ($S_{P_i}$), acceleration ($A_{P_i}$), jerk ($J_{P_i}$), and bearing rate, thus $L_i = <S_{P_i}, A_{P_i}, J_{P_i},  BR_{P_i}>$.
+
+  %  Ultimately, after calculating the motion characteristics, each location point in a segment is now represented by a vector consisting of four attributes, namely $<S_{P_i}, A_{P_i}, J_{P_i},  BR_{P_i}>$. 
+   
+\section{Benchmark Study}
+%In this section we describe the process for establishing the baseline model and classification algorithm employed. We experiment with the most common algorithms for TMD as described in \ref{tmd-classifiers}, RF and CNN using the SMF2016 dataset. 
+
+This section outlines the methodology employed to establish a baseline for this study. To this end, we experiment with the two widely used algorithms for TMD: RF and CNN, as detailed in Section \ref{tmd-classifiers}. 
+We conducted the experiments using the SMF2016, the primary dataset used in this study.
+Additionally, recognising the imbalance distribution of the dataset, we employed the use of an ensemble of autoencoders classifier. This algorithm is detailed in \Cref{sec:eae}. 
+To comprehensively evaluate these models, twelve (12) experiments were conducted. These experiments are categorised by the type of features used (raw features vs. feature statistics) and the data splitting method employed: conventional random split versus a split based on the period of data collection. \Cref{fig:framework} illustrates the conceptual framework of of the proposed methodology. 
+ \begin{figure}[htbp]
+        \centering        \centerline{\includegraphics[height=8.cm, width=15cm]{figures/concept.pdf}}
+        \caption{Conceptual framework of the proposed methodology.}
+        \label{fig:framework}
+    \end{figure}
+
+Inspired by the studies in \cite{dabiri2018inferring}, and  and recognising the requirement of fixed-size inputs for CNN, we create split each segment into fixed-size instances  of size N=100 timesteps.
+This value was chosen as it approximates the median number of data points within all segments, which is 127). %So that each instance comprises of 100 data points in four dimensions of speed, acceleration, jerk and bearing rate. This is regarded as the raw point-level feature, and is used in experiments on raw data.
+
+To ensure consistent input dimensions, the following instance data handling procedures were implemented:
+\begin{itemize}
+    \item Instances with fewer than 10 GPS points: Instances with fewer than 10 GPS points, typically occurring at the end of segments, were discarded due to insufficient data points.
+
+    \item Instances with 10 or more but not up to 100 GPS points: Instances with between 10 and 100 GPS points were padded with zeros to achieve the desired instance size of $N=100$.
+\end{itemize}
+This approach ensures that all input instances to the CNN have a consistent length as is required.
+
+
+Each instance comprises 100 data points, where each data point is represented by a four-dimensional vector containing speed, acceleration, jerk, and bearing rate. This constitutes the raw point-level feature set, which is used in experiments conducted on raw data.
+
+For the features statistics experiments, we calculated ten descriptive statistics for each of the four dimensions (speed, acceleration, jerk, and bearing rate) within an instance \cite{rodrigues2017impact}. These statistics include the mean, median, standard deviation, minimum, maximum, median absolute deviation (MAD), 25th percentile, 75th percentile, 85th percentile, and inter-quartile range. This resulted in 40 features (10 statistics x 4 dimensions) for each instance.
+
+\subsubsection{Ensemble of Autoencoders} \label{sec:eae}
+   We employ the Ensemble of Autoencoders (EAE) classifier \cite{garcia2021ensemble}. Autoencoders are a type of artificial neural network used in unsupervised learning. An autoencoder comprises two main components:
+    \begin{enumerate}
+        \item Encoder: This component processes the input data and transforms it into a compressed representation known as a latent space or bottleneck.
+
+        \item Decoder: This component receives the compressed representation from the encoder and attempts to reconstruct the original input data.
+    \end{enumerate}
+    Designed to learn efficient data representations (encodings), they aim to minimise the difference between the input data and its subsequent reconstruction.
+   
+   The EAE utilises a modular design consisting of an ensemble of several autonomous autoencoders. This approach leverages the power of multiple autoencoders, each trained to effectively represent data instances belonging to a single class in the dataset.
+   
+   Specifically, five independent autoencoders are trained, each dedicated to learning the underlying representation of a specific transportation mode: bike, bus, car, foot, and metro. %Duration prediction on unseen example, each autoencoder reconstruct the input and computes the loss.
+%   
+    Our argument is that each autoencoder learns at its best to reconstruct the input of its own class. During prediction on unseen data, each autoencoder makes its own prediction by reconstructing the sample.
+
+    Given an unseen example $s_i$, we compute the reconstruction loss $l$,  the mean squared error difference from the reconstructed instance $ \bar{s_i}$. Our goal is to minimise the objective function in \cref{eqn6} such that the AE with minimum loss is the predicted class. The motivation to use this algorithm is the expected ability to deal with imbalanced data due to its modular capacity.
+    \begin{equation}
+              l = \frac{1}{n}\sum_{i=1}^{n}(s_i- \bar{s_i})^2
+        \label{eqn6}
+    \end{equation}
+    where $s_i$ and $ \bar{s_i}$ denote the original input and the reconstructed  respectively.
+
+%    \subsection{Data split}
+
+\section{Performance Evaluation} \label{results}
+    To comprehensively evaluate model performance, twelve experiments were conducted. These experiments were designed to investigate the impact of different feature sets and data splitting strategies on model accuracy.
+
+    \begin{itemize}
+        \item \textbf{Classifiers:} Three classifiers were employed: Random Forest, Convolutional Neural Networks, and an Ensemble of Autoencoders.
+        \begin{itemize}
+            \item \textit{RF Classifier:} 
+             As a well-established machine learning algorithm, random forest was selected as the baseline classifier. This choice is supported by prior research demonstrating its strong performance in mode detection tasks \cite{li2021transportation, rodrigues2017impact}.
+            
+            \item \textit{CNN Classifier:} Inspired by the studies in \cite{dabiri2018inferring}, we created a CNN model using the fixed-length instances as far the CNN requirement. Since the CNN input layer can accept an input sample in 3 dimensions \cite{dabiri2018inferring}: length, width and depth (channels), our input sample is made-up of the fixed-length GPS instances. Each instance comprises of 4 channels of speed, acceleration, jerk and bearing rate stacked-up. the individual channel size has shape 1 x N. The CNN model therefore takes input instances, where each instance has the shape of   1 x N x 4 ($N = 100$ for raw point-level features, and $N = 10$ for feature statistics models).
+            
+            \item \textit{EAE Classifier:} The ensemble of autoencoders (EAE) model consists of an ensemble of autonomous autoencoders \cite{garcia2021ensemble}, where each autoencoder (AE) model is trained per class, in this case, 5 AEs, one for each mode. 
+        \end{itemize}
+
+        \item \textbf{Feature Sets:} Two feature sets were utilised:
+        \begin{itemize}
+            \item \textit{Raw Features:} This set comprises raw point-level features, including speed, acceleration, jerk, and bearing rate, for each of the 100 timesteps within an instance.
+
+            \item \textit{Feature Statistics:} This set consists of ten descriptive statistics (mean, median, standard deviation, minimum, maximum, median absolute deviation, 25th percentile, 75th percentile, 85th percentile, and inter-quartile range) calculated for each of the four dimensions (speed, acceleration, jerk, and bearing rate) within each instance, resulting in 40 features per instance.
+        \end{itemize}
+
+        \item \textbf{Data Splits:} Two data splitting strategies were employed:
+        \begin{itemize}
+            \item \textit{Temporal Split:} Data was split based on the period of data collection, using a 3-week trip data for training and 1 week for testing.
+
+            \item \textit{Conventional Split:} A conventional 80:20 split was used to divide the data into training and testing sets.
+        \end{itemize}
+        
+    \end{itemize}
+
+%    The result of the instances distribution in the temporal data split is dipcted in \Cref{tab:temporal-instances}, while that of conventional split is presented in \Cref{tab:conventional-instances}.
+
+    The distribution of instances resulting from the temporal data split is depicted in \Cref{tab:temporal-instances}, while that of the conventional split is presented in \Cref{tab:conventional-instances}.
+
+    \begin{table}[htbp]
+        \setlength\doublerulesep{0.2pt}
+        \caption{Distribution of instances in the temporal data split}% in train-test split}
+        \begin{center}
+        \begin{tabular}{c|cc|cc|c}
+        \hline \hline
+        \textbf{Travel}&\multicolumn{2}{|c|}{\textbf{Train set}} &
+            \multicolumn{2}{|c|}{\textbf{Test set}} & \textbf{Total} \\
+        %\cline{2-5} 
+        \textbf{mode} & \textbf{\textit{count}}& \textbf{\textit{percentage}}&
+            \textbf{\textit{count}}& \textbf{\textit{percentage}} &
+         \\
+        \hline
+       foot &   18,749  &   22.01   &   14,601  &   32.08   &   33,350 \\
+       %\hline
+       bike &   3,482    &  4.09    &   1,398   &   3.07    &  4,880  \\
+       %\hline
+       bus  &   9,566   &   11.23   &   8,317   &   18.27   &  17,883  \\
+       %\hline
+       car  &   49,741  &   58.40   &   20,301  &   44.60   &  70,042  \\
+       %\hline
+       metro    &   3,634   &   4.27    &   904 &   1.99    &  4,538  \\
+       \hline \hline
+        \end{tabular}
+        \label{tab:temporal-instances}
+        \end{center}
+    \end{table}
+%
+    \begin{table}[htbp]
+        \setlength\doublerulesep{0.5pt}
+        \caption{Distribution of instances in conventional 80:20 split}% in train-test split}
+        \begin{center}
+        \begin{tabular}{c|cc|cc|c}
+        \hline \hline
+        \textbf{Travel}&\multicolumn{2}{|c|}{\textbf{Train set}} &
+            \multicolumn{2}{|c|}{\textbf{Test set}} & \textbf{Total} \\
+        %\cline{2-5} 
+        \textbf{mode} & \textbf{\textit{count}}& \textbf{\textit{percentage}}&
+            \textbf{\textit{count}}& \textbf{\textit{percentage}} &
+         \\
+        \hline
+       foot &   26,712  &   25.55   &   6,638  &   25.40   &   33,350 \\
+       %\hline
+       bike &   3,922    &  3.75    &   958   &   3.67    &  4,880  \\
+       %\hline
+       bus  &   14,284   &   13.66   &   3,599   &   13.77   &  17,883  \\
+       %\hline
+       car  &   56,003  &   53.56   &   14,039  &   53.71   &  70,042  \\
+       %\hline
+       metro    &   3,632   &   3.47    &   906 &   3.47    &  4,538  \\
+       \hline \hline
+        \end{tabular}
+        \label{tab:conventional-instances}
+        \end{center}
+    \end{table}
+
+    This experimental design resulted in a total of twelve experiments, allowing for a thorough investigation of the impact of different classifiers, feature sets, and data splitting strategies on model performance.
+
+%    The performance of each model is evaluated using several the well-known metrics including precision, recall, f1 score as well as the Area Under the Receiver Operating Characteristics Curve (ROC-AUC) score. ROC-AUC is a recommended evaluation metric  for a multi-class imbalance problem, as it decouples classifier's performance from imbalance class distribution or unequal classification error costs \cite{fawcett2006introduction}.
+
+    Model performance was evaluated using several well-known metrics, including precision, recall, F1-score, and the Area under the Receiver Operating Characteristic curve (ROC-AUC). ROC-AUC is a recommended evaluation metric for multi-class classification problems, as it is relatively insensitive to class imbalance and unequal classification error costs \cite{fawcett2006introduction}.
+
+\section{Experimental Results}
+    
+    \subsection{Experiment 1: 3-weeks/1-week split}
+    The set of experiments conducted with the 3-weeks train, 1-week test trips data split.
+     Tables \ref{tab:rf1} through \ref{tab:eae1}, depict the confusion matrices for each of the models created with the 3 weeks/1 week train-test data split, showing the classification reports as well as recall and precision scores.
+
+     This subsection presents the results of the experiments conducted using a temporal data split. Tables \ref{tab:rf1} through \ref{tab:eae1} present the confusion matrices and corresponding classification reports, including recall and precision scores, for each of the models trained and evaluated using this temporal data split.
+     % RF raw features
+    \begin{table}[htbp]
+    \renewcommand{\arraystretch}{1.3}
+    \setlength\doublerulesep{0.5pt}
+    \setlength{\tabcolsep}{8pt} % Adjust as needed for spacing
+    \caption{Confusion matrix for RF classifier (raw features)}
+    \label{tab:rf1}
+    \centering
+    \begin{tabular}{ll|ccccc|c}
+        \hline\hline
+         &  & \multicolumn{5}{c|}{Predicted class}  &  \\
+      &   & Foot & Bike & Bus & Car & Metro & \textbf{Recall} \\
+        \hline
+       & Foot  & 8,706 & 37  & 83  & 5,746 & 29   & 0.60 \\
+       & Bike  & 437  & 297 & 7   & 657  & 0    & 0.21 \\
+Actual class & Bus   & 1,573 & 20  & 375 & 6,295 & 54   & 0.05 \\
+       & Car   & 1,738 & 107 & 359 & 18,046 & 51   & 0.89 \\
+       & Metro & 375  & 0   & 0   & 523  & 0    & 0.00 \\
+        \hline
+       & \textbf{Precision} & 0.68 & 0.64 & 0.46 & 0.58 & 0.00 & \\
+        \hline\hline
+    \end{tabular}
+    \end{table}
+
+    %CNN raw features
+    \begin{table}[htbp]
+    \renewcommand{\arraystretch}{1.3}
+    \setlength\doublerulesep{0.5pt}
+    \setlength{\tabcolsep}{8pt} % Adjust as needed for spacing
+    \caption{Confusion matrix for CNN classifier (raw features)}
+    \label{tab:cnn1}
+    \centering
+    \begin{tabular}{ll|ccccc|c}
+        \hline\hline
+         &  & \multicolumn{5}{c|}{Predicted class} & \\
+         &  & Foot & Bike & Bus & Car & Metro & \textbf{Recall} \\
+        \hline
+        & Foot & 8,618 & 46  & 274 & 5,627 & 36  & 0.59 \\
+        & Bike & 586  & 298 & 6   & 496  & 12  & 0.21 \\
+Actual class & Bus  & 1,563 & 29  & 681 & 6,044 & 0   & 0.08 \\
+        & Car  & 1,484 & 115 & 391 & 18,148 & 163 & 0.89 \\
+        & Metro & 361  & 8   & 9   & 446  & 80  & 0.09 \\
+        \hline
+        & \textbf{Precision} & 0.68 & 0.60 & 0.50 & 0.59 & 0.27 & \\
+        \hline\hline
+    \end{tabular}
+\end{table}
+
+
+    % EAE raw features
+    \begin{table}[htbp]
+    \renewcommand{\arraystretch}{1.3}
+    \setlength\doublerulesep{0.5pt}
+    \setlength{\tabcolsep}{8pt} 
+    \caption{Confusion matrix for EAE classifier (raw features)}
+    \label{tab:eae1}
+    \centering
+    \begin{tabular}{ll|ccccc|c}
+        \hline\hline
+         &  & \multicolumn{5}{c|}{Predicted class} & \\
+         &  & Foot & Bike & Bus & Car & Metro & \textbf{Recall} \\
+        \hline
+        & Foot & 11,106 & 574 & 677 & 1,698 & 546 & 0.76 \\
+        & Bike & 904  & 172 & 106 & 180  & 36  & 0.12 \\
+Actual class & Bus  & 4,897 & 657 & 530 & 2,133 & 100 & 0.06 \\
+        & Car  & 7,668 & 2,448 & 1,532 & 8,301 & 352 & 0.41 \\
+        & Metro & 490  & 36  & 33  & 319  & 26  & 0.03 \\
+        \hline
+        & \textbf{Precision} & 0.44 & 0.04 & 0.18 & 0.66 & 0.02 & \\
+        \hline\hline
+    \end{tabular}
+    \end{table}
+
+
+\section{Establishing Baseline}
+
+% RF summary stat
+\begin{table}[htbp]
+    \renewcommand{\arraystretch}{1.3}
+    \setlength\doublerulesep{0.5pt}
+    \setlength{\tabcolsep}{8pt} 
+    \caption{Confusion matrix for RF classifier (features statistics)}
+    \label{tab:rf2}
+    \centering
+    \begin{tabular}{ll|ccccc|c}
+        \hline\hline
+         &  & \multicolumn{5}{c|}{Predicted class} & \\
+         &  & Foot & Bike & Bus & Car & Metro & \textbf{Recall} \\
+        \hline
+        & Foot & 8,548 & 99  & 916 & 4,913 & 125 & 0.59 \\
+        & Bike & 334  & 478 & 67  & 519  & 0   & 0.34 \\
+Actual class & Bus  & 1,553 & 25  & 1,101 & 5,638 & 0   & 0.13 \\
+        & Car  & 1,430 & 117 & 614 & 18,094 & 46  & 0.89 \\
+        & Metro & 350  & 7   & 12  & 513  & 22  & 0.02 \\
+        \hline
+        & \textbf{Precision} & 0.70 & 0.66 & 0.41 & 0.61 & 0.11 & \\
+        \hline\hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+    \renewcommand{\arraystretch}{1.3}
+    \setlength\doublerulesep{0.5pt}
+    \setlength{\tabcolsep}{8pt} 
+    \caption{Confusion matrix for CNN classifier (features statistics)}
+    \label{tab:cnn2}
+    \centering
+    \begin{tabular}{ll|ccccc|c}
+        \hline\hline
+         &  & \multicolumn{5}{c|}{Predicted class} & \\
+         &  & Foot & Bike & Bus & Car & Metro & \textbf{Recall} \\
+        \hline
+        & Foot & 9,186 & 1   & 295 & 5,049 & 70  & 0.63 \\
+        & Bike & 676  & 253 & 0   & 469  & 0   & 0.18 \\
+Actual class & Bus  & 1,878 & 11  & 1,532 & 4,880 & 16  & 0.18 \\
+        & Car  & 1,789 & 55  & 981 & 17,322 & 154 & 0.85 \\
+        & Metro & 357  & 0   & 4   & 389  & 154 & 0.17 \\
+        \hline
+        & \textbf{Precision} & 0.66 & 0.79 & 0.54 & 0.62 & 0.39 & \\
+        \hline\hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+    \renewcommand{\arraystretch}{1.3}
+    \setlength\doublerulesep{0.5pt}
+    \setlength{\tabcolsep}{8pt}
+    \caption{Confusion matrix for EAE classifier (Features statistics)}
+    \label{tab:eae2}
+    \centering
+    \begin{tabular}{ll|ccccc|c}
+        \hline\hline
+         &  & \multicolumn{5}{c|}{Predicted class} & \\
+         &  & Foot & Bike & Bus & Car & Metro & \textbf{Recall} \\
+        \hline
+        & Foot & 6,510 & 0   & 131 & 7,397 & 563 & 0.45 \\
+        & Bike & 448  & 0   & 0   & 926  & 24  & 0.00 \\
+Actual class & Bus  & 857  & 0   & 49  & 7,296 & 115 & 0.01 \\
+        & Car  & 989  & 0   & 61  & 19,170 & 81  & 0.94 \\
+        & Metro & 237  & 0   & 0   & 617  & 50  & 0.06 \\
+        \hline
+        & \textbf{Precision} & 0.72 & 0.00 & 0.20 & 0.54 & 0.06 & \\
+        \hline\hline
+    \end{tabular}
+\end{table}
+
+
 
 
     
-    \subsection{Data split}
-
-\section{Classification Algorithms Used}
-
-\section{Establishin Baseline}
 
 
+\begin{table}[htbp]
+    \footnotesize
+    \setlength\doublerulesep{0.5pt}
+    \setlength{\tabcolsep}{20pt}
+    \centering
+    \caption{Summary of experimental results}
+    \label{tbl_summary}
+    \begin{tabular}{l|l|ccc}
+        \hline \hline
+         & Metric & CNN & EAE & RF \\
+        \hline
+        \multirow{10}{*}{Experiment 1} 
+            & Accuracy & 0.61 & 0.44 & 0.60 \\
+            & Precision & 0.60 & 0.47 & 0.58 \\
+            & Recall & 0.61 & 0.44 & 0.60 \\
+            & F1-score & 0.56 & 0.42 & 0.54 \\
+            & ROC-AUC & 0.72 & 0.60 & 0.76 \\
+        \cline{2-5}
+    %    \multirow{5}{*}{Experiment 1} 
+            & Accuracy & 0.62 & 0.57 & 0.62 \\
+            & Precision & 0.62 & 0.51 & 0.59 \\
+            & Recall & 0.62 & 0.57 & 0.62 \\
+            & F1-score & 0.59 & 0.49 & 0.58 \\
+            & ROC-AUC & 0.76 & 0.63 & 0.78 \\
+        \hline
+        \multirow{10}{*}{Experiment 2} 
+            & Accuracy & 0.97 & 0.74 & 0.79 \\
+            & Precision & 0.97 & 0.80 & 0.82 \\
+            & Recall & 0.97 & 0.74 & 0.79 \\
+            & F1-score & 0.97 & 0.74 & 0.77 \\
+            & ROC-AUC & 0.99 & 0.83 & 0.94 \\
+        \cline{2-5}
+   %     \multirow{5}{*}{Experiment 2} 
+            & Accuracy & 0.80 & 0.57 & 0.82 \\
+            & Precision & 0.80 & 0.63 & 0.83 \\
+            & Recall & 0.80 & 0.57 & 0.82 \\
+            & F1-score & 0.79 & 0.45 & 0.80 \\
+            & ROC-AUC & 0.93 & 0.55 & 0.93 \\
+        \hline \hline
+        \multicolumn{5}{c}{\textit{Precision, Recall, F1 and ROC-AUC scores are weighted averages}} \\
+    \end{tabular}
+\end{table}
