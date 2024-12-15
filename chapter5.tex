@@ -1,1 +1,245 @@
-\chapter{Hierarchical Classification for Mode Detection} \label{chap5}
+\chapter{Hierarchical Classification Approach to Mode Detection} \label{chap5}
+
+
+\section{Introduction} \label{chp5-sec1}
+Recent advancements in machine learning have spurred significant research into extracting insights from large-scale sensor data. Within the field of human activity recognition (HAR), transportation mode detection \cite{muhammad2023inferring} aims to develop machine learning algorithms that predict the modes of transportation used by individuals.
+
+TMD inherently tackles a \textit{multiclass} classification - a classification problem involving more than two classes. Trips often involve the use of multiple transportation modes; for example, a commute might combine walking to a train station followed by a train journey. Existing research \cite{andrade2022you, muhammad2021transportation, ribeiro2024deep} typically does not recognise or exploit the inherent relationships between different transportation modes. This is crucial because some transportation modes, e.g. buses, and cars, share certain characteristics or infrastructure, making them more closely related than others.  By not considering these modal relationships, existing research could limit the accuracy of TMD algorithms, potentially leading to misclassification between such modes.
+
+In this study, we propose the hierarchical classification approach to transportation mode detection - \emph{HiClass4MD} algorithm - which addresses this challenge by incorporating the inherent hierarchical relationships between transportation modes. \emph{HiClass4MD} leverages misclassification errors from a standard flat classifier to learn the class hierarchy using agglomerative clustering. This learned class hierarchy is then used to guide the development of a TMD classifier to improve correct prediction, potentially reducing misclassification between transportation modes.
+
+This chapter is structured as follows.  \Cref{chp5-sec2} provides a brief overview of existing hierarchical classification approaches. We present our proposed method for transportation mode detection with hierarchical classification, \textit{HiClass4MD}, in \Cref{chp5-sec3}. 
+\Cref{chp5-sec4} presents the results obtained, followed by the discussion in \Cref{chp5-sec5}. Finally, \Cref{chp5-sec6} summarises the key contributions and outlines future research directions.
+
+\section{Hierarchical Classification} \label{chp5-sec2}
+Conventional flat classification techniques, referring to standard binary or multiclass methods,  overlook the structural information between distinct classes. Most common classification methods decompose a multiclass problem into several binary problems to achieve better separation between the classes \cite{alshdaifat2013hierarchical}. However, this approach neglects the hierarchical information that may exist within the classes.
+
+
+In contrast, a significant proportion of real-world classification tasks lend themselves naturally to a hierarchical classification approach \cite{helm2021inducing, silva2017improving}. In these problems, the classes to be predicted form an organised hierarchy. By incorporating hierarchical structures, classification methods can exploit the relationships between classes, potentially leading to improved performance. %compared to flat approaches. 
+In what follows, we describe the different approaches to hierarchical classification.
+
+\subsection{The Big-Bang or Global Approach}
+This approach builds a single, complex classification model over the entire hierarchy in one go. Unlike other methods, the method does not involve separate training stages for each level in the class hierarchy. Instead, it considers the entire structure of the classes all at once \cite{park2018incremental}. This \textit{"one-step"} process results in a more complex model compared to other approaches. During testing, the model analyses each new example and assigns it a category within the hierarchy, with the potential to classify it at any level. Compared to other hierarchical approaches, big-bang has the advantage of a potentially smaller final model size \cite{silla2011survey}. However, the high complexity of this approach is a major drawback, and is probably the reason it is rarely used.
+
+\subsection{ Local Classifiers Approach}
+This approach utilises a modular structure, employing several local classifiers to discriminate between classes as dictated by the hierarchical structure. Each local classifier focuses on a specific portion of the hierarchy, leveraging local informational perspectives to make classification decisions. This approach can be further subdivided based on the strategies it employs to utilise local information and construct classifiers that exploit it  \cite{silla2011survey}.
+\begin{itemize}
+    \item \textit{Local Classifier per Node (LCN):} This method involves training a binary classifier at each  node within the hierarchy, excluding the root node.
+    \item \textit{Local Classifier per Parent Node (LCPN):} This method trains a multiclass classifier at each parent node (including the root) to discriminate between its child nodes throughout the hierarchy until reaching leaf nodes.
+    \item \textit{Local Classifier per Level(LCL):} This approach involves training a multiclass classifier at every level of the hierarchy.
+\end{itemize}
+
+\section{Proposed Method} \label{chp5-sec3}
+
+\subsection{Class Hierarchy Learning}\label{subsec:hierarchy}%{Proposed Method}
+The current study builds upon the research by Silva et al. \cite{silva2018probabilistic} on hierarchical classification for multiclass problems. This method infers the hierarchical structure of classes from the misclassification errors of a standard flat classifier. The process begins by training a standard flat classifier, denoted as $F$, on the entire dataset. We then evaluate the resulting confusion matrix, $M$. 
+ This matrix is subsequently normalised row-wise, resulting in $\bar{M}$. Next, we compute the class overlapping matrix, $\bar{M_{O}}$, which captures the degree of overlap between individual classes $i$ and $j$ in all possible combinations (considering both $M_{i,j}$, $M_{j,i}$) as described by Lango et al. \cite{lango2022makes}. Following this, the Similarity Matrix $\bar{M_{S}}$, is obtained. This matrix represents the distance between the classes based on the overlap information. Finally, we use this distance information for agglomerative hierarchical clustering \cite{murtagh2012algorithms} to group classes into a hierarchy. This process is outlined in Algorithm \ref{alg:hierarchy}. For example, applying this method with several classification algorithms and the datasets described in \Cref{chp3-sec1} results in the class hierarchies depicted in Figures \ref{fig:smf-DT-tree} through \ref{fig:geo-XGB-tree}. 
+
+\begin{algorithm}[tb]
+\caption{Class Hierarchy Learning}\label{alg:hierarchy} 
+\DontPrintSemicolon
+\SetNoFillComment
+
+\KwIn{Dataset $ D = {(x_1, y_1), (x_2, y_2),..,(x_m, y_m)}; $ \\ 
+\Indp
+\quad\quad Number of classes $C;$ \\ 
+\quad\quad Flat classifier $F;$ \\ 
+%\quad\quad Subspace proportion $ \rho. $
+}
+
+\SetKwInput{Process}{Process}
+
+  \LinesNumbered
+  \Process{}
+  \Indp
+  % begin process
+  %Compute $ \phi(x_{i,j}), \quad \forall x_{i,j} \in D $\  \tcp*{SHAP of input features for all instances } 
+  Fit $F$ on $D,$ and evaluate the confusion matrix $M.$
+
+  Compute $\bar{M},$ the row-wise normalisation of $M$:  %\\
+  $ \bar{M_{ij}} = \frac{M_{ij}}{\sum_{k=1}^{n}M_{ik}}  $
+  $\forall i,j \in C.$
+  
+  Determine the \textit{Overlapping Matrix} $ \bar{M_{O}}: $  the degree of overlapping between the classes: 
+    \begin{equation*}
+     Overlap(i,j) = 
+        \begin{cases}
+            \frac{\bar{M_{ij}} + \bar{M_{ji}} }{2} & \text{ if } i \neq j \\ 
+            1 & \text{ if } i= j 
+        \end{cases}
+    \end{equation*}
+    \hspace{6.2cm} $\forall i,j \in C.$
+    
+    Calculate the \textit{Distance Matrix} $\bar{M_S} $ applying class \textit{distance function}:
+    $d_S(i,j) = 1 - Overlap(i,j) $ ; 
+     $\forall i,j \in C. $ 
+
+
+     %Generate class hierarchy $H_C$ by iteratively joining classes into clusters based on closest distance in $\bar{M_S}$.
+
+     Join classes into cluster $H_C$ bottom-up based on closest distance in $\bar{M_S}$.
+ 
+  \vspace{.3cm}
+\Indm
+\KwOut{ \textit{Class Hierarchy  } $H_C$ % obtained by applying class 
+}
+\end{algorithm}
+
+
+
+\begin{figure}[htbp]
+    \centering
+
+    % Column labels
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \textbf{SMF2016 Dataset}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \textbf{Geolife Dataset}
+    \end{minipage}
+    
+    \vspace{0.5em} % Small space between labels and images
+
+    % First row
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{figures/smf2016-DT-hierarchical.png}
+        \caption{SMF2016-DT learned hierarchy.}
+        \label{fig:smf-DT-tree}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{figures/smf2016-RF-hierarchical.png}
+        \caption{Geolife-DT learned hierarchy.}
+        \label{fig:geo-DT-tree}
+    \end{minipage}
+
+    \vspace{\baselineskip}
+
+    % Second row
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{figures/smf2016-RF-hierarchical.png}
+        \caption{SMF2016-RF learned hierarchy.}
+        \label{fig:smf-RF-tree}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{figures/geolife-RF-hierarchical.png}
+        \caption{Geolife-RF learned hierarchy.}
+        \label{fig:geo-RF-tree}
+    \end{minipage}
+
+    \vspace{\baselineskip}
+
+    % Third row
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{figures/smf2016-SVM-hierarchical.png}
+        \caption{SMF2016-SVM learned hierarchy.}
+        \label{fig:smf-SVM-tree}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.\textwidth]{figures/geolife-SVM-hierarchical.png}
+        \caption{Geolife-SVM learned hierarchy.}
+        \label{fig:geo-SVM-tree}
+    \end{minipage}
+
+%    \vspace{\baselineskip}
+
+    % Fourth row
+   
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+     \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{figures/smf2016-XGB-hierarchical.png}
+        \caption{SMF2016-XGB learned hierarchy.}
+        \label{fig:smf-XGB-tree}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.\textwidth]{figures/geolife-XGB-hierarchical.png}
+        \caption{Geolife-XGB learned hierarchy.}
+        \label{fig:geo-XGB-tree}
+    \end{minipage}
+    
+    % \caption{The class hierarchy learned by different algorithms.}
+    \label{fig:class_hierarchy}
+\end{figure}
+
+\newpage
+
+\subsection{ HiClass4MD for Transportation Mode Detection}
+The proposed method, \textit{HiClass4MD}, leverages the class hierarchy learning described in \Cref{subsec:hierarchy} to establish a tree structure for transportation mode classification. Training of the \textit{HiClass4MD} involves fitting a classifier using the LCPN approach. During the testing phase on an unseen sample, the process follows the hierarchy until the predicted class is determined at the leaf node. This is illustrated in the proposed method block diagram in \Cref{fig:hiclass}. %% replace this figure with a framework fig %%%%%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.\linewidth]{figures/hiclass-model.pdf} %[width=12cm, height=10cm]
+    \caption{Block diagram of the proposed method.}
+    \label{fig:hiclass}
+\end{figure}
+
+\subsection{Dataset and Preprocessing}
+We employed the GPS trajectories datasets described in \Cref{chp3-sec1}. The data preprocessing steps and feature engineering, are described in detail in \Cref{data-preprocessing}. Together, each instance is composed of the following features:
+\begin{itemize}
+    \item \textit{Time-domain features:} 10 descriptive statistics x 4 dimensions, detailed in \Cref{chp4-time-features}.
+
+    \item \textit{Frequency-domain features:} top-10 indexes of the FFT frequency spectrum x 4 dimensions, detailed in \Cref{chp4-fft-features}.
+\end{itemize}
+
+By combining the above, each instance in the final datasets
+comprises 80 features (40 from the time domain and 40 from
+the frequency domain).
+
+\subsection{Evaluation Metrics}
+In the standard flat classification approach,  performance metrics such as precision, recall, and F-measure are calculated based on three possible prediction outcomes: a correctly predicted positive outcome (True Positive - TP), an actual negative example incorrectly predicted as positive (False Positive - FP), or a positive example incorrectly predicted as negative (False Negative -FN).
+
+However, performance evaluation in hierarchical classification requires a distinct approach due to the inherent hierarchical relationships within the class structure. As the inference process traverses down the class hierarchy (as illustrated in Figure~\ref{fig:hi-prediction}), the prediction process must consider not only the predicted class itself but also its ancestor classes, similar to the true class and all its ancestors.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/hierarchical-prediction.pdf}
+    \caption{ An illustration of the prediction process in hierarchical classification.}
+    \label{fig:hi-prediction}
+\end{figure}
+
+We therefore adopt the recommendations outlined in \cite{silla2011survey}. We define $\hat{T}$ as the set comprising the true class (and similarly, $\hat{P}$ for the predicted class) for sample $i$ and all its ancestor classes within the hierarchy. Hierarchical precision (and similarly, recall and F-measure) are then calculated using the equations provided in Table~\ref{tab:evaluation}.
+%%% To add note before table below  %%%%%
+
+\begin{table}[htbp]
+    \centering
+    \caption{Evaluation metrics for Flat and Hierarchical Classification}
+    \renewcommand{\arraystretch}{1.7} % Adjust the stretch factor as needed
+    \begin{tabularx}{.8\columnwidth}{@{}>{\centering\arraybackslash}X >{\centering\arraybackslash}X@{}}
+    \toprule
+        Flat classification & Hierarchical classification\\
+    \midrule
+        $\varname{Precision} = \frac{TP}{TP + FP}$ & $hP =\frac{\sum_{i}| \hat{P_i} \cap \hat{T_i}|}{\sum_{i}| \hat{P_i}|}$ \\
+        $\varname{Recall} = \frac{TP}{TP + FN}$ & $ hR =\frac{\sum_{i}| \hat{P_i} \cap \hat{T_i}|}{\sum_{i}| \hat{T_i}|}$ \\
+        $\varname{F1} = 2 \times \frac{ \varname{Precision} \times \varname{Recall}}{\varname{Precision} + \varname{Recall}}$ & $hF = 2 \times \frac{hP \times hR}{hP + hR} $ \\
+    \bottomrule
+    \end{tabularx}
+    \label{tab:evaluation}
+\end{table}
+
+\section{Experimental Results} \label{chp5-sec4}
+
+This study employs a selection of established machine learning algorithms commonly used for classification tasks: Decision Trees (DT), Random Forests (RF), Support Vector Machines (SVM), and XGBoost. DT recursively partition the data space based on features, while RF build ensembles of DT to improve robustness. SVM identify hyperplanes that effectively separate data points belonging to different classes. XGBoost leverages gradient boosting with decision trees to achieve high accuracy and generalisability. Our primary focus is to evaluate the effectiveness of the proposed \textit{HiClass4MD} against these algorithms and assess the potential benefits of incorporating \textit{HiClass4MD} into the transportation mode classification process. 
+
+
+
+
+
+
+\section{Discussion} \label{chp5-sec5}
+
+\section{Summary} \label{chp5-sec6}

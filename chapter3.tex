@@ -4,7 +4,7 @@
 
 The previous chapter reviewed the state-of-the-art in transportation mode detection, including discussions of various data types, approaches, and algorithms employed in the literature. This chapter delves into the datasets utilised in this thesis research, providing detailed characterisations of each.
 
-\section{Datasets Description}
+\section{Datasets Description} \label{chp3-sec1}
 Two real-world GPS trajectory datasets are employed in this thesis, which are detailed.
 
     \subsection{The SenseMyFEUP Dataset}
@@ -80,10 +80,10 @@ Two real-world GPS trajectory datasets are employed in this thesis, which are de
 %\section{Exploratory Analysis}
 
 
-\section{Data Preprocessing}
+\section{Data Preprocessing} \label{data-preprocessing}
 This Section outlines the process of chaining GPS traces into trips in the datasets.  
 
-\subsection{Trip Preprocessing}
+\subsection{Trip Preprocessing} \label{subsec-trip-preproc}
 Both GPS trajectory datasets are chronologically ordered. We define a trip as a sequence of user GPS points in session, separated by a stop of at least 30 minutes.  A trip is composed of multiple GPS points, each represented as a tuple containing latitude, longitude, and timestamp information. Our SMF2016 trip chaining algorithm identifies and joins two GPS traces within a session into a single trip based on their timestamps and location, according to the following criteria \cite{rodrigues2017impact}:      %\looseness=-1
 \begin{itemize}
     \item The GPS traces are associated with a particular user,
@@ -91,7 +91,7 @@ Both GPS trajectory datasets are chronologically ordered. We define a trip as a 
     \item The distance between a previous trace and the start of a new one is below 200m.
 \end{itemize}
 
-\subsection{Trip Filtering}
+\subsection{Trip Filtering} \label{subsec-trip-filtering}
 However, we observed instances where trips exhibited a significant difference in timestamp between successive GPS points beyond the established threshold. Further investigation revealed the large $\Delta t$ between consecutive traces was caused by "unstopped sessions" where data collection continued without recorded stops. We thoroughly searched through all sessions in the dataset and documented the affected sessions in \Cref{tab:gap-sessions}.
 
 We observed instances where trips exhibited a significant difference in timestamp between successive GPS points, exceeding the established threshold. Further investigation revealed that these large time gaps were due to "unstopped sessions," where data collection continued without recorded stops. We conducted a thorough search of all sessions in the dataset and documented the affected sessions in Table \ref{tab:gap-sessions}.
@@ -599,7 +599,7 @@ Cohort 1:   & F1-score & 0.56 & 0.42 & 0.54 \\
 \end{table}
 
 
-\section{Conclusion}
+\section{Summary}
 
 In this chapter, we comprehensively describe the datasets utilised in this research. We begin by describing the data collection process and then proceed to examine their key characteristics.
 

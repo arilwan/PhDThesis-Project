@@ -1,1 +1,352 @@
 \chapter{Class-subspace Feature Selection} \label{chap4}
+
+\section{Introduction}\label{sec:chp4-intro}
+The distribution of transportation modes within a city significantly influences large-scale urban transportation planning. To make informed decisions about transportation systems, authorities and urban planners require a comprehensive understanding of the diverse modes utilised by citizens. This knowledge is essential for developing effective policies that reduce travel time \cite{dabiri2018inferring}, alleviate traffic congestion, or promote the use of public transport in areas where it is most needed \cite{eluru2012travel}.
+It can be leveraged to refine trajectory recommendation systems by tailoring recommendations based on identified transportation modes used on specific paths or routes.
+
+However, conventional tools such as household surveys and telephone interviews have fallen short of capturing the intricate patterns of human mobility. These techniques are often resource-intensive and inherently susceptible to biases or under-reporting. This limitation accentuates the urgent need for automated methods to acquire travel data accurately. Fortunately, mobile crowd sensing emerges as a promising solution for large-scale, automated data collection \cite{aguiar2022sensemycity, rodrigues2014sensemycity, rodrigues2017impact, santos2018portolivinglab}. This technology can be leveraged to monitor diverse human activities, including transportation, with unprecedented detail and granularity.
+
+Fuelled by the widespread adoption of smartphones equipped with sophisticated sensor capabilities and advancements in machine learning, transportation mode detection  research has gained significant traction in recent years. This burgeoning field focuses on harnessing data from various sources, such as GPS, accelerometers, and gyroscopes, to accurately identify individuals' travel modes. A plethora of TMD approaches have been developed, ranging from statistical models \cite{assemi2016developing, xiao2019markovdetecting} and rule-based expert systems \cite{biljecki2013transportation, sauerlander2017evaluation, xiao2019ruledetecting} to more recent innovations in machine learning and deep learning architectures \cite{dabiri2018inferring, endo2016deep, rodrigues2017impact}.
+
+This study makes several significant contributions to the field of transportation mode detection solely using GPS trajectory data:
+\begin{itemize}
+    \item Trip pre-processing and data quality handling: we conduct a thorough trip pre-processing and data quality handling to clean and prepare the GPS trajectory data. This contribution was presented in \cref{subsec-trip-preproc,subsec-trip-filtering} of \Cref{chap3}. %This addresses common issues such as outliers and user annotation errors.
+    
+    \item we research using time-to-frequency feature transformation to extract more informative features from GPS trajectory data.   
+
+    \item We propose the \emph{Class-Subspace} feature selection method that utilises Shapley values to identify and retain feature subsets based on attribution to class prediction.
+
+    \item  We evaluate our work using two real-world GPS trajectory datasets. 
+\end{itemize}
+
+This chapter proceeds as follows. \Cref{chp4-sec2} presents a detailed description of the experimental procedures employed in this study. \Cref{chp4-sec3} outlines the classification algorithms used, while \Cref{chp4-sec4} discusses the evaluation metrics employed to assess the performance of the different models. \Cref{chp4-sec5} introduces sequential feature selection as a baseline approach. Subsequently, \Cref{chp4-sec6} introduces our proposed Class-Subspace Feature Selection method. The results obtained from our experiments are presented in \Cref{chp4-sec7} and analysed in \Cref{chp4-sec8}. Finally, \Cref{chp4-sec9} concludes the chapter by summarising the study's main findings and outlining potential directions for future research.
+
+\section{Data Preprocessing} \label{chp4-sec2}
+This chapter utilises the two GPS trajectory datasets detailed in \Cref{chp3-sec1}.
+Building upon the rigorous data preprocessing steps outlined in \cref{subsec-trip-preproc,subsec-trip-filtering}, which includes trip preprocessing and the creation of fixed-size instances, this chapter utilises the resulting instances. The distribution of instances by transportation mode is depicted in \Cref{fig:instance-distirb}.
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/instance-distribution.pdf}
+    \caption{Instance distribution by transportation mode.}
+    \label{fig:instance-distirb}
+\end{figure}
+
+
+\subsection{Time Domain Features} \label{chp4-time-features}
+Each instance comprises four dimensions of point-level motion characteristics: speed, acceleration, jerk, and bearing rate, observed over 100 consecutive time steps. This standardised representation provides a consistent and structured input format for subsequent feature engineering, encompassing both time-domain and frequency-domain features. This  enables the extraction of spectral characteristics of the trajectories as described in the subsection that follows.
+
+\subsection{Frequency Domain Features} \label{chp4-fft-features}
+To capture the spectral characteristics of the trajectories, we employ the Fast Fourier Transform (FFT) algorithm \cite{rajaby2022structured} to transform all feature dimensions of instances from the time domain to the corresponding frequency spectrum in the frequency domain. For real-valued input, the FFT produces a symmetric spectrum in which the values for positive frequencies are the complex conjugates of the values for negative frequencies. In this case we considered only the positive frequency values for the frequency features to avoid feature duplication. 
+
+Figure \ref{fig:time-freq-dom} illustrates an example of a single instance in both the time and frequency domains, highlighting the transformation of the time-series data into its corresponding frequency spectrum.
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[scale=0.3]{figures/instance-time-fft.pdf} %width=\linewidth
+    \caption{An instance's time and frequency domains.}
+    \label{fig:time-freq-dom}
+\end{figure*}
+
+\section{Classification Algorithms} \label{chp4-sec3}
+This study employs four widely-used machine learning classifiers: Decision Trees, Random Forest, Support Vector Machines, and XGBoost. For a detailed overview of these algorithms, please refer to \Cref{tmd-classifiers}.
+
+\section{Evaluation Metrics} \label{chp4-sec4}
+Evaluation metrics are quantitative measures used to assess the performance and effectiveness of a machine learning model. They are typically used to compare the performance of different models or to evaluate the performance of a model over time. Within the classification domain, the widely prevalent metrics for performance evaluation are \textit{accuracy} and \textit{error rate.} In this section, we describe the most common performance metrics in classification. 
+
+\subsection{Confusion Matrix}
+Each example data sample can yield one of four potential outcomes in a binary classification task involving two classes. If the sample is genuinely positive and the classification algorithm correctly predicts it, it is termed a \textit{true positive (TP)}. Conversely, if the algorithm incorrectly predicts it as negative, it is referred to as a \textit{false negative (FN)}. Similarly, if the sample is truly negative and the classifier accurately predicts it as negative, it is labelled as a \textit{true negative (TN)}. If, however, the algorithm erroneously classifies it as positive, it is designated as a \textit{false positive (FP)}. These four distinct outcomes are precisely captured within a structure known as a \textit{contingency table}, or  \textit{confusion matrix}.
+
+The confusion matrix is a table summarising a classification algorithm's performance on the test set \cite{fawcett2006introduction}. It is typically divided into four cells, corresponding to the four possible outcomes.
+
+\begin{table}[htbp]
+  \caption{Confusion Matrix.} 
+  \label{tab:confusion_matrix}
+  \centering 
+  \settowidth{\templena}{~False Positive (FP)~}% Set maximum box/column width for Positive
+  \settowidth{\templenb}{~False Negative (FN)~}% Set maximum box/column width for Negative
+  \begin{tabular}{ l l c @{} c c }
+    \multicolumn{2}{c}{} & \multicolumn{2}{c}{\bfseries Predicted Class} & \\
+    \multicolumn{2}{c}{} & \itshape Positive & \itshape Negative & \itshape Class Support \\
+    & \itshape Positive & \fbox{\makebox[\templena]{True Positive (TP)}} & \hspace{-\fboxrule}\fbox{~False Negative (FN)~} & \bfseries P \\[\dimexpr\baselineskip-\fboxrule]
+    \raisebox{0.5\dimexpr\normalbaselineskip+2\fboxsep+2\fboxrule}[0pt][0pt]{\bfseries Actual Class} & \itshape Negative & \fbox{~False Positive (FP)~} & \hspace{-\fboxrule}\fbox{\makebox[\templenb]{True Negative (TN)}} & \bfseries N \\
+  \end{tabular}
+\end{table}
+
+\subsection{Accuracy}
+Accuracy is the proportion of test instances correctly classified by the model. The accuracy score can be calculated from the confusion matrix following \cref{eq_accuracy}. 
+\begin{equation}
+    \vn{Accuracy} = \frac{(TP + TN)}{(TP + TN + FP + FN) } \label{eq_accuracy}
+\end{equation}
+
+\subsection{Precision}
+Precision is the proportion of test instances that are classified as positive by the model that are positive. Using the entries of the confusion matrix, this can be calculated as: 
+\begin{equation}
+    \vn{Precision} = \frac{TP}{TP + FP} \label{eq_precisin}
+\end{equation}
+
+\subsection{Recall}
+Recall evaluates the proportion of test instances that are actually positive and are classified as positive by the model. This is calculated using \cref{eq_recall}.
+\begin{equation}
+    \vn{Recall} = \frac{TP}{(TP + FN)}  \label{eq_recall} 
+\end{equation}
+
+\subsection{F1 score}
+There is always a trade-off between a machine learning model's precision and recall scores. An \textit{F1 score} combines the precision and recall scores into a single value, making it a useful measure for evaluating the performance of a classification model. It is the harmonic mean of the  precision and the recall scores, calculated as:
+\begin{equation}
+    \vn{F1} = \frac{2 \cdot (\vn{Precision} \times \vn{Recall})}{\vn{Precision} + \vn{Recall}}  \label{eq_f1}
+\end{equation}
+
+
+
+\subsection{Receiver Operating Characteristics}
+So far, all the evaluation metrics mentioned above rely on the value of the possible outcomes from the confusion matrix. They are, therefore, sensitive to the class distribution of positive and negative classes. We can see from the confusion matrix (\Cref{tab:confusion_matrix}) that the class distribution is the relationship of the positive class (upper) row to the negative (lower) row \cite{fawcett2006introduction} (see the \textquotedblleft Class Support\textquotedblright~ column in the confusion matrix \Cref{tab:confusion_matrix}). A somewhat better metric insensitive to class distribution is the Receiver Operating Characteristics (ROC). ROC is a graphical representation and a performance measurement tool used in binary classification problems.
+
+The ROC curves are plotted using two performance metrics: the \textit{true positive rate (TPR) - } proportion of positive instances that are correctly classified, and \textit{false positive rate (FPR) -} the proportion of negative instances that are incorrectly classified. Figure \ref{fig:roc-curve} illustrates a typical ROC curve, showing the relationship between TPR and FPR at various classification thresholds. The Area Under the Curve (AUC) is a common metric for summarising the performance of a classifier based on its ROC curve.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/roc_curve.png}
+    \caption{Area under the Receiver Operating Characteristic (ROC) Curve.}
+    \label{fig:roc-curve}
+\end{figure}
+
+These curves are created by varying the classification threshold and plotting the TPR against the FPR at each threshold. The classification threshold is a value used to decide whether an instance is classified as positive or negative. Lowering the classification threshold will classify more instances as positive, thus increasing both TPR and FPR.
+A higher area under the ROC curve (AUC) generally indicates a better-performing model, with 1 representing perfect discrimination and an AUC of 0.5 representing just a random classifier. 
+
+\section{Feature Selection} \label{chp4-sec5}
+Feature selection is a critical step in machine learning pipelines aimed at identifying and retaining only relevant features while discarding extraneous ones. The primary goal of feature selection is to identify and select the most relevant and informative subset of features from a more extensive set of variables, aiming to improve model performance and interpretability and reduce computational complexity \cite{khaire2022stability}. Previous studies in TMD from GPS data primarily focused on constructing features in the time domain.  While this approach has yielded effective learning models, there is a tendency to overlook the potential of frequency-domain features \cite{ashqar2018smartphone, james2020semi}.
+
+We use the ten (10) descriptive feature statistics \cite{muhammad2021transportation} calculated for every feature of an instance for the time-domain features (mean, median, standard deviation, minimum, maximum, MAD, \nth{25}, \nth{75}, \nth{85} percentiles, and inter-quartile range). For the frequency-domain features, we consider the indexes of the top 10 frequency components for each feature of an instance. Thus, each instance consists of 80 features: time-domain 10 x 4 features and frequency-domain 10 x 4 features.
+
+\subsubsection{Sequential Forward Floating Selection}
+After generating the pool of features, we applied the \textit{Sequential Forward Floating Selection (SFFS)} \cite{ferri1994comparative, raschka2018mlxtend} technique, a wrapper-based method for feature selection. SFFS begins with an empty feature subset. In the forward selection phase, features are iteratively added to the subset one at a time, with each addition leading to model training and evaluation. The floating operation in SFFS involves removing features from the currently chosen subset if they no longer contribute significantly to the model's performance, even if they were previously selected. The process continues until no further improvement in the evaluation metric, such as accuracy or error rate, is observed on a validation set. This study uses the area under the curve - receiver operating characteristics (ROC-AUC) as the evaluation criterion.
+
+\section{Proposed Method} \label{chp4-sec6}
+This section introduces the proposed feature selection method rooted in Shapley values. We firstly provide a concise overview of Shapley values and their relevance to feature importance assessment.
+
+\subsection{The Shapley Values} \label{shaply_values}
+Drawing upon the principles of cooperative game theory, the \emph{Shapley values} emerges as a powerful tool for assessing the contributions of individual features towards a machine learning model predictions \cite{lundberg2017unified}. The Shapley value of a feature quantifies its average marginal contribution to the overall prediction across all possible combinations of feature values. It measures the significance of each feature by evaluating its impact on the model prediction across all possible combinations of feature values.
+
+Lundberg, Erion, and Lee (2018) \cite{lundberg2018consistent} introduced a computationally efficient and theoretically sound approach called SHAP (short for \emph{SHapley Additive exPlanations}) for explaining the output of a machine learning model using insights from game theory. SHAP values is a well-established feature importance technique that quantifies the attribution of each feature to the model prediction by considering all possible marginal contributions of the features. The SHAP value of a feature $i$, denoted $\phi_i$, is calculated following equation \ref{shap_value_eqn},  where $N$ represents the set of all input features and $S$ denotes the feature subset.  $E[ f(X)]$ represent the conditional expectations of the models with  ( $X_{S \cup i}$ ) and without ($ X_S $) feature $i$, respectively. Despite its computational cost, SHAP has demonstrated commendable properties, including fairness and consistency \cite{zhao2020shap}, in assigning importance scores to individual features.   %\looseness=-1
+\begin{equation} \label{shap_value_eqn}
+  \phi_i = \sum_{S\subseteq N\setminus\{i\}} \frac{|S|!(|N| - |S| - 1)!}{|N|!}  \{ E[f(X)|X_{S \cup i} = x_{S \cup i}] - E[f(X)|X_S = x_S] \}
+\end{equation}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.\linewidth]{figures/subspace-illustration.pdf}
+    \caption{An illustration of the Class-Subspace selection process.}
+    \label{fig:subspace}
+\end{figure}
+
+\subsection{Class-Subspace Selection} \label{subspace_alg}
+Traditional wrapper-based feature selection algorithms, such as SFFS, do not evaluate each feature in isolation. Instead, they train a model using different combinations of features and determine which combinations yield the best performance (e.g., highest accuracy). This approach prioritises features that collectively enhance the model's predictive power. To address the challenge of identifying a minimal subset of features that adequately capture the classification boundaries for each unique class, we propose the Class-Subspace selection technique.
+
+Our approach involves training an initial classifier and computing the SHAP values $ \phi(x_{i,j})$ for all features $i$ and instances $j$ in the training set $D$. Subsequently, for each unique class $k$, we evaluate the contribution of each feature to the model prediction of that class by computing the mean absolute SHAP values. These values are then sorted in non-increasing order of magnitude to identify the most influential features for predicting the class. The minimum subset of features comprising the top contributing values whose sum is larger than the contribution threshold ($\rho$) is selected. 
+
+\Cref{fig:subspace} visually depicts the steps involved in this process. The chosen subset trains a base model specialised in detecting instances belonging to that class. We create $k$ such base models, one for each unique class. Finally, we construct an ensemble of these base models. Algorithm \ref{alg:subspace} provides the pseudo-code for the Class-Subspace selection technique. In this case, we used $\rho = 0.6$ for features contributing to each class prediction. 
+
+\begin{algorithm}[htbp]
+\caption{Class-Subspace }\label{alg:subspace} % Class-specific Subspace Ensemble
+\DontPrintSemicolon
+\SetNoFillComment
+\KwIn{Dataset $ D = {(x_1, y_1), (x_2, y_2),..,(x_m, y_m)}; $ \\ 
+\Indp
+\quad\quad Number of classes $K;$ \\ 
+\quad\quad Base learning algorithm $T;$ \\ 
+\quad\quad Subspace proportion $ \rho. $}
+
+\SetKwInput{Process}{Process}
+
+  \LinesNumbered
+  \Process{}
+  \Indp
+  % begin process
+  Compute $ \phi(x_{i,j}), \quad \forall x_{i,j} \in D $\  \tcp*{SHAP of input features for all instances } 
+  
+  \For{$k = 1$ to $K$}{
+  
+   Compute  $ \vb{x}_k   = \sum_{i=1}^{n} |\phi(x_{i,j})| $ 
+   \tcp*{feature vector}
+   
+   Sort $ \vb{x}_k  $ in non-increasing order %descending order
+
+   Select subspace $ x_i $ for which $ \vb{x}_k $ adds up to $ \rho $ \label{baseL}
+
+   Fit $T$ using  $ x_i $ in \ref{baseL}
+  }
+  
+\Indm
+\KwOut{ $H(x),$ an ensemble of $K$ base learners }
+\end{algorithm}
+
+\section{Experiments and Results}\label{chp4-sec7}
+We train the four classification algorithms mentioned in \Cref{chp4-sec3}.
+A comparative analysis of the classification results shows that RF and XGB demonstrated superior performance on both datasets when used with the 80 features initially generated. This is presented in \Cref{tab:combined-results}. RF and XGB achieved higher ROC-AUC scores of 75\% and 88\%, respectively.
+
+
+
+\begin{table}[htbp]
+\caption{Classification Results for SMF2016 and Geolife Datasets} \label{tab:combined-results}
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabularx}{\textwidth}{lXXXX|XXXX|XXXX}
+    \toprule
+    \multicolumn{13}{c}{\textbf{SMF2016 Classification Results}} \\
+    \midrule
+    Transportation &
+    \multicolumn{4}{c}{Precision} &
+    \multicolumn{4}{c}{Recall} &
+    \multicolumn{4}{c}{F1-score} \\
+    \cmidrule(r{1ex}){2-5} \cmidrule(r{1ex}){6-9} \cmidrule{10-13}
+    Mode & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB} \\
+    \midrule
+    Foot  & 0.60 & 0.57 & 0.59   & 0.61 & 0.93 & 0.94 & 0.73   & 0.93 & 0.73 & 0.71 & 0.65   & 0.73 \\
+    Bike  & 0.97 & 0.02 & 0.39   & 0.88 & 0.22 & 0.03 & 0.23   & 0.36 & 0.36 & 0.02 & 0.28   & 0.51 \\
+    Bus   & 0.13 & 0.16 & 0.18   & 0.18 & 0.06 & 0.07 & 0.19   & 0.11 & 0.08 & 0.10 & 0.18   & 0.14 \\
+    Car   & 0.74 & 0.73 & 0.71   & 0.75 & 0.80 & 0.69 & 0.64   & 0.77 & 0.77 & 0.71 & 0.67   & 0.76 \\
+    Metro & 0.00 & 0.28 & 0.04   & 0.00 & 0.00 & 0.02 & 0.09   & 0.00 & 0.00 & 0.03 & 0.06   & 0.00 \\
+    \midrule
+    &  \multicolumn{3}{c}{RF}  &  \multicolumn{3}{c}{SVC}   & \multicolumn{3}{c}{DT}  & \multicolumn{3}{c}{XGB}  \\
+   ROC-AUC ** &  \multicolumn{3}{c}{0.75}  &  \multicolumn{3}{c}{0.67}   & \multicolumn{3}{c}{0.64}  & \multicolumn{3}{c}{0.75}  \\
+    \midrule    
+    \multicolumn{13}{c}{\textbf{Geolife Classification Results}} \\
+    \midrule
+    Transportation &
+    \multicolumn{4}{c}{Precision} &
+    \multicolumn{4}{c}{Recall} &
+    \multicolumn{4}{c}{F1-score} \\
+    \cmidrule(r{1ex}){2-5} \cmidrule(r{1ex}){6-9} \cmidrule{10-13}
+    Mode & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB} \\
+    \midrule
+    Foot  & 0.68 & 0.63 & 0.65   & 0.69 & 0.93 & 0.83 & 0.69   & 0.91 & 0.79 & 0.72 & 0.67   & 0.79 \\
+    Bike  & 0.84 & 0.61 & 0.67   & 0.84 & 0.68 & 0.53 & 0.53   & 0.69 & 0.75 & 0.57 & 0.59   & 0.75 \\
+    Bus   & 0.71 & 0.66 & 0.51   & 0.71 & 0.70 & 0.66 & 0.56   & 0.70 & 0.70 & 0.66 & 0.53   & 0.70 \\
+    Car   & 0.67 & 0.57 & 0.37   & 0.65 & 0.46 & 0.34 & 0.46   & 0.51 & 0.55 & 0.42 & 0.41   & 0.57 \\
+    Metro & 0.76 & 0.51 & 0.51   & 0.76 & 0.53 & 0.40 & 0.42   & 0.54 & 0.63 & 0.45 & 0.46   & 0.63 \\
+    \midrule
+    &  \multicolumn{3}{c}{RF}  &  \multicolumn{3}{c}{SVC}   & \multicolumn{3}{c}{DT}  & \multicolumn{3}{c}{XGB}  \\
+   ROC-AUC ** &  \multicolumn{3}{c}{0.88}  &  \multicolumn{3}{c}{0.83}   & \multicolumn{3}{c}{0.72}  & \multicolumn{3}{c}{0.88}  \\    
+    \bottomrule
+\end{tabularx}
+}
+\footnotesize\parbox{0.8\textwidth}{\centering **metric is a weighted average (global).}
+\end{table}
+
+
+We further investigate the impact of different feature combinations to identify the most relevant features through training RF and XGB models with various feature subsets in the following settings:  
+\begin{itemize}
+    \item	\textit{Time-domain:} These models used the 40 features derived from the temporal characteristics of the GPS trajectories (e.g., speed, acceleration, bearing rate) only.
+    \item	\textit{Frequency-domain:} These models used the 40 frequency-domain features obtained from the frequency spectrum of the Fourier transformation of time features.
+    \item	\textit{Combined:} these models are trained using entire 80 features (40 time + 40 frequency).
+    \item \textit{SFFS-chosen:} These models are trained using the feature subset selected by the SFFS selector for each classifier and dataset.  
+    \item \textit{SFFS-common:} These models are trained using the SFFS-selected features by each classifier standard to both datasets.
+    \item \textit{Class-Subspace:} models created using our proposed feature selection subsets.
+\end{itemize}
+
+In \Cref{tab:no-features-selected} is the summary of the number of SFFS-chosen and common features for each algorithm and dataset. \Cref{tab:overall-metrics} presents the results obtained for each feature subset and dataset. While yielding only marginal performance gains, our proposed method consistently outperforms other techniques. The only exceptions are the RF model's ROC-AUC score on SMF2016 and the precision and ROC-AUC scores on Geolife.
+This demonstrates the effectiveness of our method in identifying the most relevant features, ultimately leading to improved classification performance.
+\begin{table}[htbp]
+    \centering
+    \caption{SFFS feature Selection by each classifier across the datasets.}
+    \label{tab:no-features-selected}
+    \begin{tabular}{lccc}
+    \toprule
+    & \multicolumn{2}{c}{Number of SFFS chosen Features} & Number of Features  \\
+    Classifier  &  SMF2016 & Geolife & in Common \\
+    \midrule
+     RF  & 24 & 30 & 10 \\
+     XGB & 55 & 42 & 30 \\
+     \bottomrule
+    \end{tabular}
+\end{table}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % Use symbols for footnotes
+\begin{table}[htbp]
+    \setlength\tabcolsep{0pt}
+    \caption{Model evaluations using different feature combinations.\strut} \label{tab:overall-metrics}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} ll *{10}{c} }
+    \toprule
+    & & \multicolumn{2}{c}{Precision\textsuperscript{*}}
+    & \multicolumn{2}{c}{Recall\textsuperscript{*}}
+    & \multicolumn{2}{c}{F1-score\textsuperscript{*}}
+    & \multicolumn{2}{c}{ROC-AUC\textsuperscript{*}}
+    & \multicolumn{2}{c}{Accuracy} \\
+    \cmidrule{3-4} \cmidrule{5-6} \cmidrule{7-8} \cmidrule{9-10} \cmidrule{11-12} 
+    & & RF & XGB & RF & XGB & RF & XGB & RF & XGB & RF & XGB \\ 
+    \midrule 
+    & \textit{Time-domain}  & 0.54 & 0.61 & 0.56 & 0.63 & 0.55 & 0.61 & 0.68 & 0.70 & 0.56 & 0.63 \\
+    & \textit{Freq-domain}  & 0.50 & 0.50 & 0.55 & 0.57 & 0.52 & 0.52 & 0.64 & 0.74 & 0.55 & 0.57 \\
+\multirow{2}{*}{SMF2016}  & \textit{Combined} & 0.57 & 0.62 & 0.60 & 0.65 & 0.58 & 0.62 & 0.75 & 0.75 & 0.60 & 0.65 \\
+    & \textit{SFFS-chosen} & 0.59 & 0.61 & 0.62 & 0.64 & 0.60 & 0.61 & \textbf{0.79} & \textbf{0.78} & 0.62 & 0.64 \\
+    & \textit{SFFS-common} & 0.58 & 0.62 & 0.61 & 0.64 & 0.58 & 0.62 & 0.75 & 0.76 & 0.61 & 0.64 \\
+     & \textit{Class-Subspace\textsuperscript{**}} & \textbf{0.61} & \textbf{0.64} & \textbf{0.68} & \textbf{0.68} & \textbf{0.62} & \textbf{0.64} & 0.76 & \textbf{0.78} & \textbf{0.68} & \textbf{0.68} \\
+    \midrule
+    & \textit{Time-domain} & 0.72 & \textbf{0.73} & 0.71 & \textbf{0.72} & 0.70 & \textbf{0.72} & 0.88 & 0.88 & 0.71 & \textbf{0.72} \\
+    & \textit{Freq-domain} & 0.43 & 0.41 & 0.40 & 0.40 & 0.35 & 0.38 & 0.71 & 0.69 & 0.40 & 0.40 \\
+Geolife & \textit{Combined} & 0.72 & \textbf{0.73} & \textbf{0.72} & \textbf{0.72} & 0.71 & \textbf{0.72} & 0.88 & \textbf{0.89} & \textbf{0.72} & \textbf{0.72} \\
+    & \textit{SFFS-chosen} & \textbf{0.73} & 0.72 & \textbf{0.72} & 0.71 & \textbf{0.72} & 0.71 & \textbf{0.89} & 0.88 & \textbf{0.72} & 0.71 \\
+    & \textit{SFFS-common} & 0.70 & 0.71 & 0.69 & 0.70 & 0.68 & 0.70 & 0.87 & 0.88 & 0.69 & 0.70 \\
+     & \textit{Class-Subspace\textsuperscript{**}} & 0.72 & 0.72 & \textbf{0.72} & \textbf{0.72} & \textbf{0.72} & \textbf{0.72} & 0.88 & 0.88 & \textbf{0.72} & \textbf{0.72} \\
+    \bottomrule
+    \end{tabular*}
+    \vspace{-0.001em} % Adjust this value as needed to control spacing
+\begin{center}
+    \footnotesize\parbox{0.6\textwidth}{\centering \textsuperscript{*}Weighted average. \quad \textsuperscript{**}Our proposed feature selection method.}
+\end{center}
+\end{table}
+
+Finally, we determined the predicted segments and trips by combining instances and segments through a majority voting strategy. The resulting segment-trip predictions are shown in \Cref{tab:trip-segment-prediction}.
+\begin{table}[b]
+\caption{Segment and trip prediction results (\%).}\label{tab:trip-segment-prediction}%
+\begin{tabular}{llcccccccc}
+\toprule
+   & & \multicolumn{2}{c}{Precision\footnotemark[1]} & \multicolumn{2}{c}{Recall\footnotemark[1]} & \multicolumn{2}{c}{F1-Score\footnotemark[1]} & \multicolumn{2}{c}{Accuracy} \\
+   \cmidrule(r){3-4} \cmidrule(r){5-6} \cmidrule(r){7-8} \cmidrule(r){9-10} 
+%\midrule   
+ & & RF & XGB & RF & XGB & RF & XGB & RF & XGB  \\ 
+ \midrule
+\multirow{2}{*}{SMF2016} & Segment & 65.2 & 71.3 & 69.4 & 70.6 & 60.9 & 63.6 & 69.4 & 70.6 \\
+                        & Trip & 75.5 & 76.1 & 79.5 & 79.0 & 74.1 & 74.7 & 79.5 & 79.0 \\
+\midrule
+\multirow{2}{*}{Geolife} & Segment & 74.4 & 75.4 & 73.9 & 74.9 & 73.8 & 74.8 & 73.9 & 74.9 \\
+                         & Trip & 79.0 & 80.5 & 76.6 & 78.8 & 76.9 & 79.1 & 76.6 & 78.8 \\
+\bottomrule  % 0.713     0.706     0.636
+          % 0.761     0.790     0.747 
+\end{tabular}
+\vspace{-0.5em} % Adjust this value as needed to control spacing
+\begin{center}
+    \footnotesize\parbox{0.5\textwidth}{\centering *weighted averages.}
+\end{center}
+\end{table}
+
+\section{Discussion}\label{chp4-sec8}
+The results presented in \Cref{tab:overall-metrics} underscore the significance of time-domain features for accurate mode detection. This trend is particularly evident in the Geolife dataset, where time-domain features consistently outperform frequency-domain features. While the benefits of frequency-domain features are less pronounced in the SMF2016 dataset, they still contribute to the improvements in overall performance. The combined features models demonstrate improvements in overall performance, further emphasising the value of incorporating both time-domain and frequency-domain features. This highlights the potential benefits of incorporating time-domain and frequency-domain features in mode detection models. We experimented with the influence of standard features selected by SFFS from each dataset, as shown in \Cref{tab:no-features-selected}. However, this did not lead to improved classification outcomes.
+
+Our proposed method consistently improves classification results, except for the few cases in ROC-AUC and precision scores. Perhaps the most exciting part is its flexibility to select various features per class. This selection is influenced by the individual feature's contribution to the overall model. While some classes, such as foot, can be accurately predicted with only a few features, others, such as the \textit{metro}, require more features but still struggle for correct prediction. One possible explanation is that the models struggle to find the optimal feature subset to correctly discriminate the \textit{metro} class. Nevertheless, our method's ability to tailor feature selection to each class demonstrates its adaptability and potential for enhancing classification performance.
+
+\Cref{fig:subspace-features} illustrates the feature subsets selected by our proposed method for individual classes using the SMF2016 dataset with both RF and XGB classifiers. The number in parentheses indicates the features selected for each class, using a $\rho =0.6$ threshold. This significantly reduced the feature set, focusing on the most informative features for each class.
+We anticipate the proposed feature selection method will improve discrimination between bus and car classes, addressing the higher misclassification rate. This expectation is based on the observation that the most important predictors for buses (jerk and bearing rate features) differ substantially from those for cars (primarily dominated by speed features).
+
+\begin{figure}%[tbhp]%[htp]
+ \captionsetup{justification=centering}
+ \captionsetup[subfigure]{justification=centering}
+ \centering 
+\subfloat[ Subspace selection with RF. \label{fig:subspace-A}]{%
+  \includegraphics[width=\textwidth, height=5cm]{figures/subspace-selection-A.pdf}%
+  }
+\vspace{0.3cm}
+
+\subfloat[Subspace selection with XGB. \label{fig:subspace-B}]{%
+  \includegraphics[width=\textwidth, height=5cm]{figures/subspace-selection-B.pdf}%
+  }
+\caption{ Features  selected by  subspace algorithm for SMF2016 using RF \textbf{(a)}  and XGB \textbf{(b)} for $ \rho = 0.6 $. } \label{fig:subspace-features}
+\end{figure}
+
+\section{Summary}\label{chp4-sec9}
+This paper presents a methodology that exclusively leverages GPS trajectory data to extract motion features for accurate transportation mode classification. 
+We initially constructed time-domain motion features and 
+subsequently enriched the feature set by transforming time-domain features into the frequency domain. To optimise feature selection, we explored the impact of various feature combinations, including the sequential forward selection technique.
+Finally, we proposed a novel feature selection method that relies on the concept of game theory to select the most relevant predictors for individual classes in the problem. Our method consistently outperforms other methods explored in our work, though improvements are potentially needed.
+We evaluated our work using two real-world GPS trajectory datasets. 
+Overall, the final segment prediction results achieved 70.6\% accuracy in SMF2016 and 78.8\% in Geolife for XGB. 
+Trip prediction accuracy achieved at least 79\% in SMF2016 for both classifiers and 78.8\% in Geolife for XGB.

@@ -1,1 +1,368 @@
-\chapter{TMD Classifier in the Presence of Imbalance} \label{chap6}
+\chapter{Characterising Class Imbalance in Transportation
+Mode Detection} \label{chap6}
+%%% old chapter title: TMD Classifier in the Presence of Imbalance
+
+\section{Introduction}
+The majority of research approaches TMD as a supervised machine learning problem, specifically a classification task. Researchers leverage various data sources to train their models. Commonly used datasets include GPS trajectory data  (e.g. \cite{dabiri2018inferring,muhammad2023inferring}) and sensor data collected from IMU sensors such as accelerometers and gyroscopes (e.g. \cite{richoz2020transportation}). The number of transportation modes that these models aim to identify can range from as few as three to as many as ten \cite{biljecki2013transportation}.
+One common challenge persists irrespective of the number of transportation modes or the data type employed: the distribution of data points belonging to individual modes within the dataset. Often, the proportion of transportation modes is unequal, with some modes dominating the data while others are scarce. This unequal distribution leads to a problem known as \textit{class imbalance}.
+
+Class imbalance refers to a situation in supervised learning problems where some classes have significantly more data samples available compared to others. This problem is well-studied in binary classification tasks (e.g., credit card fraud detection \cite{feng2021imbalanced}), but it remains an active area of research in multi-class scenarios such as TMD  \cite{santos2022joint}. A previous study \cite{muhammad2021transportation} acknowledges the impact of class imbalance in identifying underrepresented transportation modes. Imbalance handling techniques employed in a later study \cite{muhammad2023inferring} did not yield significant performance improvement.
+Furthermore, class imbalance can be exacerbated by other intrinsic data characteristics, such as class overlap. Class overlap refers to a situation where data points belonging to different classes share similar characteristics, making it difficult for algorithms to discriminate between them \cite{santos2022joint}.
+
+This study investigates the combined effects of class imbalance and class overlap on TMD model performance. We analyse two real-world GPS trajectory datasets. The first dataset exhibits significant class imbalance \cite{muhammad2021transportation}. The second is the Geolife \cite{zheng2011geolife} benchmark dataset, a fairly-balanced GPS trajectory data containing several transportation modes. By comparing the performance of TMD models on these datasets, we aim to gain a deeper understanding of how the combination of class imbalance and class overlap affects TMD model performance, particularly for underrepresented transportation modes.
+
+
+%This chapter is organised as follows. We overview related work on class imbalance and TMD in \Cref{chp6-sec2}, followed by the materials and methods for this research in \Cref{chp6-sec3}. Experimental results and analysis is presented in \Cref{chp6-sec4}. Finally, \Cref{chp6-sec5} concludes the paper summarising the key insights.
+
+This chapter is organised as follows.  \Cref{chp6-sec2} provides an overview of related work on class imbalance and TMD. This is followed by a description of the materials and methods used in this research in \Cref{chp6-sec3}. The experimental results and analysis are presented in \Cref{chp6-sec4}. Finally, \Cref{chp6-sec5} concludes the paper by summarising key insights.
+
+\section{Related Work} \label{chp6-sec2}
+Learning from imbalanced data, where one class has significantly fewer examples than others, poses a significant challenge. This difficulty stems not only from the limited samples in the minority class, but also from other data intrinsic characteristics such as class overlap. Class overlap can further obscure the characteristics of the rare class, making it even harder to learn effectively. Denil and Trappenberg \cite{denil2010overlap} argue that class overlap can be even more detrimental than class imbalance. They reason that while imbalance can be mitigated to some extent by acquiring more training data, class overlap inherently makes classification a more difficult task. Even with increasing data, overlap can lead to increasingly complex models.
+
+An empirical study by Lango and Stefanowski \cite{lango2022makes} explores how various factors affect the classification of data with imbalanced  and multiple classes. Using carefully designed synthetic data, the study showed that overlap, imbalance, and number and size of classes all play a significant role. Researchers have further investigated methods to assess class overlap in imbalanced learning.
+Santos et al. \cite{santos2022joint} delve into the combined effect of class imbalance and overlap. Their work proposes a categorisation of metrics to evaluate class overlap. These metrics consider various aspects, including feature similarity between classes, data structure indicators of overlap, and the contribution of individual data points. The authors argue for the limitations of a single metric in capturing the complexities of class overlap, particularly in imbalanced data scenarios. 
+
+Regarding the methods to learn a classifier in the presence of class imbalance, two approaches are available: data-level and algorithm-level \cite{weiss2013foundations}. Data-level solutions modify the class distribution of the training data. Common techniques include oversampling the minority class, undersampling the majority class, or a combination of both. However, these techniques have limitations. Oversampling can introduce bias towards the oversampled class and lead to overfitting if exact copies are used. Undersampling discards potentially useful data from the majority class. Algorithm-level approaches, on the other hand, focus on modifying the learning algorithm itself. These can involve techniques like cost-sensitive learning, which assigns higher penalties for misclassifying instances of the minority class, and boosting methods that adjust the weights of training examples to focus on those that are poorly classified, especially for the minority class.
+
+In the context of TMD, the impact of class imbalance has not been extensively explored. Existing studies that acknowledge class imbalance often resort to eliminating underrepresented classes, potentially discarding valuable data \cite{xiao2017identifying,yu2023graph,zeng2023trajectory}. %Only Zeng et al. \cite{zeng2023trajectory} appear to have addressed the problem via undersampling. 
+While the study in \cite{muhammad2021transportation} observes the impact of imbalance on model prediction, even with imbalance handling techniques, performance improvements might be marginal \cite{muhammad2023inferring}. This current work investigates how resampling a balanced dataset can be used to understand the impact of class imbalance on TMD model prediction.
+
+\section{Materials and Methods} \label{chp6-sec3}
+Two real-world datasets containing GPS trajectory data are utilised in this work. These datasets are described in \Cref{chp3-sec1}.
+
+\subsection{Preprocessing and Feature Engineering} \label{chap6-sec3:data_preprocessing}
+We applied the same data processing and feature engineering pipeline as described in \cite{muhammad2023inferring}. In brief, this pipeline involves the following steps:
+\begin{enumerate}
+    \item Extracting basic motion features: This involves calculating four point-level motion attributes like speed, acceleration, jerk, and bearing rate from the GPS data.
+    \item Segmentation: Trajectories are segmented into sequences of moving and stopped segments to capture human mobility patterns more effectively.
+    \item Instance creation: Fixed-size instances of size N=100 data points are created from the segmented trajectories.
+    \item Feature extraction: Statistical and spectral features are calculated from each instance in both the time and frequency domains.
+\end{enumerate}
+This process results in a set of 80 features: 40 capturing characteristics in the time domain and 40 in the frequency domain.
+
+The resulting distribution of these instances is presented in \Cref{tab:instances}. It is clear that SMF2016 presents class imbalance. For example, in the training set, the majority classes foot and car, account for nearly 75\% while the minority classes bike and metro put together contribute just 9\%. 
+In contrast, Geolife exhibits a fairly balanced class distribution, with the majority classes (foot and bus) comprising around 53\%, while the minority classes (bike and car) contribute approximately 28\%. 
+\begin{table}[htbp]
+    \centering
+    \caption{Proportion of instances by transportation mode in each dataset.}
+    \label{tab:instances}
+    \setlength{\tabcolsep}{10pt} % Adjust column spacing for readability
+    \renewcommand{\arraystretch}{1.2} % Adjust row height for readability
+    \begin{tabular}{lcccccc}
+    \toprule
+    & &\multicolumn{5}{c}{Transportation Mode} \\
+    \cmidrule{3-7}
+    Dataset & &Foot & Bike & Bus & Car & Metro \\
+    \midrule
+    \multirow{2}{*}{SMF2016} 
+        & Train set & 22.63 & 3.73 & 16.43 & 51.92 & 5.30 \\
+        & Test set  & 17.73 & 3.69 & 17.44 & 59.28 & 1.86 \\
+    \midrule
+    \multirow{2}{*}{Geolife} 
+        & Train set & 29.31 & 12.52 & 23.96 & 15.33 & 18.89 \\
+        & Test set  & 31.87 & 23.54 & 21.86 & 12.11 & 10.62 \\
+    \bottomrule     
+    \end{tabular}
+\end{table}
+
+\subsection{Imbalanced Handling Techniques} \label{subsec:techiques}
+
+To address the class imbalance observed in the transportation mode distribution of the SMF2016 dataset, four imbalanced handling techniques are employed:
+\begin{enumerate}
+    \item SMOTE (Synthetic Minority Oversampling Technique) \cite{chawla2002smote}: This method creates synthetic minority class samples by selecting a random minority sample, finding its $k$ nearest neighbours, and generating a new data point along the line segment between the sample and a randomly chosen neighbour.
+    \item AdaBoost (Adaptive Boosting) \cite{freund1997decision}: This boosting technique combats imbalanced data by iteratively training weak learners. AdaBoost focuses on previously misclassified classes during each iteration, ultimately building a stronger ensemble classifier.
+    \item SMOTEBoost \cite{chawla2003smoteboost}: This hybrid technique combines SMOTE's data generation with AdaBoost's weighting strategy. SMOTEBoost balances the class distribution by creating synthetic minority samples, while AdaBoost utilises weights to train stronger learners for imbalanced data.
+    \item DECOC (Diversified Error Correcting Output Codes) \cite{bi2018empirical}: This technique tackles multi-class imbalanced data by training a diverse ensemble of algorithms. DECOC selects the best performing learner for each data point, creating a more powerful classifier.
+\end{enumerate}
+
+\section{Experimental Analysis} \label{chp6-sec4}
+
+\subsection{Baseline Model} \label{subsec-baseline}
+This study employs a Random Forest (RF) classifier as the baseline model. Random Forest is a well-established ensemble learning technique that has proven effective in various classification tasks \cite{biau2016random}. It operates by combining the predictions from a multitude of randomised decision trees, demonstrably achieving superior overall performance compared to a single decision tree. This ensemble approach capitalises on the principle that an aggregation of weaker models can collectively outperform a single, highly complex model. Random Forest leverages a technique known as bagging, where each tree within the forest is trained on a bootstrapped subset of the training data. The final prediction for a new instance is made by aggregating the votes from all trees in the forest, resulting in a more robust and generalisable model.
+
+Random Forest offers a limited number of hyperparameters requiring tuning, we deviate from the default settings solely for the number of trees in the forest. In this study, we employ a forest comprising 5,000 trees (i.e., \texttt{n\_estimators=5000}). 
+
+\subsection{Evaluation Metrics} \label{chp4-sec4-evaluation}
+While accuracy and error rate are commonly used metrics for evaluating classification performance, their application in imbalanced datasets can be misleading. 
+This study utilises precision, recall, and F-measure \cite{tanha2020boosting} as the primary evaluation metrics. These metrics are calculated based on the values derived from confusion matrix, as described in \Cref{chp4-sec4}. We additionally employ the area under the curve - receiver operating characteristics (AUC-ROC) \cite{fawcett2006introduction}. The ROC curve is a graphical visualisation that depicts a model's performance across all possible classification thresholds.
+
+\subsection{Experimental Setup}
+We conducted the experiments in 4 different setups as detailed below:
+
+\subsubsection{Experiment 1: Baseline}
+This experiment establishes a baseline by training the RF classifier described in \Cref{subsec-baseline} on both  datasets. We employ the data in original form without resampling to preserve the class distribution within each dataset. This allows us to assess the models performance on the datasets using the evaluation metrics defined in \Cref{chp4-sec4-evaluation}. Additionally, for subsequent experiments where Geolife is resampled to create imbalanced datasets, we train a new RF classifier just before employing the imbalanced learning technique. This  allow us to assess the impact of the technique on the resampled data. 
+
+The classification results in Table~\ref{tab:baseline-clsf-reprt} demonstrate significant performance disparity between the SMF2016 and Geolife datasets. This observation underscores the challenges associated with imbalanced datasets. For instance, the bike class, a minority class in both datasets but with a lower proportion in SMF2016, exhibits generally better performance in the Geolife dataset (precision: 84\%, recall: 68\%, F1: 75\%) compared to SMF2016 (precision: 97\%, recall: 22\%, F1: 36\%). Similarly, the model completely misclassifies the metro class instances in SMF2016 (0\% for all metrics), whereas the car class, another minority class in Geolife, achieves a reasonable F1-score of 55\%.
+Notably, resampling the Geolife dataset to address imbalance did not significantly impact model performance compared to the original data in either case.
+\begin{table}[htbp]
+    \caption{Baselines classification results.}
+    \label{tab:baseline-clsf-reprt}
+    \setlength{\tabcolsep}{1pt} % Adjust column spacing
+    \renewcommand{\arraystretch}{1.2} % Adjust row height
+    \begin{tabularx}{\textwidth}{
+        l
+        *{3}{X}
+        *{3}{X}
+        *{3}{X}
+        *{3}{X}
+    }
+    \toprule
+    & \multicolumn{3}{c}{SMF2016} &
+      \multicolumn{3}{c}{\makecell{Geolife \\ (original)}} &
+      \multicolumn{3}{c}{\makecell{Geolife \\ (experiment 3)}} &
+      \multicolumn{3}{c}{\makecell{Geolife \\ (experiment 4)}} \\
+    \cmidrule(r{1ex}){2-4}
+    \cmidrule(r{1ex}){5-7}
+    \cmidrule(r{1ex}){8-10}
+    \cmidrule(r{1ex}){11-13}
+    & Prec. & Rec. & F1 & Prec. & Rec. & F1 & Prec. & Rec. & F1 & Prec. & Rec. & F1 \\
+    \midrule
+    Foot  & 0.60 & 0.93 & 0.73 & 0.69 & 0.93 & 0.79 & 0.63 & 0.96 & 0.76 & 0.65 & 0.94 & 0.77 \\
+    Bike  & 0.97 & 0.22 & 0.36 & 0.84 & 0.68 & 0.75 & 0.91 & 0.49 & 0.63 & 0.92 & 0.51 & 0.65 \\
+    Bus   & 0.13 & 0.05 & 0.08 & 0.71 & 0.71 & 0.71 & 0.64 & 0.77 & 0.70 & 0.70 & 0.57 & 0.63 \\
+    Car   & 0.74 & 0.80 & 0.77 & 0.67 & 0.47 & 0.55 & 0.85 & 0.28 & 0.42 & 0.38 & 0.66 & 0.48 \\
+    Metro & 0.00 & 0.00 & 0.00 & 0.77 & 0.54 & 0.63 & 0.73 & 0.57 & 0.64 & 0.75 & 0.19 & 0.31 \\
+    \midrule
+    Weighted avg. & 0.57 & 0.60 & 0.58 & 0.73 & 0.72 & 0.71 & 0.73 & 0.68 & 0.66 & 0.70 & 0.64 & 0.63 \\
+    \midrule
+    AUC-ROC & \multicolumn{3}{c}{75.23} & \multicolumn{3}{c}{88.14} & \multicolumn{3}{c}{87.80} & \multicolumn{3}{c}{87.71} \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Experiment 2: Addressing Imbalance in SMF2016}
+This experiment uses imbalanced learning techniques to address the imbalance in SMF2016. As shown in \Cref{tab:smf2016-imbalanced}, data oversampling using SMOTE and RF classifier did not yield significant improvements compared to the baseline. DECOC showed improvement for bike prediction (recall: 22\% to 37\%, F1: 36\% to 52\%) without significantly affecting the majority car and foot class predictions. %However, DECOC's performance for metro class remained poor. 
+AdaBoost, on the other hand, exhibited a stability in recall score for bike (22\% to 21\%) but resulted in a decrease in F1-score (36\% to 17\%) due to a precision-recall trade-off. 
+%This trade-off was also observed in metro class prediction (recall: 0\% to 18\%, F1: 0\% to 2\%). 
+Notably, SMOTEBoost emerged as the most effective technique for minority class predictions. It maintained a stable recall score for bike (22\% to 24\%) while achieving a good F1-score (28\%). Considering the weighted average metric values, the overall performance of the models is only marginally better than the baseline.
+\begin{table}[htbp]
+    \caption{Experiment 2: Using imbalanced techniques with the SMF2016.} \label{tab:smf2016-imbalanced}
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabularx}{\textwidth}{
+        @{\extracolsep{\fill}}
+        l
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{}
+      }
+      \toprule
+      & \multicolumn{3}{c}{AdaBoost} &
+      \multicolumn{3}{c}{DECOC} &
+      \multicolumn{3}{c}{RF + SMOTE} &
+      \multicolumn{3}{c}{SMOTEBoost} \\
+      \cmidrule(r{1ex}){2-4} \cmidrule(r{1ex}){5-7} \cmidrule(r{1ex}){8-10} \cmidrule(r{1ex}){11-13}
+      Mode & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1}\\
+      \midrule
+      Foot  & 0.48 & 0.75 & 0.58 & 0.60 & 0.93 & 0.73 & 0.58 & 0.94 & 0.72 & 0.57 & 0.71 & 0.63 \\
+      Bike  & 0.14 & 0.21 & 0.17 & 0.86 & 0.37 & 0.52 & 0.84 & 0.25 & 0.39 & 0.35 & 0.24 & 0.28 \\
+      Bus   & 0.27 & 0.32 & 0.29 & 0.10 & 0.06 & 0.08 & 0.17 & 0.07 & 0.10 & 0.20 & 0.20 & 0.20 \\
+      Car   & 0.64 & 0.21 & 0.31 & 0.74 & 0.75 & 0.74 & 0.75 & 0.80 & 0.77 & 0.73 & 0.66 & 0.69 \\
+      Metro & 0.01 & 0.18 & 0.02 & 0.02 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.06 & 0.11 & 0.07 \\
+      \midrule
+      Weighted avg. & 0.52 & 0.32 & 0.35 & 0.59 & 0.63 & 0.60 & 0.61 & 0.66 & 0.62 & 0.58 & 0.56 & 0.57 \\
+      \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Experiment 3: Gelife Resampled}
+This experiment investigates the impact of class imbalance in the Geolife dataset. We hypothesise the high misclassification error in SMF2016 is primarily caused by class imbalance. We therefore resample the Geolife dataset to a majority-minority class distribution similar to SMF2016. We anticipate substantial decrease on the model's performance. 
+
+Specifically, we oversampled the majority class (foot) using SMOTE to match the proportion of the highest majority (car) in SMF2016. The second most frequent class (bus), exceeds the proportion of the second-highest class in SMF2016 (foot). We therefore employ random undersampling (RUS) to downsample it.
+Furthermore, RUS is applied to downsample all other classes to achieve a distribution similar to SMF2016. The specific resampling proportions used are detailed in  \Cref{tab:geolife-resmpled}. 
+%vspace{-13pt}
+\begin{table}[htbp]
+    \centering
+    \caption{Geolife class distribution in the resampled experiments}
+    \label{tab:geolife-resmpled}
+    \setlength{\tabcolsep}{4pt} % Adjust column spacing
+    \renewcommand{\arraystretch}{1.2} % Adjust row height
+    \begin{tabularx}{0.8\textwidth}{
+        l
+        c
+        X
+        c
+        X
+        c
+    }
+    \toprule
+       & Original & \multicolumn{2}{c}{Experiment 3} & \multicolumn{2}{c}{Experiment 4} \\
+    \cmidrule(r{1ex}){3-4}
+    \cmidrule(r{1ex}){5-6}
+     & \multicolumn{1}{c}{(\%)} & Proportion & Method & Proportion & Method \\
+    \midrule
+     Foot & 29.31 & 51.92 & SMOTE & 22.63 & RUS \\
+     Bike & 12.52 &  3.73 & RUS &  3.73 & RUS \\
+     Bus  & 23.96 & 22.63 & RUS & 16.43 & RUS \\
+     Car  & 15.33 &  5.30 & RUS & 51.92 & SMOTE \\
+     Metro & 18.89 & 16.43 & RUS &  5.30 & RUS \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+The classification results using imbalanced learning techniques for this experiment are presented in Table~\ref{tab:geoilife1}. While the performance metrics exhibit a decrease compared to the baseline (precision: 73\%, recall: 68\%, F1-score: 66\%), the extent of this degradation varies across techniques. For instance, AdaBoost demonstrates a 26\% decrease in F1-score (40\% vs. 66\%). DECOC performs even worse. However, when considering individual class prediction compared to the SMF2016 results in \Cref{tab:smf2016-imbalanced}, the degradation is not as severe as initially anticipated.
+\begin{table}[htbp]
+    \caption{Experiment 3: Geolife resampled.} \label{tab:geoilife1}
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabularx}{\textwidth}{
+        @{\extracolsep{\fill}}
+        l
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{}
+      }
+      \toprule
+      & \multicolumn{3}{c}{AdaBoost} &
+      \multicolumn{3}{c}{DECOC} &
+      \multicolumn{3}{c}{RF + SMOTE} &
+      \multicolumn{3}{c}{SMOTEBoost} \\
+      \cmidrule(r{1ex}){2-4} \cmidrule(r{1ex}){5-7} \cmidrule(r{1ex}){8-10} \cmidrule(r{1ex}){11-13}
+      Mode & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1}\\
+      \midrule
+      Foot  & 0.64 & 0.38 & 0.48 & 0.59 & 0.78 & 0.67 & 0.70 & 0.92 & 0.80 & 0.69 & 0.89 & 0.78 \\
+      Bike  & 0.73 & 0.51 & 0.60 & 0.20 & 0.24 & 0.22 & 0.85 & 0.70 & 0.77 & 0.78 & 0.67 & 0.72 \\
+      Bus   & 0.25 & 0.12 & 0.16 & 0.24 & 0.02 & 0.04 & 0.69 & 0.73 & 0.71 & 0.54 & 0.67 & 0.60 \\
+      Car   & 0.28 & 0.61 & 0.39 & 0.41 & 0.03 & 0.06 & 0.73 & 0.42 & 0.54 & 0.50 & 0.25 & 0.33 \\
+      Metro & 0.20 & 0.52 & 0.28 & 0.01 & 0.45 & 0.02 & 0.74 & 0.58 & 0.65 & 0.43 & 0.22 & 0.29 \\
+      \midrule
+      Weighted avg. & 0.48 & 0.40 & 0.40 & 0.40 & 0.18 & 0.17 & 0.74 & 0.73 & 0.72 & 0.63 & 0.64 & 0.62  \\
+      \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Experiment 4: Geolife to SMF2016 Class Equivalence}
+This experiment is similar to Experiment 3, but we resample each class to match the exact proportion of the corresponding class in SMF2016 (Exp. 4 in Table~\ref{tab:geolife-resmpled} ).
+The same resampling techniques (SMOTE or RUS) are applied appropriately to achieve the distribution.
+The corresponding classification results for all the classifiers is presented in \Cref{tab:geoilife2}. 
+
+Surprisingly, compared to SMF2016, the resampled Geolife classification results have not shown a significant decrease in performance (as reported in \Cref{tab:baseline-clsf-reprt})  except for AdaBoost and DECOC. The majority class (Car) now shows much worse results on all metrics when compared to SMF2016 or GeoLife unsampled, where it was a minority class. than  The minority classes (Bike, Bus) degrade w.r.t the original dataset, but still can be better learnt than on the SMF2016 dataset. This suggests that factors beyond class imbalance might be influencing the predictions on SMF2016. Therefore, we will further investigate the possibility of class overlap.
+\begin{table}[htbp]
+    \caption{Experiment 4: Geolife resampled to SMF2016 class distribution.} \label{tab:geoilife2}
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabularx}{\textwidth}{
+        @{\extracolsep{\fill}}
+        l
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{\hskip 1ex}
+        *{3}{S[table-format=1.2]}
+        @{}
+      }
+      \toprule
+      & \multicolumn{3}{c}{AdaBoost} &
+      \multicolumn{3}{c}{DECOC} &
+      \multicolumn{3}{c}{RF + SMOTE} &
+      \multicolumn{3}{c}{SMOTEBoost} \\
+      \cmidrule(r{1ex}){2-4} \cmidrule(r{1ex}){5-7} \cmidrule(r{1ex}){8-10} \cmidrule(r{1ex}){11-13}
+      Mode & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1} & {Prec.} & {Rec.} & {F1}\\
+      \midrule
+      Foot  & 0.64 & 0.39 & 0.49 & 0.59 & 0.89 & 0.71 & 0.71 & 0.91 & 0.80 & 0.70 & 0.86 & 0.77 \\
+      Bike  & 0.64 & 0.58 & 0.61 & 0.43 & 0.21 & 0.28 & 0.81 & 0.73 & 0.77 & 0.69 & 0.69 & 0.69 \\
+      Bus   & 0.25 & 0.13 & 0.17 & 0.37 & 0.05 & 0.09 & 0.73 & 0.65 & 0.69 & 0.63 & 0.58 & 0.60 \\
+      Car   & 0.19 & 0.43 & 0.26 & 0.46 & 0.12 & 0.19 & 0.57 & 0.56 & 0.56 & 0.48 & 0.42 & 0.44 \\
+      Metro & 0.24 & 0.45 & 0.31 & 0.01 & 0.30 & 0.02 & 0.77 & 0.50 & 0.61 & 0.46 & 0.29 & 0.35 \\
+      \midrule
+      Weighted avg. & 0.46 & 0.39 & 0.40 & 0.46 & 0.25 & 0.27 & 0.73 & 0.72 & 0.72 & 0.63 & 0.64 & 0.63  \\
+      \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Class Overlap Evaluation} 
+
+Using \texttt{pymfe} \cite{alcobacca2020mfe}, a Python meta-feature extractor package, we assess class overlap using two categories of metrics: \textit{structural overlap} and \textit{feature overlap}.
+
+\begin{itemize}
+    \item Structural Overlap: We assess structural overlap, which characterises the complexity of class and information pertaining the internal structure of classes (data morphology). We compute the following metrics:
+    \begin{itemize}
+        \item \textit{Fraction of borderline points (N1):} the proportion of data points that lie close to the decision boundary between classes.
+        \item \textit{Fraction of hyperspheres covering data (T1):} the compactness of class clusters.
+        \item \textit{Local set average cardinality (LSAvg):} the average number of nearest neighbours for each data point.
+    \end{itemize}
+
+    \item Feature Overlap: characterises the similarity of individual features between classes in the data domain. Here, we calculate the following metrics:
+    \begin{itemize}
+        \item \textit{Maximum Fisher's discriminant ratio (F1):} measures the separability between classes by projecting data points perpendicularly using all possible features combination.
+        \item \textit{Directional vector maximum Fisher's discriminant ratio (F1v):} this variant of F1 searches for a vector that maximises the separation between classes.
+    \end{itemize}
+\end{itemize}
+
+In all metrics, a high value indicates strong overlap. The exception is LSAvg, where a low value suggests strong overlap. The calculated class overlap metrics are presented in Table~\ref{tab:overlap}.
+\begin{table}[htbp]
+    \centering
+    \caption{Evaluation of class overlap in datasets.}
+    \label{tab:overlap}
+    \begin{tabular}{lccccc}
+    \toprule
+      &Metric  &SMF2016 &Geolife  &Geolife &Geolife \\
+      & & & (original) & (Exp. 3) & (Exp. 4)\\
+     \midrule
+     \multirow{2}{*}{Structural Overlap} &N1  & 0.44 &0.46 &0.37 &0.47 \\
+     &T1 &0.56 &0.81 &0.88 &0.89 \\
+     &LSCAvg &0.99 &0.99 &0.99 &0.99 \\
+     \midrule
+     \multirow{2}{*}{Feature Overlap} &F1$^{\mathrm{**}}$  &0.86 &0.85 &\textit{--} &\textit{--}  \\
+     &F1v$^{\mathrm{**}}$ &0.20 &0.16 &0.12 &0.13 \\
+    \bottomrule
+    \multicolumn{6}{c}{$^{\mathrm{**}}$\textit{mean features value} \quad \textit{-- fail to compute for some features (nan)} } \\
+    \end{tabular}
+\end{table}
+
+While the class overlap metrics in \Cref{tab:overlap} provide a global view, they don't reveal individual feature behaviour. To gain a deeper understanding, we examine the individual feature distributions of Fisher's discriminant ratio (\Cref{fig:smf-fisher-scores,fig:geo-fisher-scores}). These distributions show that highly discriminative features (speed features identified in our previous study \cite{muhammad2023inferring}) have higher values in SMF2016 and lower in Geolife. The higher values observed for these features in SMF2016 suggest greater overlap, and potentially the lower values in Geolife suggest better separability. The combined effect of class imbalance and class overlap are significant contributors to the poor classification performance observed in SMF2016.
+
+\begin{figure}%[t]
+    \centering
+    \includegraphics[width=10cm, height=10cm]{figures/smf2016-fisher-scores.pdf}
+    \caption{SMF2016 Fisher discriminant scores of features.}
+    \label{fig:smf-fisher-scores}
+\end{figure}
+
+\begin{figure}%[b]
+    \centering
+    \includegraphics[width=10cm, height=10cm]{figures/geolife-fisher-scores.pdf}
+    \caption{Geolfe Fisher discriminant scores of features.}
+    \label{fig:geo-fisher-scores}
+\end{figure}
+
+
+%\begin{figure}[htbp]
+%    \centering
+%    \begin{minipage}[t]{0.8\textwidth}
+%        \centering
+%        \includegraphics[width=10cm, height=12cm]{figures/smf2016-fisher-scores.pdf}
+%        \parbox{0.8\linewidth}{\centering a. SMF2016 Fisher discriminat scores} % Custom caption for subfigure
+%        \label{fig:1a}
+%    \end{minipage}
+%    \vspace{4mm} % Add spacing between figures if needed
+%    \begin{minipage}[t]{0.8\textwidth}
+%        \centering
+%        \includegraphics[width=10cm, height=10cm]{figures/geolife-fisher-scores.pdf}
+%        \parbox{0.8\linewidth}{\centering b. Geolife dataset} % Custom caption for subfigure
+%        \label{fig:1b}
+%    \end{minipage}
+%    \caption{Maximum Fisher's discriminant ratio (F1) distribution.}
+%    \label{fig:overall}
+%\end{figure}
+
+
+\section{Summary} \label{chp6-sec5}
+
+This study underlines the critical role of balanced class distributions in achieving robust transportation mode classification models. Our work demonstrates that a baseline random forest model, whilst effectively learnt on a relatively balanced dataset, suffers significantly when presented with an imbalanced one. Our exploration of various imbalance-handling techniques to mitigate this effect yielded only marginal improvements in results.
+
+Resampling a fairly balanced dataset to such a degree of imbalance suggests the potential influence of other classification difficulty factors, possibly in conjunction with class imbalance itself. We hypothesise that class overlap may be such a factor, and therefore assessed the degree of class overlap from both data domain structural and feature perspectives. Maximum Fisher's discriminant ratio analysis indicates that feature overlap, particularly amongst the most discriminative features, may be a significant source of the observed weak separability between classes.
+
+In conclusion, we emphasise the importance of exploring a broader range of classification difficulty factors, in addition to class imbalance, when building transportation mode classification models. This will ensure the development of more robust and generalisable models.
