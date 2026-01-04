@@ -33,14 +33,14 @@ This approach utilises a modular structure, employing several local classifiers 
 
 \subsection{Class Hierarchy Learning}\label{subsec:hierarchy}%{Proposed Method}
 The current study builds upon the research by Silva et al. \cite{silva2018probabilistic} on hierarchical classification for multiclass problems. This method infers the hierarchical structure of classes from the misclassification errors of a standard flat classifier. The process begins by training a standard flat classifier, denoted as $F$, on the entire dataset. We then evaluate the resulting confusion matrix, $M$. 
- This matrix is subsequently normalised row-wise, resulting in $\bar{M}$. Next, we compute the class overlapping matrix, $\bar{M_{O}}$, which captures the degree of overlap between individual classes $i$ and $j$ in all possible combinations (considering both $M_{i,j}$, $M_{j,i}$) as described by Lango et al. \cite{lango2022makes}. Following this, the Similarity Matrix $\bar{M_{S}}$, is obtained. This matrix represents the distance between the classes based on the overlap information. Finally, we use this distance information for agglomerative hierarchical clustering \cite{murtagh2012algorithms} to group classes into a hierarchy. This process is outlined in Algorithm \ref{alg:hierarchy}. For example, applying this method with several classification algorithms and the datasets described in \Cref{chp3-sec1} results in the class hierarchies depicted in Figures \ref{fig:smf-DT-tree} through \ref{fig:geo-XGB-tree}. 
+ This matrix is subsequently normalised row-wise, resulting in $\bar{M}$. Next, we compute the class overlapping matrix, $\bar{M_{O}}$, which captures the degree of overlap between individual classes $i$ and $j$ in all possible combinations (considering both $M_{i,j}$, $M_{j,i}$) as described by Lango et al. \cite{lango2022makes}. Following this, the Similarity Matrix $\bar{M_{S}}$, is obtained. This matrix represents the distance between the classes based on the overlap information. Finally, we use this distance information for agglomerative hierarchical clustering \cite{murtagh2012algorithms} to group classes into a hierarchy. This process is outlined in Algorithm \ref{alg:hierarchy}. Applying this method with several classification algorithms and the SMF2016 dataset results in the class hierarchies depicted in Figures \ref{fig:smf-DT-tree} through \ref{fig:smf-xgb-tree}. %\ref{fig:geo-XGB-tree}. 
 
 \begin{algorithm}[tb]
 \caption{Class Hierarchy Learning}\label{alg:hierarchy} 
 \DontPrintSemicolon
 \SetNoFillComment
 
-\KwIn{Dataset $ D = {(x_1, y_1), (x_2, y_2),..,(x_m, y_m)}; $ \\ 
+\KwIn{Dataset $ D = {(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2),..,(\mathbf{x}_m, y_m)}; $ \\ 
 \Indp
 \quad\quad Number of classes $C;$ \\ 
 \quad\quad Flat classifier $F;$ \\ 
@@ -85,37 +85,59 @@ The current study builds upon the research by Silva et al. \cite{silva2018probab
 }
 \end{algorithm}
 
+%%%%%%%%%%% hiearachy learned (ITSC-2024) paper %%%%%%%
+%\begin{figure*}
+%    \centering
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.8\textwidth]{figures/smf2016-DT-hierarchical.png}
+%        \caption{Decision Tree}
+%        \label{fig:smf-DT-tree}
+%    \end{subfigure}
+%    \hfill
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.8\textwidth]{figures/smf2016-RF-hierarchical.png}
+%        \caption{Random Forest}
+%        \label{fig:smf-RF-tree}
+%    \end{subfigure}
+%    
+%    \vspace{\baselineskip}
+%    
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.6\textwidth]{figures/smf2016-SVM-hierarchical.png}
+%        \caption{Support Vector Machines}
+%        \label{fig:smf-svm-tree}
+%    \end{subfigure}
+%    \hfill
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.8\textwidth]{figures/smf2016-XGB-hierarchical.png}
+%        \caption{XGBoost}
+%        \label{fig:smf-xgb-tree}
+%    \end{subfigure}
+%    
+%    \caption{The class hierarchy learned by different algorithms.}
+%    \label{fig:class_hierarchy}
+%\end{figure*}
 
 
 \begin{figure}[htbp]
     \centering
-
-    % Column labels
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \textbf{SMF2016 Dataset}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \textbf{Geolife Dataset}
-    \end{minipage}
-    
-    \vspace{0.5em} % Small space between labels and images
-
     % First row
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=.9\textwidth]{figures/smf2016-DT-hierarchical.png}
-        \caption{SMF2016-DT learned hierarchy.}
+        \caption{DT learned hierarchy.}
         \label{fig:smf-DT-tree}
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=.9\textwidth]{figures/smf2016-RF-hierarchical.png}
-        \caption{Geolife-DT learned hierarchy.}
-        \label{fig:geo-DT-tree}
+        \caption{RF learned hierarchy.}
+        \label{fig:smf-RF-tree}
     \end{minipage}
 
     \vspace{\baselineskip}
@@ -123,62 +145,112 @@ The current study builds upon the research by Silva et al. \cite{silva2018probab
     % Second row
     \begin{minipage}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=.9\textwidth]{figures/smf2016-RF-hierarchical.png}
-        \caption{SMF2016-RF learned hierarchy.}
-        \label{fig:smf-RF-tree}
+        \includegraphics[width=.7\textwidth]{figures/smf2016-SVM-hierarchical.png}
+        \caption{SVM learned hierarchy.}
+        \label{fig:smf-svm-tree}
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=.9\textwidth]{figures/geolife-RF-hierarchical.png}
-        \caption{Geolife-RF learned hierarchy.}
-        \label{fig:geo-RF-tree}
+        \includegraphics[width=.9\textwidth]{figures/smf2016-XGB-hierarchical.png}
+        \caption{XGB learned hierarchy.}
+        \label{fig:smf-xgb-tree}
     \end{minipage}
+\end{figure}
 
-    \vspace{\baselineskip}
+%%%%%%%%%%% end                                 %%%%%%%
+%\begin{figure}[htbp]
+%    \centering
 
-    % Third row
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{figures/smf2016-SVM-hierarchical.png}
-        \caption{SMF2016-SVM learned hierarchy.}
-        \label{fig:smf-SVM-tree}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=1.\textwidth]{figures/geolife-SVM-hierarchical.png}
-        \caption{Geolife-SVM learned hierarchy.}
-        \label{fig:geo-SVM-tree}
-    \end{minipage}
+    % Column labels
+%    \be%gin{minipage}[b]{0.45\textwidth}
+%       % \centering
+%       % \textbf{SMF2016 Dataset}
+%    \en%d{minipage}
+%    \hfill
+%    \be%gin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \textbf{Geolife Dataset}
+%    \end{minipage}
+   % 
+%    \vspace{0.5em} % Small space between labels and images
+
+    % First row
+%    \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.9\textwidth]{figures/smf2016-DT-hierarchical.png}
+%        \caption{SMF2016-DT learned hierarchy.}
+%        \label{fig:smf-DT-tree}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.9\textwidth]{figures/geolife-DT-hierarchical.png}
+%        \caption{Geolife-DT learned hierarchy.}
+%        \label{fig:geo-DT-tree}
+%    \end{minipage}
 
 %    \vspace{\baselineskip}
 
+    % Second row
+%    \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.9\textwidth]{figures/smf2016-RF-hierarchical.png}
+%        \caption{SMF2016-RF learned hierarchy.}
+%        \label{fig:smf-RF-tree}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.9\textwidth]{figures/geolife-RF-hierarchical.png}
+%        \caption{Geolife-RF learned hierarchy.}
+%        \label{fig:geo-RF-tree}
+%    \end{minipage}
+
+%    \vspace{\baselineskip}
+
+    % Third row
+%    \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.9\textwidth]{figures/smf2016-SVM-hierarchical.png}
+%        \caption{SMF2016-SVM learned hierarchy.}
+%        \label{fig:smf-SVM-tree}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=1.\textwidth]{figures/geolife-SVM-hierarchical.png}
+%        \caption{Geolife-SVM learned hierarchy.}
+%        \label{fig:geo-SVM-tree}
+%    \end{minipage}
+
+%%    \vspace{\baselineskip}
+
     % Fourth row
    
-\end{figure}
+%\end{figure}
 
-\begin{figure}[t]
-    \centering
-     \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{figures/smf2016-XGB-hierarchical.png}
-        \caption{SMF2016-XGB learned hierarchy.}
-        \label{fig:smf-XGB-tree}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=1.\textwidth]{figures/geolife-XGB-hierarchical.png}
-        \caption{Geolife-XGB learned hierarchy.}
-        \label{fig:geo-XGB-tree}
-    \end{minipage}
+%\begin{figure}[t]
+%    \centering
+%     \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=.9\textwidth]{figures/smf2016-XGB-hierarchical.png}
+%        \caption{SMF2016-XGB learned hierarchy.}
+%        \label{fig:smf-XGB-tree}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=1.\textwidth]{figures/geolife-XGB-hierarchical.png}
+%        \caption{Geolife-XGB learned hierarchy.}
+%        \label{fig:geo-XGB-tree}
+%    \end{minipage}
     
     % \caption{The class hierarchy learned by different algorithms.}
-    \label{fig:class_hierarchy}
-\end{figure}
+%    \label{fig:class_hierarchy}
+%\end{figure}
 
-\newpage
+%\newpage
 
 \subsection{ HiClass4MD for Transportation Mode Detection}
 The proposed method, \textit{HiClass4MD}, leverages the class hierarchy learning described in \Cref{subsec:hierarchy} to establish a tree structure for transportation mode classification. Training of the \textit{HiClass4MD} involves fitting a classifier using the LCPN approach. During the testing phase on an unseen sample, the process follows the hierarchy until the predicted class is determined at the leaf node. This is illustrated in the proposed method block diagram in \Cref{fig:hiclass}. %% replace this figure with a framework fig %%%%%
@@ -235,11 +307,117 @@ We therefore adopt the recommendations outlined in \cite{silla2011survey}. We de
 
 This study employs a selection of established machine learning algorithms commonly used for classification tasks: Decision Trees (DT), Random Forests (RF), Support Vector Machines (SVM), and XGBoost. DT recursively partition the data space based on features, while RF build ensembles of DT to improve robustness. SVM identify hyperplanes that effectively separate data points belonging to different classes. XGBoost leverages gradient boosting with decision trees to achieve high accuracy and generalisability. Our primary focus is to evaluate the effectiveness of the proposed \textit{HiClass4MD} against these algorithms and assess the potential benefits of incorporating \textit{HiClass4MD} into the transportation mode classification process. 
 
-
-
-
-
+The experiments were conducted using the sklearn \cite{pedregosa2011scikit} implementation of these algorithms (for DT, RF, and SVM), and XGBoost library \cite{chen2016xgboost}. Default hyperparameters of the algorithms were used, other than the number of trees in RF (\texttt{n\_estimators=5000}) and for XGB \\ (\texttt{n\_estimators=1000}), for the flat classification experiments. The same settings were used with a wrapper around the algorithms to implement the hierarchical classification scenarios. 
 
 \section{Discussion} \label{chp5-sec5}
+To evaluate the proposed method, we utilised the hierarchical metrics developed in the context of hierarchical classification (hP, hR, hF) \cite{silla2011survey}. These metrics are extended versions of the well known conventional metrics for flat classification, but tailored to incorporate peculiarities of hierarchical classification.  \Cref{tab:evaluation} shows the expressions for that. 
+However, given the primary interest in the predicted transportation mode rather than the path to prediction in the hierarchy, we also assessed \textit{HiClass4MD} using the conventional metrics. 
+Consequently, the confusion matrices for \textit{HiClass4MD} are presented in \Cref{tab:hi-conf-mat}, from which  conventional metrics were computed and compared with those of the flat classifiers (\Cref{tab:flat-conf-mat}). These results are shown in parenthesis for each metrics in \Cref{tab:evaluation}.
+
+
+\begin{table*}[htbp]
+     \centering
+    \setlength\doublerulesep{0.5pt}
+    \caption{Confusion matrices of the flat classification models}
+    \label{tab:flat-conf-mat}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+\begin{tabular}{c|c|rrrrr||rrrrr}
+        \hline
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Decision Tree (DT) } & \multicolumn{5}{c}{ Random Forest (RF) } \\
+        \cline{3-12}
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Predicted class} & \multicolumn{5}{c}{ Predicted class }  \\
+        \cline{3-7} \cline{8-12}
+        \multicolumn{2}{c|}{} & Foot & Bike & Bus & Car & Metro &  Foot & Bike & Bus & Car & Metro  \\
+        \hline %\hline
+        \multirow{5}{*}{\rotatebox{90}{ Actual class }} 
+        & \multirow{5}{*}{\begin{tabular}[c]{@{}l@{}} Foot\\ Bike\\ Bus\\ Car\\ Metro\end{tabular}} 
+         &5248 &36  &373  &1236  &318 &6727 &0   &0    &481  &3 \\
+        &&411  &338 &88   &563   &102 &300  &335 &0    &867  &0  \\
+        &&1232 &104 &1354 &3961  &444 &1657 &0   &394  &5044 &0  \\
+        &&1792 &383 &5738 &15415 &788 &2247 &9   &2577 &19283 &0  \\
+        &&229  &15  &46   &398   &70  &321  &3   &0    &434  &0   \\
+        \hline
+    \end{tabular}
+
+%%\vspace{.5cm}
+\bigskip%\medskip
+
+    \begin{tabular}{c|c|rrrrr||rrrrr}
+        \cline{3-12}
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Support Vector Machines (SVM) } & \multicolumn{5}{c}{ XGBoost (XGB) } \\
+        \cline{3-12}
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Predicted class} &  \multicolumn{5}{c}{ Predicted class }  \\
+        \cline{3-7} \cline{8-12}
+        \multicolumn{2}{c|}{} & Foot & Bike & Bus & Car & Metro & Foot & Bike & Bus & Car & Metro \\
+        \hline %\hline
+        \multirow{5}{*}{\rotatebox{90}{ Actual class }} 
+        & \multirow{5}{*}{\begin{tabular}[c]{@{}l@{}} Foot\\ Bike\\ Bus\\ Car\\ Metro\end{tabular}} 
+         &6794 &0    &21   &396   &0  &6672 &4   &3    &527   &5    \\
+        &&782  &51   &16   &653   &0  &382  &535 &0    &581   &4    \\
+        &&1733 &0    &530  &4819  &13 &1579 &12  &794  &4695  &15  \\
+        &&2267 &2529 &2644 &16656 &20 &2068 &51  &3493 &18490 &14  \\
+        &&330  &0    &17   &398   &13 &304  &9   &26   &419   &0    \\
+        \hline
+    \end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\medskip
+
+    \caption{Confusion matrices of the hierarchical classification models}
+    \label{tab:hi-conf-mat}
+    
+    \begin{tabular}{c|c|rrrrr||rrrrr}
+        \hline
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Decision Tree (DT) } & \multicolumn{5}{c}{ Random Forest (RF) } \\
+        \cline{3-12}
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Predicted class} & \multicolumn{5}{c}{ Predicted class }  \\
+        \cline{3-7} \cline{8-12}
+        \multicolumn{2}{c|}{} & Foot & Bike & Bus & Car & Metro &  Foot & Bike & Bus & Car & Metro  \\
+        \hline %\hline
+        \multirow{5}{*}{\rotatebox{90}{ Actual class }} 
+        & \multirow{5}{*}{\begin{tabular}[c]{@{}l@{}} Foot\\ Bike\\ Bus\\ Car\\ Metro\end{tabular}} 
+         &5238 &38  &421  &1170  &344 &6704 &0   &0   &503  &4  \\
+        &&334  &439 &114  &579   &36  &374  &150 &0   &978  &0  \\
+        &&1589 &95  &1439 &3796  &176 &1656 &0   &381 &5058 &0  \\
+        &&2324 &482 &3614 &17051 &645 &2236 &9  &2470 &19401 &0  \\
+        &&255  &30  &68   &363   &42  &320  &0  &0    &432  &6   \\
+%%        \hline\hline
+%        \multicolumn{2}{l|}{Precision(\%)}  &0.54 &0.40 &0.25 &0.74 &0.03 &0.59 &0.94 &0.13 &0.74  \\
+ %      % \hline
+%%        \multicolumn{2}{l|}{F1-measure(\%)}  &0.62 &0.34 &0.23 &0.72 &0.04 &0.72 &0.18 &0.08 &0.77  \\
+        \hline
+    \end{tabular}
+
+%%\vspace{.5cm}
+\bigskip%\medskip
+
+    \begin{tabular}{c|c|rrrrr||rrrrr}
+        \cline{3-12}
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Support Vector Machines (SVM) } & \multicolumn{5}{c}{ XGBoost (XGB) } \\
+        \cline{3-12}
+        \multicolumn{2}{c|}{} & \multicolumn{5}{c||}{ Predicted class} &  \multicolumn{5}{c}{ Predicted class }  \\
+        \cline{3-7} \cline{8-12}
+        \multicolumn{2}{c|}{} & Foot & Bike & Bus & Car & Metro & Foot & Bike & Bus & Car & Metro \\
+        \hline %\hline
+        \multirow{5}{*}{\rotatebox{90}{ Actual class }} 
+        & \multirow{5}{*}{\begin{tabular}[c]{@{}l@{}} Foot\\ Bike\\ Bus\\ Car\\ Metro\end{tabular}} 
+         &5976 &170 &20   &784   &261  &6722 &38   &45   &376   &30    \\
+        &&461  &164 &4    &829   &44  &388  &613  &8    &469   &24    \\
+        &&1599 &172 &59   &5065  &200 &1992 &0    &827  &3949  &327   \\
+        &&1458 &269 &8778 &13055 &556  &4678 &1875 &1222 &14973 &1368  \\
+        &&297  &5   &6    &360   &90  &367  &3    &30   &295   &63    \\
+%        \hline\hline
+%        \multicolumn{2}{l|}{Precision(\%)}  &0.18 &0.00 &0.00 &0.29 &0.00 &&0.48 &0.24 &0.39 &0.75 &0.03 \\
+%       % \hline
+%%        \multicolumn{2}{l|}{F1-measure(\%)}  &0.30 &0.00 &0.00 &0.00 &0.00 &&0.63 &0.30 &0.18 &0.68 &0.05  \\
+        \hline
+    \end{tabular}
+
+\end{table*}
+
+Counterintuitively, \textit{HiClass4MD} did not consistently outperform flat classifiers. While decision trees (DT) exhibited marginal improvements, random forests (RF) showed no significant differences. This might be attributed to the fact that DT inherently produces more errors than RF in flat classification, providing a richer error distribution for \textit{HiClass4MD} to exploit. SVM and XGB even experienced slight performance degradation.
 
 \section{Summary} \label{chp5-sec6}
+This study introduced the \textit{HiClass4MD}, a hierarchical classification method for transportation mode detection. By leveraging misclassification errors from a typical flat classifier, \textit{HiClass4MD} aims to enhance performance. While hierarchical metrics demonstrated improvements, the evaluation using conventional metrics revealed no significant improvement overall. 
+
+Decision trees benefited marginally from the hierarchical approach, but random forests showed no significant improvements. Support vector machines and extreme gradient boosting algorithms even degraded.
+These findings underscore the need for further investigation into the factors influencing the effectiveness of hierarchical classification in this context. Despite these results, the potential benefits of hierarchical approaches warrant continued exploration.

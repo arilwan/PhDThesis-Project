@@ -1,1 +1,39 @@
 \chapter{Conclusion} \label{chap7}
+
+%\section{Introduction}
+%In conclusion, this thesis embarked on an investigation into the multifaceted challenges of accurate transportation mode detection solely using GPS trajectory data. The primary objective was to explore and enhance existing transportation mode detection methodologies by addressing critical issues such as optimal feature selection, the impact of class distribution, and the potential benefits of hierarchical classification.
+
+In conclusion, this thesis investigated the multifaceted challenges of accurately detecting transportation modes using solely GPS trajectory data. The primary objective was to explore and enhance existing transportation mode detection methodologies by addressing critical issues: optimal feature selection, the impact of class imbalance, and the potential benefits of hierarchical classification. The key contributions of this study are summarised in the following.
+
+\section{Summary of Findings}
+
+\begin{itemize}
+%    \item \textbf{Hierarchical classification approach to mode detection}  \\
+%    This research, presented in \Cref{chap5} investigated the potential benefits of hierarchical classification for TMD. The proposed \emph{HiClass4MD} method, which utilises a hierarchical structure learned from the misclassification errors of a flat classifier, aimed to improve classification accuracy by exploiting the relationships between different transportation modes. While the results demonstrated some improvements in hierarchical metrics, the evaluation using conventional metrics revealed no significant overall improvement compared to flat classifiers.
+
+    \item \textbf{Class-subspace feature selection}\\
+    This work, detailed in \Cref{chap4} focused on optimising feature engineering and selection for TMD. The results demonstrated the effectiveness of combining time-domain and frequency-domain features in enhancing classification accuracy. Traditional feature selection methods, such as sequential forward selection, often select a single set of features common for all classes. However, the importance of different features can vary significantly across different transportation modes. 
+
+    This research introduced a novel feature selection method, the Class-Subspace feature selection. The proposed method leverages the Shapley values, a game-theoretic concept, to assess the individual contribution of each feature to the classification accuracy of each class. By analysing the Shapley values for each feature and each class, it is possible to identify the most relevant features for each specific transportation mode. This class-specific feature selection approach can effectively tailor the feature set to the unique characteristics of each mode, leading to significant improvements in classification accuracy compared to traditional methods.
+    
+    
+%    Furthermore, the novel Class-Subspace feature selection method, which leverages Shapley values to identify the most relevant features for each class, consistently outperformed traditional sequential forward selection, leading to significant improvements in classification performance.
+
+    \item \textbf{Hierarchical classification approach to mode detection}  \\
+    This work, presented in \Cref{chap5}, delved into the potential advantages of employing a hierarchical classification approach for transportation mode detection. The existing body of TMD literature primarily focuses on standard flat classification models. However, transportation modes often exhibit inherent hierarchical relationships or infrastucture. For instance, "car" mode is closely related to a "bus," class than it is to a "metro" or "bike". Recognising and exploiting these hierarchical relationships can potentially enhance classification accuracy and provide more nuanced insights into travel patterns.
+
+    To this end, this research proposed a novel hierarchical classification framework, termed \emph{HiClass4MD}. \emph{HiClass4MD} leverages the inherent hierarchical structure within the transportation mode space. It begins by training a flat classifier on the available dataset. Subsequently, the misclassification errors of this initial classifier are analysed to identify patterns and relationships between misclassified instances. This analysis informs the construction of a hierarchical structure. Finally, a series of specialised classifiers are trained at each level (internal node) of the hierarchy, effectively refining the classification process and mitigating the impact of common misclassification errors.
+
+    This hierarchical approach offers several potential benefits. By decomposing the complex TMD problem into a series of simpler sub-problems, \emph{HiClass4MD} can potentially improve overall classification accuracy. Furthermore, the hierarchical structure provides a valuable framework for understanding the underlying relationships between different transportation modes and identifying the specific challenges associated with distinguishing between certain modes.
+
+
+\end{itemize}
+
+%\section{Limitations and Future Work}
+
+%\section{Concluding Remarks}
+
+
+% Add a blank page just before references list
+\newpage
+\mbox{} 

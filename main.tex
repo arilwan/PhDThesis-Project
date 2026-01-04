@@ -148,6 +148,22 @@
 \graphicspath{{figures/}}
 
 %%========================================
+%% Add Dedication enviroment
+%%========================================
+\newenvironment{dedicatory}
+{
+  \thispagestyle{empty} % No page number
+  \null\vfil % Vertically center the content
+  \begin{center} % Center the text horizontally
+    \Large\slshape % Set font size and style
+}
+{
+  \end{center}
+  \vfil\null
+}
+
+
+%%========================================
 %% Start of document
 %%========================================
 \begin{document}
@@ -160,7 +176,7 @@
 %%----------------------------------------
 %% Information about the work
 %%----------------------------------------
-\title{Transportation Mode Detection using real-world Mobile crowsourced GPS Trajectory Dataset} %% Transportation Mode Detection from raw GPS Trajectories
+\title{Transportation Mode Detection from crowdsourced GPS Trajectory Datasets} 
 \author{Akilu Rilwan Muhammad}
 
 %% Comment next line if not necessary for degree
@@ -204,6 +220,7 @@
 
 % remove unnecessary \include{} commands
 \begin{Prolog}
+  \include{dedicate}
   \afterpage{\blankpage}
   \include{abstract} % the abstract
   \include{acknows}  % the acknowledgments
@@ -245,11 +262,14 @@
 \include{chapter1} 
 \include{chapter2}
 \include{chapter3}
-\include{chapter4}
+\include{chapter4-old}
+
+%\include{chapter4-new}
 
 \include{chapter5} 
 \include{chapter6}
 \include{chapter7}
+
 %\include{chapter8}
 
 %%----------------------------------------

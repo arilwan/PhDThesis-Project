@@ -8,7 +8,7 @@ The previous chapter reviewed the state-of-the-art in transportation mode detect
 Two real-world GPS trajectory datasets are employed in this thesis, which are detailed.
 
     \subsection{The SenseMyFEUP Dataset}
-    The \emph{SenseMyFEUP (SMF2016)} dataset is a GPS trajectory dataset of 227 participants collected in Porto, Portugal, in April 2016 \cite{rodrigues2017impact}. It was collected using an Android-based mobile application installed on participants' smartphones. The application was designed to automatically record location data whenever user movement was detected and to stop recording when the user ceased moving. SMF2016 is densely represented at approximately one sample per second or every 5 meters. The location data is structured as a tuple containing the following attributes: timestamp, longitude, latitude, altitude, speed, bearing, and GPS accuracy, thus $ L_{i} = <time[t], lon, lat, alt, speed, bearing, \\gps\_acc>$.
+    The \emph{SenseMyFEUP (SMF2016)} dataset is a GPS trajectory dataset of 227 participants collected in Porto, Portugal, in April 2016 \cite{rodrigues2017impact}. It was collected using an Android-based mobile application installed on participants' smartphones. The application was designed to automatically record location data whenever user movement was detected and to stop recording when the user ceased moving. SMF2016 is recorded at approximately one sample per second or every 5 meters. The location data is structured as a tuple containing the following attributes: timestamp, longitude, latitude, altitude, speed, bearing, and GPS accuracy, thus $ L_{i} = <time[t], lon, lat, alt, speed, bearing, \\gps\_acc>$.
 
 
     Moreover, the application includes an end-of-trip survey administered after each trip completion, prompting users to indicate their travel mode. (\Cref{fig:survey}). 
@@ -265,7 +265,7 @@ To comprehensively evaluate these models, twelve (12) experiments were conducted
     \end{figure}
 
 Inspired by the studies in \cite{dabiri2018inferring}, and  and recognising the requirement of fixed-size inputs for CNN, we create split each segment into fixed-size instances  of size N=100 timesteps.
-This value was chosen as it approximates the median number of data points within all segments, which is 127). %So that each instance comprises of 100 data points in four dimensions of speed, acceleration, jerk and bearing rate. This is regarded as the raw point-level feature, and is used in experiments on raw data.
+This value was chosen as it approximates the median number of data points within all segments, which is 123. %So that each instance comprises of 100 data points in four dimensions of speed, acceleration, jerk and bearing rate. This is regarded as the raw point-level feature, and is used in experiments on raw data.
 
 To ensure consistent input dimensions, the following instance data handling procedures were implemented:
 \begin{itemize}

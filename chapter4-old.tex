@@ -19,7 +19,164 @@ This study makes several significant contributions to the field of transportatio
     \item  We evaluate our work using two real-world GPS trajectory datasets. 
 \end{itemize}
 
-This chapter proceeds as follows. \Cref{chp4-sec2} presents a detailed description of the experimental procedures employed in this study. \Cref{chp4-sec3} outlines the classification algorithms used, while \Cref{chp4-sec4} discusses the evaluation metrics employed to assess the performance of the different models. \Cref{chp4-sec5} introduces sequential feature selection as a baseline approach. Subsequently, \Cref{chp4-sec6} introduces our proposed Class-Subspace Feature Selection method. The results obtained from our experiments are presented in \Cref{chp4-sec7} and analysed in \Cref{chp4-sec8}. Finally, \Cref{chp4-sec9} concludes the chapter by summarising the study's main findings and outlining potential directions for future research.
+%This chapter proceeds as follows. Related work in \Cref{chp4-rlt-work}. \Cref{chp4-sec2} presents a detailed description of the experimental procedures employed in this study. \Cref{chp4-sec3} outlines the classification algorithms used, while \Cref{chp4-sec4} discusses the evaluation metrics employed to assess the performance of the different models. \Cref{chp4-sec5} introduces sequential feature selection as a baseline approach. Subsequently, \Cref{chp4-sec6} introduces our proposed Class-Subspace Feature Selection method. The results obtained from our experiments are presented in \Cref{chp4-sec7} and analysed in \Cref{chp4-sec8}. Finally, \Cref{chp4-sec9} concludes the chapter by summarising the study's main findings and outlining potential directions for future research.
+
+This chapter is organized as follows. We begin in \Cref{chp4-rlt-work} by the reviewing related work. Next, \Cref{chp4-sec2} details the experimental procedures employed in this study. In \Cref{chp4-sec3}, we outline the classification algorithms used, followed by a discussion of the evaluation metrics employed to assess the performance of the different models in \Cref{chp4-sec4}. \Cref{chp4-sec5} introduces sequential feature selection as a baseline approach. Subsequently, \Cref{chp4-sec6} introduces our proposed Class-Subspace Feature Selection method. The results obtained from our experiments are presented in \Cref{chp4-sec7} and analyzed in \Cref{chp4-sec8}. Finally, \Cref{chp4-sec9} concludes the chapter by summarizing the study's main findings and outlining potential directions for future research.
+
+
+\section{Related Work} \label{chp4-rlt-work}
+GPS trajectory data comprises a sequence of location points, each represented as a tuple containing spatial and temporal information, typically including longitude, latitude, and timestamp. Data preprocessing is essential for extracting meaningful motion features such as speed, acceleration, and direction changes from the raw data. Trip segmentation is a crucial step in the preprocessing process, involving dividing the trip into segments.
+
+Zheng et al. \cite{zheng2008learning} introduced a change-point-based approach, utilising a change-point algorithm to discriminate between walking and non-walking segments. They established thresholds for maximum velocity (\( 1.8 \, \mathrm{m/s} \)) and acceleration (\( 0.6 \, \mathrm{m/s}^2 \)) for this purpose. This method is based on the following two key considerations: (1) individuals typically walk when transitioning between different modes of transport (e.g., walking from their home to a bus stop, or from a train station to their workplace); and (2) each trip begins and ends with a walking segment. This approach has been widely adopted in subsequent studies \cite{zheng2010understanding, zhu2021semi, james2020semi}.
+
+Conversely, a substantial body of research has employed the stop-detection approach. This methodology focuses on identifying stationary locations. By identifying and labelling these points as \enquote{stops}, the method effectively distinguishes them from locations where the user is in motion, which are labelled as \enquote{moving}. Two primary categories of stop-detection-based methods are prevalent in the literature \cite{yang4960556machine}: rule-based and clustering-based.
+Rule-based methods actively determine \enquote{stops} by analysing the duration a user spends within a specific area (\cite{dabiri2018inferring, andrade2022you, sadeghian2022stepwise} or by evaluating their movement speed within a defined time interval \cite{rodrigues2017impact, muhammad2021transportation, sadeghian2022stepwise}. In contrast, clustering-based methods (\cite{jiang2023framework, dutta2023inferencing} identify stop points by analysing the spatial coordinates of location points. Despite the growing use of these methods, no study has explicitly examined the direct impact of data segmentation methods.
+
+When identifying features for mode detection, two primary categories emerge. Kinematic features, which describe the inherent motion characteristics, encompass attributes such as speed, acceleration, and their statistical derivatives. These features are widely utilised in mode detection, as evident in \Cref{tbl:pre_work}, \cite{zhang2021toward, yang2022data, bolbol2012inferring, bantis2017you}. Conversely, geospatial context features characterise the interplay between the movement and its surrounding environment, encompassing spatial and temporal relationships \cite{hong2023evaluating}. These features often leverage data derived from GIS and transportation networks, such as proximity to bus stations.
+These features, which capture the unique characteristics of different travel modes \cite{yang4960556machine}, are subsequently utilised in various downstream tasks, including data cleaning and subsequent analysis.
+
+Feature selection constitutes a critical step in the development of effective learning models. This crucial task can be broadly categorised into three distinct approaches \cite{li2017feature}: filter methods, wrapper-based methods, and embedded methods. Filter methods are independent of any learning algorithms. evaluate the relevance of features based on their statistical relationship with the target variable. Wrapper methods rely on the performance of the learning algorithm to evaluate the relevance of features by iteratively selecting subsets of features and training a model on each subset. Embedded methods integrate feature selection directly into the structure of a learning algorithm, utilising its inherent properties (e.g., regularisation models) \cite{li2017feature}.
+
+While prior research has recognised the potential of feature selection in TMD, its specific significance remains largely unexplored. This gap necessitates further investigation. 
+The study in \cite{etemad2018feature} explored the efficacy of wrapper and information retrieval methods for selecting optimal feature subsets, demonstrating improved performance. Nevertheless, a key limitation of their work lies in the failure to conduct a comparative analysis with other prominent feature selection techniques. The proposed framework in \cite{susi2013motion} incorporates feature selection based on intra/inter-class feature distances. However, the description of this selection approach lacks clarity and specificity. Furthermore, the study fails to provide empirical evidence demonstrating an improvement in results attributable to the feature selection module.
+
+Alazeb et al. \cite{alazeb2024intelligent} employed a recursive feature elimination method to select the most informative features. However, a significant limitation arises from the inability to definitively attribute the observed performance gains solely to the feature selection process, owing to the concomitant implementation of feature selection and imbalance learning techniques within their proposed framework. Isolating the impact of feature selection is crucial for a thorough understanding of its effectiveness and for establishing best practices in TMD.
+
+Despite the growing importance of feature selection in machine learning, its specific impact on TMD accuracy remains largely unexplored. Existing studies have either not explicitly investigated feature selection or have not adequately isolated its contribution to performance gains. This gap in knowledge motivates the need for further research to understand the role of feature selection in optimising TMD models.
+
+\begin{table}%[tbhp]
+    \caption{Summary of TMD studies from GPS data.}
+    \centering
+    \begin{tabular}{lcclccc}
+        \toprule
+        Study & Population & Duration & Features & Classifier & Modes & Accuracy (\%) \\
+        \midrule
+
+        \cite{zheng2008learning} & 45 & 6 months & 
+            \begin{tabular}{@{}l@{}}
+                Distance, velocity \\
+                \& acceleration %\\
+                stats.\\
+            \end{tabular} 
+            & DT & 4 & 72.8 \\
+
+        \cite{zhang2021toward} & 69 & > 5 years &
+            \begin{tabular}{@{}l@{}}
+                Speed, acceleration \\
+                \& jerk.
+            \end{tabular}
+            & DNN & 5 & 91.4 \\
+
+        \cite{endo2016deep} & 69 & > 5 years &
+            \begin{tabular}{@{}l@{}}
+                Distance, velocity, \\
+                \& deep extracted \\
+                features
+            \end{tabular}
+            & LR & 7 & 67.9 \\
+
+        \cite{xiao2017identifying} & 69 & > 5 years &
+            \begin{tabular}{@{}l@{}}
+                Velocity, acceleration \\
+                turning angle.
+            \end{tabular}
+            & XGB & 6 & 90.8 \\
+
+        \cite{bantis2017you} & 2 & 3 days &
+          %  \begin{tabular}{@{}l@{}}
+             Speed statistics.   
+          %  \end{tabular}
+            & HMM & 4 & 78 \\
+
+        \cite{bolbol2012inferring} & 81 & 2 weeks & 
+            \begin{tabular}{@{}l@{}}
+                Velocity \& acceler- \\
+                ation stats.
+            \end{tabular} 
+            & SVM & 6 & 88 \\
+
+        \cite{dabiri2018inferring} & 69 & > 5 years &
+            \begin{tabular}{@{}l@{}}
+                Speed, acceleration \\
+                jerk, bearing rate.
+            \end{tabular}
+            & CNN & 5 & 84.8 \\
+
+        \cite{song2016deeptransport} & 1.6m users & 3 years & 
+            \begin{tabular}{@{}l@{}}
+                Auto-extracted (deep) \\
+                features.
+            \end{tabular}
+            & LSTM & 5 & 81.37 \\
+
+        \cite{xiao2019detecting} & 203 & 10 months & 
+            \begin{tabular}{@{}l@{}}
+                Spped, acceleration \\
+                \& heading change.
+            \end{tabular}
+            & Gaussian & 6 & 92 \\
+
+        \cite{rodrigues2017impact} & 227 & 1 month &
+            \begin{tabular}{@{}l@{}}
+                Spped, acceleration \\
+                statistics.
+            \end{tabular}
+            & RF & 5 & 85 \\
+
+        \cite{yang2022data} & 410 & 10 months &
+             \begin{tabular}{@{}l@{}}
+                Spped statistics \\
+                \& location data.
+            \end{tabular}
+        & RF &5 & 93 \\
+
+        \cite{hong2023evaluating} & 139 & 12 months &
+            \begin{tabular}{@{}l@{}}
+                Distance, acceleration, \\
+                geospatial context
+            \end{tabular}
+        & RF & 7  &  93.0 \\
+
+        \cite{sadeghian2022stepwise} & 20 & 5 months &
+            \begin{tabular}{@{}l@{}}
+                Distance, speed \& \\
+                acceleration stats.
+            \end{tabular}
+         & RF & 6 & 91.2 \\   
+
+
+         \cite{sadeghian2024deep} & 91 & 12 months  &
+            \begin{tabular}{@{}l@{}}
+            Speed, acceleration \\
+                bearing rate
+            \end{tabular}
+         & RF & 5 & 93.94 \\   
+
+         \cite{zeng2024masked} & 69 & > 5 years &
+         \begin{tabular}{@{}l@{}}
+                longitude, latitude, \\ velocity, acceleration  \\
+                frequency–inverse.
+            \end{tabular}
+         & Autoencoder & 7 & 68.26 \\
+
+         \cite{pei2024travel} & 69 & > 5 years &
+         \begin{tabular}{@{}l@{}}
+                Speed, acceleration, \\
+                jerk, bearing rate.
+            \end{tabular}
+         & CNN &5 & 83.3 \\
+
+         \cite{fan2024multi} &69 & > 5 years &
+            \begin{tabular}{@{}l@{}}
+                Velocity,acceleration, \\distance, heading, \\ and curvature.
+            \end{tabular}
+        & CNN & 5 & 95.16 \\
+
+             
+        \bottomrule
+    \end{tabular}
+    \label{tbl:pre_work}
+\end{table}
 
 \section{Data Preprocessing} \label{chp4-sec2}
 This chapter utilises the two GPS trajectory datasets detailed in \Cref{chp3-sec1}.
@@ -149,7 +306,7 @@ Our approach involves training an initial classifier and computing the SHAP valu
 \caption{Class-Subspace }\label{alg:subspace} % Class-specific Subspace Ensemble
 \DontPrintSemicolon
 \SetNoFillComment
-\KwIn{Dataset $ D = {(x_1, y_1), (x_2, y_2),..,(x_m, y_m)}; $ \\ 
+\KwIn{Dataset $ D = {(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2),..,(\mathbf{x}_m, y_m)}; $ \\ 
 \Indp
 \quad\quad Number of classes $K;$ \\ 
 \quad\quad Base learning algorithm $T;$ \\ 
