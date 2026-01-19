@@ -1,0 +1,46 @@
+\chapter{Sensitivity of the Subspace threshold (\texorpdfstring{$\rho$}{rho})} \label{chap:appdx2}
+
+%\section{Sensitivity of the Subspace threshold (\texorpdfstring{$\rho$}{rho})}\label{appdxB}
+
+This analysis compares RF and XGB classifier performance across both datasets as we varied $\rho$ between 50\% and 85\% of the total feature contribution.
+The Geolife dataset demonstrates remarkable robustness, with all metrics remaining highly stable across the entire range of $\rho$ for both RF and XGB. This suggests that the feature representation in Geolife is inherently less sensitive to the specific threshold used. Conversely, the SMF dataset exhibits greater sensitivity, particularly with the XGB classifier.
+
+\par\vspace{\baselineskip} 
+\noindent
+While both RF and XGB maintain stability on the robustnessGeolife dataset, the SMF dataset highlights divergent behaviours. XGB exhibits greater sensitivity to $\rho$ adjustments, characterised by noticeable fluctuations in precision, recall, and F1-score. Conversely, RF demonstrates relatively stable performance on SMF, despite minor variations in recall.
+
+\par\vspace{\baselineskip} 
+\noindent
+Overall, the analysis identifies potential areas for optimisation for the SMF dataset, e.g., the slight dips in performance observed around $\rho$ values of 70-75\% for XGB. These fluctuations suggest that the choice of $\rho$ in this range can significantly impact the model's ability to balance precision and recall.
+The consistently high performance in the Geolife dataset, particularly the high and stable ROC-AUC scores around 89\%, indicates that the subspace threshold does not significantly affect the model's ability to distinguish between classes.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig-b11.pdf}
+        \caption{SFM2016 with RF classifier.}
+        \label{fig:sensitivity1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig-b12.pdf}
+        \caption{SMF2016 with XGB classifier.}
+        \label{fig:sensitivity2}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig-b21.pdf}
+        \caption{Geolife with RF classifier.}
+        \label{fig:sensitivity3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig-b22.pdf}
+        \caption{Geolife with XGB classifier.}
+        \label{fig:sensitivity4}
+    \end{subfigure}
+
+    \caption{Sensitivity of the subspace threshold ($\rho$).}
+    \label{fig:rho-sensitivity-analysis}
+\end{figure}
+

@@ -73,6 +73,12 @@
 \usepackage{longtable}
 \usepackage{changepage}
 \usepackage{subcaption}
+
+
+\usepackage{pdfpages}
+
+
+
 \usepackage[ruled, ]{algorithm2e}
 \usepackage{physics} % for vector symbol in algorithm listing
 \usepackage{makecell}
@@ -262,9 +268,9 @@
 \include{chapter1} 
 \include{chapter2}
 \include{chapter3}
-\include{chapter4-old}
+%\include{chapter4-old}
 
-%\include{chapter4-new}
+\include{chapter4-new}
 
 \include{chapter5} 
 \include{chapter6}
@@ -284,8 +290,10 @@
 
 %% 2021-07-20: change
 %% comment next 2 commands if numbered appendices are not used
-%\appendix
-%\include{appendix1}
+\appendix
+\include{appendix1}
+\include{appendix2}
+
 
 %% Index
 %% Uncomment next command if index is required

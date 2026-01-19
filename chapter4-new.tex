@@ -1,3 +1,475 @@
-\chapter{Class-subspace Feature Selection} \label{chap4}
 
-%\section{Introduction}\label{sec:chp4-intro}
+
+\chapter{Class-Subspace Feature Selection for Transportation Mode Detection} \label{chap4}
+
+This chapter addresses a primary objective of this thesis: the development of specialised feature selection techniques to resolve the challenges of overlapping characteristics in transportation mode classification. While the preceding chapters established the fundamental datasets and preprocessing requirements for GPS trajectory analysis, this chapter introduces a more sophisticated methodological layer designed to handle the class-similarity inherent in transportation mode data. By shifting the focus from global feature optimisation to class-specific subspaces, this work provides a targeted solution to the classification bottlenecks identified in the broader Research Objectives of this study.
+
+The research presented here introduces a novel Class-Subspace feature selection framework utilising Shapley values to isolate bespoke feature subsets for individual transportation modes. By integrating time-domain and frequency-domain features obtained through Fast Fourier Transform, this approach demonstrates how class-aware selection can capture discriminative patterns that are often masked by conventional techniques. This study, which utilises both the SenseMyFEUP and Geolife datasets, has been published in the \textit{International Journal of Data Science and Analytics} under the title \textit{“From Attribution to Selection: Harnessing SHAP values for Class-Subspace Feature Selection in Transportation Mode Detection”} \cite{muhammad2026subspace}. %It is presented here as a core component of the thesis's contribution to improving classification accuracy in challenging multi-class urban mobility scenarios.
+
+\section{Introduction}\label{sec:chp4-intro}
+Accurate and detailed understanding of complex human mobility patterns, particularly transportation mode choices, is fundamental for effective urban planning and policy development. Traditional data collection approaches, however, face inherent limitations in capturing the necessary scale and granularity for such insights. In this context, mobile crowdsensing \cite{aguiar2022sensemycity, rodrigues2014sensemycity, rodrigues2017impact, santos2018portolivinglab} has emerged as a promising approach for large-scale, automated data collection. This technology enables researchers and planners to monitor diverse human activities, including transportation, with a higher degree of details and granularity, thereby facilitating informed decision-making.
+
+The capabilities of mobile crowdsensing have been substantially advanced by the widespread adoption of GPS-enabled devices \cite{capponi2019survey, cardone2013fostering}, including smartphones with sophisticated sensor technologies, in parallel with significant progress in machine learning methodologies. As a result, transportation mode detection (TMD) has become an increasingly active research field in recent years. TMD leverages data from various sources—such as GPS, accelerometers, and gyroscopes—to accurately identify individuals’ travel modes. Researchers have developed diverse TMD approaches, ranging from statistical models \cite{assemi2016developing, xiao2019markovdetecting}, rule-based expert systems \cite{biljecki2013transportation, xiao2019ruledetecting, sauerlander2017evaluation} to more recent innovations incorporating machine learning and deep learning architectures \cite{dabiri2018inferring, rodrigues2017impact, endo2016deep}.
+
+Despite the exploration of diverse sensor data in existing literature, this study focuses exclusively on TMD using GPS trajectory data. This approach is justified by the practical and technical advantages of GPS for wide-coverage data collection. Specifically, GPS data is considered an efficient sensor modality, available not only through ubiquitous consumer smartphones but also via dedicated low-power logging devices. Furthermore, GPS offers rich spatial and temporal movement information highly effective for mode recognition.
+
+The study addresses the following key research questions within the context of TMD:
+
+\begin{itemize}
+
+    \item \textit{What preprocessing workflow is necessary to address the quality of crowdsourced GPS trajectory data for transportation mode detection?} \\
+    To address this, we implement a multi-stage preprocessing and data quality handling pipeline to clean and prepare the GPS trajectory data, mitigating common issues such as outliers, noise, and user annotation errors.
+ 
+    \item \textit{How effective are frequency-domain features, derived from GPS trajectories, in enhancing transportation mode detection?} \\ To address this, we employ Fast Fourier Transform (FFT) to extract frequency-domain features from GPS trajectories, complementing time-domain features.
+
+    \item \textit{ How can the most relevant features for each transportation mode be identified to foster the development of robust and interpretable models? } \\
+    We propose the \emph{Class-Subspace} feature selection method that utilises Shapley values to identify and retain feature subsets based on attribution to class prediction.
+
+\end{itemize}
+
+We evaluate the performance of our approach on two real-world GPS trajectory datasets collected from smartphones and GPS loggers in two different cities.
+
+This chapter is organised as follows. \Cref{chp4-rlt-work} provides a comprehensive overview of related literature. \Cref{chp4-methodology} presents a detailed description of the experimental procedures employed in this study. \Cref{chp4-framework} introduces our proposed feature selection method. The results are presented in \Cref{chp4-results}, followed by a discussion of their implications in \Cref{chp4-discussion}. Finally, \Cref{chp4-conclusion} concludes the paper by summarising the main findings and outlining directions for future research.
+
+\section{Related Work} \label{chp4-rlt-work}
+GPS trajectory data comprises a sequence of location points, each represented as a tuple containing spatial and temporal information, typically including longitude, latitude, and timestamp. Data preprocessing is essential for extracting the raw data's meaningful motion features, such as speed, acceleration, and direction changes. Trip segmentation is a crucial step in preprocessing, involving dividing the trip into segments.
+
+Zheng et al. \cite{zheng2008learning} introduced a change-point-based approach, utilising a change-point algorithm to discriminate between walking and non-walking segments. They established thresholds for maximum velocity (\( 1.8 \, \mathrm{m/s} \)) and acceleration (\( 0.6 \, \mathrm{m/s}^2 \)) for this purpose. This method is based on the following two key considerations: (1) individuals typically walk when transitioning between different modes of transport (e.g., walking from home to a bus stop, or from a train station to workplace); and (2) each trip begins and ends with a walking segment. This approach has been widely adopted in subsequent studies \cite{zheng2010understanding, zhu2021semi, james2020semi}.
+
+Alternatively, a substantial body of research has employed the stop-detection approach. This methodology focuses on identifying stationary locations. By identifying and labelling these points as \enquote{stops}, the method effectively distinguishes them from locations where the user is in motion, which are labelled as \enquote{moving}. Two primary categories of stop-detection-based methods are prevalent in the literature \cite{yang4960556machine}: rule-based and clustering-based.
+Rule-based methods determine \enquote{stops} by analysing the duration a user spends within a specific area (\cite{dabiri2018inferring, andrade2022you, sadeghian2022stepwise} or by evaluating their movement speed within a defined time interval \cite{rodrigues2017impact, muhammad2021transportation, sadeghian2022stepwise}. In contrast, clustering-based methods (\cite{jiang2023framework, dutta2023inferencing} identify stop points by analysing the spatial coordinates of location points. These diverse segmentation approaches highlight an inconsistency in preprocessing strategies across the literature, demonstrating that segmentation remains a non-standardised step in TMD pipelines. 
+
+Two primary categories emerge when identifying features for mode detection. Kinematic features, which describe the inherent motion characteristics, encompass attributes such as speed, acceleration, and statistical derivatives. These features are widely utilised in mode detection, as evident in \Cref{tbl:pre_work}, \cite{zhang2021toward, yang2022data, bolbol2012inferring, bantis2017you}. Conversely, geospatial context features characterise the interplay between the movement and its surrounding environment, encompassing spatial and temporal relationships \cite{hong2023evaluating}. These features often leverage data from GIS and transportation networks, such as proximity to bus stations.
+These features, which capture the characteristics of different travel modes \cite{yang4960556machine}, are subsequently utilised in various downstream tasks, including data cleaning and subsequent analysis.
+
+\begin{longtable}{lcc m{2cm} m{1.8cm} cc}
+\caption{Summary of transportation mode detection studies from GPS data.}
+\label{tbl:pre_work} \\
+
+\toprule
+Study & Population & Duration & Features & Modes & Classifier & Accuracy (\%) \\
+\midrule
+\endfirsthead
+
+\multicolumn{7}{c}%
+{\tablename\ \thetable\ -- continued from previous page} \\
+\toprule
+Study & Population & Duration & Features & Modes & Classifier & Accuracy (\%) \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{7}{r}{Continued on next page} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+    \cite{rodrigues2017impact} & 227 & 1 month & speed \& acceleration stats. & bike, bus, car, foot, metro. & RF & 85 \\
+
+    \cite{dabiri2018inferring} & 69 & > 5 years & speed, acceleration, jerk, bearing rate. & bike, bus, car, foot, train. & CNN & 84.8 \\
+
+    \cite{endo2016deep} & 69 & > 5 years & distance, velocity \& deep extracted features & bike, bus, car, foot, subway, taxi, train. & LR & 67.9\\
+
+    \cite{zheng2008learning} & 45 & 6 months &
+        distance, velocity, acceleration stats.
+        & bike, bus, car, foot.
+        & DT & 72.8 \\ 
+
+    \cite{sadeghian2022stepwise} & 20 & 5 months & distance, speed \& acceleration stats. &bike, bus, foot, car, train. & RF & 91.2 \\
+
+        \cite{zhang2021toward} & 69 & > 5 years &
+        speed, acceleration, jerk
+        & bike,  bus, car, foot, train.
+        & DNN & 91.4 \\
+
+    \cite{yang2022data} & 410 & 10 months & speed stats. \& location data. &bike, bus, car, foot, rail. &RF &93 \\
+
+    \cite{bolbol2012inferring} &81 & 2 weeks & velocity \& acceleration stats. &bike, bus, car, foot, train, tube. &SVM & 88  \\
+
+    \cite{bantis2017you} & 2 & 3 days & speed stats. &bus \& car, foot, stationary, rail.   &HMM & 78\\
+
+    \cite{hong2023evaluating} & 139 & 12 months &  distance, acceleration, geospatial context &bike, boat, bus, car, foot, train, tram. & RF & 93.0 \\
+
+    \cite{xiao2017identifying} &69 & > 5 years & velocity, acceleration, turning angle. &bike, bus \& taxi, car, foot, subway, train. &XGB &90.8 \\        
+
+    \cite{song2016deeptransport} &1.6m user & 3 years & auto-extracted (deep) features. &bike, foot, car, stationary, train. &LSTM & 81.4  \\
+
+    \cite{xiao2019detecting} & 203 & 10 months & speed, acceleration \& heading change.  & bike, bus, car, foot, e-bike, subway. &Gaussian & 92 \\
+        
+    \cite{sadeghian2024deep} & 91 & 12 months  & speed, acceleration, bearing rate. &bike, bus, foot, car, train. &Autoencoder & 93.9 \\
+
+    \cite{zeng2024masked} & 69 & > 5 years &  velocity, acceleration, frequency-inverse &bike, bus, car, foot, subway, train, taxi. & Autoencoder & 68.3 \\
+
+    \cite{pei2024travel} & 69 & > 5 years & speed, acceleration, jerk, bearing rate. &bike, bus, car, foot, train. & CNN & 83.3 \\
+
+    \cite{fan2024multi} & 69 & > 5 years & distance, heading, curvature. & bike, bus, car, foot, subway. & CNN & 95.2 \\
+
+\end{longtable}
+
+Feature selection constitutes a critical step in the development of effective learning models. This crucial task can be broadly categorised into three distinct approaches \cite{li2017feature}: filter methods, wrapper-based methods, and embedded methods. Filter methods are independent of any learning algorithms. evaluate the relevance of features based on their statistical relationship with the target variable. Wrapper methods rely on the learning algorithm's performance to evaluate the relevance of features by iteratively selecting subsets of features and training a model on each subset. Embedded methods integrate feature selection directly into the structure of a learning algorithm, utilising its inherent properties (e.g., regularisation models) \cite{li2017feature}.
+
+While prior research has recognised the potential of feature selection in TMD, its specific significance remains largely unexplored. This gap necessitates further investigation. 
+The study in \cite{etemad2018feature} explored the efficacy of wrapper and information retrieval methods for selecting optimal feature subsets, demonstrating improved performance. Nevertheless, a key limitation of their work lies in the failure to conduct a comparative analysis with other prominent feature selection techniques. The proposed framework in \cite{susi2013motion} incorporates feature selection based on intra/inter-class feature distances. However, the description of the selection approach lacks clarity and specificity. Furthermore, the study fails to provide empirical evidence demonstrating an improvement in results attributable to the feature selection module.
+
+Alazeb et al. \cite{alazeb2024intelligent} employed a recursive feature elimination method to select the most informative features. However, a significant limitation arises because it is impossible to attribute the observed performance gains solely to the feature selection process, as their proposed framework integrated feature selection and imbalance learning techniques. Isolating the impact of feature selection is crucial for a thorough understanding of its effectiveness and for establishing best practice in TMD. Researchers recognise feature selection as a crucial step for optimising machine learning models, yet its precise contribution within multi-faceted TMD frameworks, such as that of Alazeb et al., is often difficult to determine reliably. This coupling of techniques obscures the distinct impact of the feature selection process itself, making the identification of the most effective features for individual transportation modes challenging.
+
+To address this gap, the \emph{Class-Subspace} feature selection method is introduced in the current study. The method leverages Shapley values to provide feature interpretability and is explicitly designed to isolate and optimise the relevance of features on a mode-specific basis. The Class-Subspace approach establishes a clear connection between feature subsets and mode accuracy, thereby supporting the design of robust and focused TMD models.
+
+\section{Materials and Methods}\label{chp4-methodology}
+This section details the materials and methods used in this study. The overall conceptual framework is shown in Fig. \ref{fig:chp4-framework}.
+\begin{figure}
+    \centering
+    \includegraphics[width=1.\linewidth]{figures/chp4-framework.pdf}
+    \caption{Conceptual framework detailing the overall methodology pipeline.}
+    \label{fig:chp4-framework}
+\end{figure}
+
+\subsection{Terminology}
+\textbf{Point:} A point refers to a single GPS location point recorded at a specific timestamp, typically at 1 Hz when the GPS device is actively acquiring signals. \\
+
+\noindent
+\textbf{Trajectory:} A trajectory is a chronologically ordered sequence of GPS points, each point is a pair of spatial coordinates and a timestamp:. 
+$$T = \{(x_1, y_1, t_1), (x_2, y_2, t_2), \dots, (x_n, y_n, t_n)\}$$
+
+\noindent
+\textbf{Session:} A session is defined as a continuous period of GPS data recording initiated when a user starts moving and terminated when they stop.  \\
+
+\noindent
+\textbf{Trip:} A trip is defined as a sequence of GPS points representing a single travel episode, characterised by continuous movement with a potential stop of no more than 30 minutes between consecutive segments. A trip can consist of multiple sessions for a user. \\
+
+\noindent
+\textbf{Segment:} A segment is a continuous subsequence of a trip in which the user travels using a single mode of transportation.
+
+\subsection{Datasets }
+This study utilises two real-world GPS trajectory datasets: the \emph{SenseMyFEUP} \cite{rodrigues2017impact} dataset and the \emph{GeoLife} \cite{zheng2008geolife} dataset, which are described below.
+
+\subsubsection{SenseMyFEUP dataset}
+The \textit{SenseMyFEUP (SMF2016)} dataset is a GPS trajectory dataset of 227 participants collected in Porto - Portugal in April 2016. It was collected using an Android-based mobile application installed on participants' smartphones. The application was designed to record location data whenever user movement is detected automatically and to stop recording when the user stops moving. \textit{SMF2016} dataset has a sampling frequency of approximately 1 sample per second \cite{rodrigues2017impact}. The location data is structured as a tuple containing the following attributes: timestamp, longitude, latitude, altitude, speed, bearing, and GPS accuracy, thus $ L_{i} = <time[t], long, lat, alt, speed, bearing, gps\_acc>$.
+Moreover, the application includes an end-of-trip survey administered after each trip completion, prompting users to indicate their travel mode.   
+This user-annotated data, collected through an end-of-trip survey administered after each trip completion, serves as the ground truth for our analysis. Only trips with a single reported mode of transportation were included in this study. In all, \textit{SMF2016} contains travel mode information for five different transportation modes: \textit{bike, bus, car, foot} and \textit{metro}.
+
+\subsubsection{Geolife dataset}
+We utilised the publicly accessible \textit{Geolife}  dataset published by Microsoft Research Asia \cite{zheng2010geolife, zheng2008learning, zheng2010understanding} to assess the reliability of our method. This dataset was collected from 182 participants mainly in Beijing - China, primarily over five years (April 2007 - February 2012). The data collection employed various GPS loggers and GPS-enabled phones, capturing movement information at a spatio-temporal granularity of approximately 1-5 seconds or 5-10 meters per data point. According to the \textit{Geolife} user guide \cite{zheng2011geolife}, 73 users have annotated their trajectories with travel mode information. However, we found only 69 users with transportation mode information upon examining the raw data. There are about ten different transportation modes \textit{(walk, bike, bus, car, taxi, train, subway, motorcycle, airplane, boat)} available in the dataset.
+
+For the purpose of this study, we focus solely on ground transportation modes, even though the dataset includes annotations for other types of transportation. In compliance with the user guide \cite{zheng2011geolife}, we regard the labels of both \textit{taxi} and \textit{car} as \textit{car mode}. Specifically, we consider five transportation modes that correspond to those available in the SMF2016 dataset.
+
+%\section{Trip Preprocessing} \label{chp4-preprocessing}
+%%%This paper utilises the two GPS trajectory datasets described in \Cref{chp3-sec1}.
+%Building upon the  data preprocessing steps outlined in \cref{subsec-trip-preproc,subsec-trip-filtering}, which includes trip preprocessing and the creation of fixed-size instances, this chapter utilises the resulting instances. The distribution of instances by transportation mode is depicted in \Cref{fig:instance-distirb}.
+
+\subsection{Trip Preprocessing} \label{trip-preprocessing}This section outlines the process of chaining GPS points into trips in the SMF2016 dataset and subsequently ensuring data quality through a series of preprocessing and filtering steps. For consistency across the datasets used in this study, we adopt the standard methodology for separating user trajectories into trips: a time interval ($\Delta t$) between two successive GPS points that exceeds 30 minutes defines the boundary between two distinct trips, following established literature \cite{dabiri2018inferring}.
+
+Our trip chaining algorithm in the SMF2016 dataset identifies and joins two GPS points within a session into a single trip according to the following criteria \cite{rodrigues2017impact}:
+\begin{itemize}
+    \item the points are associated with a particular user,
+    \item the time interval ($\Delta t$) between a point and its predecessor is no more than 30 minutes,
+    \item the distance between a previous point and the start of a new one is below 200m.
+\end{itemize}
+
+\subsubsection{Data Quality Control and Filtering}
+To ensure the dataset’s integrity for urban mobility analysis, we implemented a series of quality control steps following the initial trip chaining. The first step involved a diagnostic check for temporal anomalies, identifying "unstopped sessions" where the interval between successive GPS points ($\Delta t$) in a trip exceeded the established threshold. These cases, which resulted from data collection persisting despite a lack of recorded movement, are detailed in \Cref{tab:chp4-gap-sessions}. Investigation further revealed that many of these anomalous sessions corresponded to trips exceeding the scope of the study area's urban context. To maintain a focus on urban-scale mobility, we implemented a spatial filter using metropolitan coordinates (41.38786, -8.77034) and (41.04928, -8.4253). This filter removed affected trips extending beyond the functional urban area, ensuring the data characterise only typical city-scale transportation.
+
+%Second, we addressed mode-specific anomalies. We observed several trips manually annotated as "foot" mode that exceeded 10~km, which is statistically improbable for urban pedestrian movement (Fig. \ref{fig:trip-filter}a). Consequently, we applied a conservative 8~km distance cap on all walking trips. As shown in Fig. \ref{fig:trip-filter}b, this targeted filter produced a more plausible distance distribution. The final filtered dataset, used for all subsequent analysis, is summarised in \Cref{tab:trips}.
+
+\begin{table}[htbp]
+    \centering
+    \tabcolsep=70pt
+    \caption{Sessions having $\Delta t > 1hr$  between consecutive GPS points.} 
+    \label{tab:chp4-gap-sessions}
+    \begin{tabular}{@{} l*{1}{c} @{}} %{c|c}
+    \toprule
+      Number of cases found    &   58 \\
+    % \hline
+     Number of sessions affected  & 26 \\
+     %\hline
+      Total number of sessions in the dataset  &  5368 \\
+     %\hline
+     Number of trips in unstopped sessions  &   25 \\
+     %\hline
+     Single mode trips affected       &  15 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}%[thbp]
+    \centering
+    \includegraphics[width=1.\textwidth]{fig2.pdf} 
+    \caption{Trip distance distribution by travel mode (a) before trip filtering; (b) after filtering to trips covered in Porto region.}
+    \label{fig:trip-filter}
+\end{figure}
+
+Second, we addressed mode-specific anomalies. We observed several trips manually annotated as "foot" mode that exceeded 10~km, which is statistically improbable for urban pedestrian movement (Fig. \ref{fig:trip-filter}a). Consequently, we applied a conservative 8~km distance cap on all walking trips. As shown in Fig. \ref{fig:trip-filter}b, this targeted filter produced a more plausible distance distribution. The final filtered dataset, used for all subsequent analysis, is summarised in \Cref{tab:trips}.
+
+\begin{table}[htbp]
+    \centering\tabcolsep=30pt\caption{Summary of data filtering stages.} \label{tab:trips}
+    \begin{tabular}{@{} l*{1}{c} @{}}
+    \toprule 
+    Initial number of trips &  3730 \\ 
+    Trips with temporal gaps (large $\Delta t$) &  15 \\  
+    Non-urban trips (spatial filter)  & 764 \\ 
+%    Trips outside the metropolitan area &  \\
+    Remaining urban-scale trips &   2951 \\ Final dataset (foot mode capped at 8~km)   &  2909  \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Instances Creation}
+To prepare the dataset for mode detection, each trip trajectory was segmented into alternating sequences of motion and stationary instances. The creation of instances is a multi-step process that involves:
+
+\subsubsection{ Trip Segmentation}
+The trajectory segmentation process begins by identifying stationary segments, which represent periods of user inactivity. We employ a threshold-based method using the $\text{85}^\text{th}$ percentile of instantaneous GPS speed $\cite{rodrigues2017impact}$. A segment is classified as stationary if the user's average speed remains below $0.5 \text{ m/s}$ for a minimum duration of 5 seconds. All remaining segments are categorised as motion segments, representing active travel.
+%
+This process inherently divides each trip into its corresponding single-mode segments. We then finalise the preparation by assigning the ground truth labels to these segments, achieving this by leveraging the manual user annotations of transportation modes. 
+
+\subsubsection{Segments Filtering}
+Following trip segmentation, the process may generate several short segments that are potentially uninformative and can degrade the performance of the TMD classifiers due to data sparsity $\cite{rodrigues2017impact}$. To ensure only meaningful segments are used for model development, we apply a filtering step, imposing a minimum segment length threshold of $50 \text{m}$. This dual-purpose filter mitigates noise from short, insignificant movements and enhances the classifier’s ability to distinguish between different transportation modes by focusing on more substantial movement patterns. Applying this $50 \text{m}$ length threshold resulted in the removal of 11,060 segments from the SMF2016 dataset (38.7\% of the total segments) and 1,476 segments from the Geolife dataset (14.3\% of the total segments).
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/point-bearing.pdf}
+    \caption{Visual representation of bearing between successive GPS points in a trajectory.}
+    \label{fig:point-bearing}
+\end{figure}
+
+\subsubsection{Time Domain Features}
+Our approach involves computing four motion attributes for each location point in the time domain. Because the Geolife dataset lacks instantaneous GPS speed information—unlike the SMF2016 dataset—we first calculate the instantaneous speed value of each point using \cref{eq_spd} for any two consecutive data points ($\vn{P_m, P_n}$). Additionally, we calculate point-level acceleration, jerk, and bearing rate (as illustrated in Fig. $\text{\ref{fig:point-bearing}}$) using \cref{eq_acc}, \cref{eq_jk}, and \cref{eq_br}, respectively.
+\begin{align}
+    S_{P_m}  &= \frac{\vn{Vincenty}(P_m, P_n)}{\Delta t} \label{eq_spd} \\
+    A_{P_m}  &= \frac{S_{P_n} - S_{P_m}}{\Delta t} \label{eq_acc} \\
+    J_{P_m}  &= \frac{A_{P_n} - A_{P_m}}{\Delta t} \label{eq_jk} \\
+    BR_{P_m} &= |\vn{bearing}(P_n) - \vn{bearing}(P_m)| \label{eq_br} \\
+    y  &= \vn{sin}[P_n(\vn{lon})-P_m(\vn{lon})] \times \vn{cos} [P_n(\vn{lat})] \label{geo_br1} \\
+    x &= \vn{cos}[P_m(\vn{lat})] \times \vn{sin}[P_n(\vn{lat})] - \vn{sin}[P_m(\vn{lat})] \times \nonumber %\label{geo_br} 
+     \vn{cos}[P_n(\vn{lat})] \times \\ 
+     & \vn{cos}[P_n(\vn{lon}) - P_m(\vn{lon})] \label{geo_br3}  \\
+     \vn{bearing}(P_m) &= \vn{arctan(y,x)}  \label{geo_br4}
+\end{align}
+
+We divide each segment into fixed-length instances of $N=100$ time steps. This 
+approach ensures a consistent input format for our classification models. We selected this specific value to approximate the median number of data points present within all segments of the SMF2016 (123) and Geolife (200) \cite{dabiri2018inferring} datasets, 
+which allows our separate models to learn from a representative sample of each dataset's characteristics.
+
+\subsubsection{Frequency Domain Features} 
+While most GPS-based TMD methodologies focus exclusively on time-domain features, we incorporate frequency domain features to gain a deeper insight into the periodic characteristics of the motion signals. This is because different travel modes possess distinct frequency signatures: for instance, cyclic motion patterns present in modes such as walking or cycling (due to human gait or pedalling) could introduce clear, higher-frequency components in acceleration and jerk. Conversely, modes involving steady mechanical travel, such as car or bus trips, are typically characterised by dominant low-frequency components. We leverage the frequency domain to isolate and quantify these patterns, which we hypothesised could enhance the classifier's ability to discriminate between modes.
+
+To achieve this, we utilised the Fast Fourier Transform (FFT) algorithm $\cite{rajaby2022structured}$ to transform all feature dimensions of each instance from the time domain to the corresponding frequency spectrum. For real-valued input, the FFT produces a symmetric spectrum where the values for positive frequencies are the complex conjugates of the values for negative frequencies. We considered only the absolute value (magnitude) of the positive frequency components for feature creation, which effectively extracts the signal's energy distribution across frequencies while avoiding feature duplication and the complexity of using the raw imaginary values. Fig. \ref{fig:time-freq-dom} shows an example of an instance in the time and frequency domains.
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[scale=0.4]{figures/instance-time-fft.pdf} %width=\linewidth
+    \caption{An instance's time and frequency domains.}
+    \label{fig:time-freq-dom}
+\end{figure*}
+
+\subsubsection{Dataset Splitting}
+To prepare the resulting instances for model training and evaluation, we implemented a temporal data split, separating the train and test sets based on the data collection period. This strategy is crucial because the datasets represent a time series of user GPS records. We opted to deviate from the conventional random data split to mitigate the potential risk of data leakage and avoid optimistic performance estimates. The conventional random split does not preserve the chronological order of the trip data, which can lead to models performing unrealistically well on the test set because they have inadvertently seen patterns from the test period during training $\cite{muhammad2021transportation}$. 
+As demonstrated in previous work $\cite{muhammad2021transportation}$, failing to preserve the chronological order can result in accuracy overestimation. Therefore, the temporal data split provided a realistic evaluation of the models' predictive capabilities on future, unseen data by ensuring that the model learned only from previous trip data.
+
+For the SMF2016 dataset, we allocated the first three weeks of data for model training and reserved the subsequent week for the test set. Similarly, for the Geolife dataset, we utilised data from April 2007 to November 2008 for model training and reserved all data beyond November 2008 for the test set. The distribution of instances by transportation mode is provided in Table $\text{\ref{tab:instance-distirb}}$.
+\begin{table}[ht]
+    \caption{Instance distribution by transportation mode in both datasets.}
+    \label{tab:instance-distirb}
+    \centering
+    \begin{tabular}{lrrrrrrrr}
+    \toprule
+    \textbf{Mode} & \multicolumn{2}{c}{\textbf{SMF2016 Train}} & \multicolumn{2}{c}{\textbf{SMF2016 Test}} & \multicolumn{2}{c}{\textbf{Geolife Train}} & \multicolumn{2}{c}{\textbf{Geolife Test}} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+& \textbf{Count} & \textbf{(\%)} & \textbf{Count} & \textbf{(\%)} & \textbf{Count} & \textbf{(\%)} & \textbf{Count} & \textbf{(\%)} \\
+\midrule
+Foot & 15,181 & 22.63 & 7,211 & 17.73 & 9,581 & 29.31 & 8,169 & 31.67 \\
+Bike & 2,502 & 3.73 & 1,502 & 3.69 & 4,092 & 12.52 & 6,010 & 23.30 \\
+Bus & 11,024 & 16.43 & 7,095 & 17.44 & 7,831 & 23.96 & 5,720 & 22.18 \\
+Car & 34,832 & 51.92 & 24,116 & 59.28 & 5,011 & 15.33 & 3,108 & 12.05 \\
+Metro & 3,553 & 5.30 & 758 & 1.86 & 6,175 & 18.89 & 2,784 & 10.79 \\
+\midrule
+\textbf{Total} & \textbf{67,092} & \textbf{100.00} & \textbf{40,682} & \textbf{100.00} & \textbf{32,690} & \textbf{100.00} & \textbf{25,791} & \textbf{100.00} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%\subsection{Features per Instance}
+%We use ten descriptive feature statistics \cite{muhammad2021transportation} calculated for every feature of an instance for the time-domain features (mean, median, standard deviation, minimum, maximum, MAD, \nth{25}, \nth{75}, \nth{85} percentiles, and inter-quartile range). For the frequency-domain features, we consider the indexes of the top 10 frequency components for each feature of an instance. Thus, each instance consists of 80 features: time-domain 10 x 4 features and frequency-domain 10 x 4 features.
+
+\subsection{Classification Algorithms} \label{classifiers}
+This section provides an overview of the classification algorithms used in the study.
+
+\subsubsection{Decision Trees}
+Decision Trees (DT) are a supervised learning method commonly used for classification and regression purposes \cite{moreira2018general}. Decision trees construct a directed graph with a tree-like structure, where each internal node represents a feature, and each leaf node represents a class label. A DT classifier partitions the input space recursively based on the training input and label vector such that instances with the same labels are clustered together. An impurity measure, such as \textit{entropy} or \textit{Gini} impurity, determines the splitting criterion, which seeks to minimise classification error.
+
+\subsubsection{Support Vector Machines (SVMs)}
+SVMs are a family of supervised learning algorithms widely used for classification and regression tasks \cite{moreira2018general}. A key strength of the SVMs lies in the ability to handle non-linear data. SVMs achieve this by employing the \textit{kernel} function \cite{xue2009svm}, which increases the problem dimensionality, effectively transforming a non-linear problem into a linearly separable one. The \textit{Support Vector Classifier (SVC)} is a variant of the SVMs designed explicitly for classification problems. SVC seeks to identify an optimal hyperplane that effectively separates data points belonging to different classes while maximizing the margin between the hyperplane and the nearest data points (also called the \textit{support vectors}). This margin maximization principle, made possible by the kernel-induced increase in dimensionality, contributes significantly to the high classification accuracy and generalization capabilities of SVMs, even in the presence of noise or imbalanced data \cite{wang2010boosting}.
+
+\subsubsection{Ensemble Methods}
+Ensemble methods combine multiple base models to produce a single, more robust predictive model. The following ensemble methods were utilised in this study.
+
+\paragraph{Random Forest}
+Random forests (RF) are an ensemble method that combines multiple decision trees to enhance predictive accuracy. Each decision tree within the forest is trained on a different bootstrap sample \cite{moreira2018general,biau2016random}, similar to bagging; however, at each node, the split rule is selected from a random subset of predictive features rather than the complete set. The random feature selection at each split can be advantageous in datasets with many predictive variables by reducing correlation among trees and enhancing generalisation performance \cite{biau2016random}. Nevertheless, its practical benefit depends on the proportion of informative features. Although computationally intensive, random forests leverage decision trees as base learners and are versatile for classification and regression tasks. The prediction variability decreases as more trees are added to the ensemble, improving result stability.
+
+\paragraph{Extreme Gradient Boosting}
+Extreme Gradient Boosting or \textit{XGBoost} is a powerful open-source software library that follows the principle of the gradient boosting algorithm \cite{chen2015higgs}. It uses decision trees as base learners, sequentially adding them to an ensemble while focusing on rectifying the errors made by prior models. This sequential refinement is guided by the gradient boosting approach, which minimises a predefined loss function. Furthermore, XGBoost incorporates several techniques such as regularization, tree pruning, and parallel processing to enhance the generalisability of the final model \cite{chen2016xgboost}. XGBoost's strength lies in its distributed architecture, enabling parallel tree boosting across machines.
+
+\subsection{Features per Instance}
+We use ten descriptive feature statistics \cite{muhammad2021transportation} calculated for every feature of an instance for the time-domain features (mean, median, standard deviation, minimum, maximum, MAD, \nth{25}, \nth{75}, \nth{85} percentiles, and inter-quartile range). For the frequency-domain features, we consider the indexes of the top 10 frequency components for each feature of an instance. Thus, each instance consists of 80 features: time-domain 10 x 4 features and frequency-domain 10 x 4 features.
+
+\subsection{Feature Selection} \label{feature-selection}
+Following the generation of an extensive pool of time-domain and frequency-domain features, we employed the $\text{Sequential Forward Floating Selection (SFFS)}$ $\cite{ferri1994comparative, raschka2018mlxtend}$, a wrapper-based feature selection method, to derive the optimal subset. $\text{SFFS}$ initiates the selection process with an empty feature subset and iteratively builds this subset by combining forward addition and backward floating steps.
+
+In the forward step, features are sequentially introduced to the subset based on their contribution to model performance, evaluated against a held-out validation set using the Area Under the Receiver Operating Characteristic Curve (ROC-AUC). Subsequently, a floating step is initiated, wherein previously selected features are assessed for removal. If the model's performance, following the removal of a feature, does not significantly degrade, that feature is permanently discarded from the subset. This iterative cycle of forward introduction and backward evaluation continues until a termination criterion is met, when no further significant gain in $\text{ROC-AUC}$ is observed.
+
+%\section{Evaluation Metrics}
+
+\section{Evaluation Metrics} \label{chp4-sec4}
+Evaluation metrics are quantitative measures used to assess the performance and effectiveness of a machine learning model. They are typically used to compare the performance of different models or to evaluate the performance of a model over time. Within the classification domain, the widely prevalent metrics for performance evaluation are \textit{accuracy} and \textit{error rate.} In this section, we describe the most common performance metrics in classification. 
+
+\subsection{Confusion Matrix}
+Each example data sample can yield one of four potential outcomes in a binary classification task involving two classes. If the sample is genuinely positive and the classification algorithm correctly predicts it, it is termed a \textit{true positive (TP)}. Conversely, if the algorithm incorrectly predicts it as negative, it is referred to as a \textit{false negative (FN)}. Similarly, if the sample is truly negative and the classifier accurately predicts it as negative, it is labelled as a \textit{true negative (TN)}. If, however, the algorithm erroneously classifies it as positive, it is designated as a \textit{false positive (FP)}. These four distinct outcomes are precisely captured within a structure known as a \textit{contingency table}, or  \textit{confusion matrix}.
+
+The confusion matrix is a table summarising a classification algorithm's performance on the test set \cite{fawcett2006introduction}. It is typically divided into four cells, corresponding to the four possible outcomes.
+
+\begin{table}[htbp]
+  \caption{Confusion Matrix.} 
+  \label{tab:confusion_matrix}
+  \centering 
+  \settowidth{\templena}{~False Positive (FP)~}% Set maximum box/column width for Positive
+  \settowidth{\templenb}{~False Negative (FN)~}% Set maximum box/column width for Negative
+  \begin{tabular}{ l l c @{} c c }
+    \multicolumn{2}{c}{} & \multicolumn{2}{c}{\bfseries Predicted Class} & \\
+    \multicolumn{2}{c}{} & \itshape Positive & \itshape Negative & \itshape Class Support \\
+    & \itshape Positive & \fbox{\makebox[\templena]{True Positive (TP)}} & \hspace{-\fboxrule}\fbox{~False Negative (FN)~} & \bfseries P \\[\dimexpr\baselineskip-\fboxrule]
+    \raisebox{0.5\dimexpr\normalbaselineskip+2\fboxsep+2\fboxrule}[0pt][0pt]{\bfseries Actual Class} & \itshape Negative & \fbox{~False Positive (FP)~} & \hspace{-\fboxrule}\fbox{\makebox[\templenb]{True Negative (TN)}} & \bfseries N \\
+  \end{tabular}
+\end{table}
+
+\subsection{Accuracy}
+Accuracy is the proportion of test instances correctly classified by the model. The accuracy score can be calculated from the confusion matrix following \cref{eq_accuracy}. 
+\begin{equation}
+    \vn{Accuracy} = \frac{(TP + TN)}{(TP + TN + FP + FN) } \label{eq_accuracy}
+\end{equation}
+
+\subsection{Precision}
+Precision is the proportion of test instances that are classified as positive by the model that are positive. Using the entries of the confusion matrix, this can be calculated as: 
+\begin{equation}
+    \vn{Precision} = \frac{TP}{TP + FP} \label{eq_precisin}
+\end{equation}
+
+\subsection{Recall}
+Recall evaluates the proportion of test instances that are actually positive and are classified as positive by the model. This is calculated using \cref{eq_recall}.
+\begin{equation}
+    \vn{Recall} = \frac{TP}{(TP + FN)}  \label{eq_recall} 
+\end{equation}
+
+\subsection{F1 score}
+There is always a trade-off between a machine learning model's precision and recall scores. An \textit{F1 score} combines the precision and recall scores into a single value, making it a useful measure for evaluating the performance of a classification model. It is the harmonic mean of the  precision and the recall scores, calculated as:
+\begin{equation}
+    \vn{F1} = \frac{2 \cdot (\vn{Precision} \times \vn{Recall})}{\vn{Precision} + \vn{Recall}}  \label{eq_f1}
+\end{equation}
+
+
+
+\subsection{Receiver Operating Characteristics}
+So far, all the evaluation metrics mentioned above rely on the value of the possible outcomes from the confusion matrix. They are, therefore, sensitive to the class distribution of positive and negative classes. We can see from the confusion matrix (\Cref{tab:confusion_matrix}) that the class distribution is the relationship of the positive class (upper) row to the negative (lower) row \cite{fawcett2006introduction} (see the \textquotedblleft Class Support\textquotedblright~ column in the confusion matrix \Cref{tab:confusion_matrix}). A somewhat better metric insensitive to class distribution is the Receiver Operating Characteristics (ROC). ROC is a graphical representation and a performance measurement tool used in binary classification problems.
+
+The ROC curves are plotted using two performance metrics: the \textit{true positive rate (TPR) - } proportion of positive instances that are correctly classified, and \textit{false positive rate (FPR) -} the proportion of negative instances that are incorrectly classified. Figure \ref{fig:roc-curve} illustrates a typical ROC curve, showing the relationship between TPR and FPR at various classification thresholds. The Area Under the Curve (AUC) is a common metric for summarising the performance of a classifier based on its ROC curve.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/roc_curve.png}
+    \caption{Area under the Receiver Operating Characteristic (ROC) Curve.}
+    \label{fig:roc-curve}
+\end{figure}
+
+These curves are created by varying the classification threshold and plotting the TPR against the FPR at each threshold. The classification threshold is a value used to decide whether an instance is classified as positive or negative. Lowering the classification threshold will classify more instances as positive, thus increasing both TPR and FPR.
+A higher area under the ROC curve (AUC) generally indicates a better-performing model, with 1 representing perfect discrimination and an AUC of 0.5 representing just a random classifier. 
+
+\section{Feature Selection} \label{chp4-sec5}
+Feature selection is a critical step in machine learning pipelines aimed at identifying and retaining only relevant features while discarding extraneous ones. The primary goal of feature selection is to identify and select the most relevant and informative subset of features from a more extensive set of variables, aiming to improve model performance and interpretability and reduce computational complexity \cite{khaire2022stability}. Previous studies in TMD from GPS data primarily focused on constructing features in the time domain.  While this approach has yielded effective learning models, there is a tendency to overlook the potential of frequency-domain features \cite{ashqar2018smartphone, james2020semi}.
+
+We use the ten (10) descriptive feature statistics \cite{muhammad2021transportation} calculated for every feature of an instance for the time-domain features (mean, median, standard deviation, minimum, maximum, MAD, \nth{25}, \nth{75}, \nth{85} percentiles, and inter-quartile range). For the frequency-domain features, we consider the indexes of the top 10 frequency components for each feature of an instance. Thus, each instance consists of 80 features: time-domain 10 x 4 features and frequency-domain 10 x 4 features.
+
+\subsection{Sequential Forward Floating Selection}
+After generating the pool of features, we applied the \textit{Sequential Forward Floating Selection (SFFS)} \cite{ferri1994comparative, raschka2018mlxtend} technique, a wrapper-based method for feature selection. SFFS begins with an empty feature subset. In the forward selection phase, features are iteratively added to the subset one at a time, with each addition leading to model training and evaluation. The floating operation in SFFS involves removing features from the currently chosen subset if they no longer contribute significantly to the model's performance, even if they were previously selected. The process continues until no further improvement in the evaluation metric, such as accuracy or error rate, is observed on a validation set. This study uses the area under the curve - receiver operating characteristics (ROC-AUC) as the evaluation criterion.
+
+\section{Proposed Feature Selection Method} 
+\label{chp4-sec-framework}
+This section introduces the proposed feature selection method rooted in Shapley values. We firstly provide a concise overview of Shapley values and their relevance to feature importance assessment.
+
+\subsection{The Shapley Values} \label{shaply_values}
+Drawing upon the principles of cooperative game theory, the \emph{Shapley values} emerges as a powerful tool for assessing the contributions of individual features towards a machine learning model predictions \cite{lundberg2017unified}. The Shapley value of a feature quantifies its average marginal contribution to the overall prediction across all possible combinations of feature values. It measures the significance of each feature by evaluating its impact on the model prediction across all possible combinations of feature values.
+
+Lundberg, Erion, and Lee (2018) \cite{lundberg2018consistent} introduced a computationally efficient and theoretically sound approach called SHAP (short for \emph{SHapley Additive exPlanations}) for explaining the output of a machine learning model using insights from game theory. SHAP value is a well-established feature importance technique that quantifies the attribution of each feature to the model prediction by considering all possible marginal contributions of the features. The SHAP value of a feature $i$, denoted $\phi_i$, is calculated following equation \ref{shap_value_eqn},  where $N$ represents the set of all input features and $S$ denotes the feature subset.   
+\begin{equation} \label{shap_value_eqn}
+  \phi_i = \sum_{S\subseteq N\setminus\{i\}} \frac{|S|!(|N| - |S| - 1)!}{|N|!}  \{ E[f(X)|X_{S \cup i} = x_{S \cup i}] - E[f(X)|X_S = x_S] \}
+\end{equation}
+%
+The conditional expectation $E[f(X) \mid X_{S \cup i} = x_{S \cup i}]$ refers to the model's expected output when feature $i$ is included along with the features in subset $S$. In contrast, $E[f(X) \mid X_S = x_S]$ represents the expected output when feature $i$ is excluded, considering only the features in subset $S$.
+
+Despite its computational cost, SHAP has demonstrated commendable properties, including fairness and consistency \cite{zhao2020shap}, in assigning importance scores to individual features.
+
+\subsection{Class-Subspace Selection } \label{subspace_alg}
+Traditional wrapper-based feature selection algorithms, such as SFFS, do not determine each feature's relevance based solely on its individual merit. Instead, they operate by training a model using different combinations of feature subsets and determine which combination yields the best overall performance (e.g., highest accuracy). This approach fundamentally prioritises features that collectively enhance the model's overall predictive power.
+However,  experimental results (see \Cref{fig:subspace-smf,fig:subspace-geolife}  in Appendix \ref{appendix1}) showed that the features most relevant for classifying one transportation mode (e.g., bus) were often sub-optimal for classifying another (e.g., car). This difference implies that relying on a single, globally optimised feature subset necessarily compromises the predictive performance for certain classes.
+
+To address this limitation—the need to capture distinct classification boundaries for each unique mode—we propose the Class-Subspace feature selection technique. This method identifies a minimal, class-specific subset of features that adequately captures the discriminative information required to classify a single target mode against all others.
+
+Our approach involves training an initial classifier and computing the SHAP values $\phi(x_{i,j})$ for all features $i$ and instances $j$ in the training set $D$. Subsequently, for each unique class $k$, we evaluate the contribution of each feature to the model prediction of that class by computing the mean absolute SHAP values. These values are then sorted in decreasing order of magnitude to identify the most influential features for predicting the class. The minimum subset of features comprising the contributing values whose sum is larger than the contribution threshold ($\rho$) is selected. $\text{Figure \ref{fig:subspace}}$ visually depicts the steps involved in the process. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.46]{figures/subspace-illustration.pdf} 
+    \caption{An illustration of the selection process for individual class in a dataset.}
+    \label{fig:subspace}
+\end{figure}
+
+Once these $k$ discrete feature subsets $\{S_1, S_2, \dots, S_k\}$ have been identified, they are used to construct the predictive framework. We adopt a modular approach whereby a base learner is trained for each class $k$ using only its corresponding optimal subset $S_k$. This ensures that each model acts as a specialist discriminator, specifically designed to maximise the detection of instances belonging to its respective class. While the final classification is achieved via a hard-voting aggregation of these specialised learners, this multi-model configuration is employed primarily as a transparent proxy to measure the discriminative utility of the selected features. Unlike traditional ensemble methods that aim to optimise predictive variance, our objective remains the isolation and characterisation of class-dependent feature relevance. Algorithm \ref{alg:class_subspace} provides the pseudocode for the Class-Subspace selection technique. For the experiments, a contribution threshold of $\rho = 0.6$ was employed for features contributing to each class prediction; i.e., only features explaining 60\% of cumulative relevance were retained. The impact of the subspace threshold ($\rho$) on classification performance was evaluated through a sensitivity analysis (see Fig. \ref{fig:rho-sensitivity-analysis} in Appendix  \ref{chap:appdx2}).
+
+During the testing phase on unseen data samples, the $k$ base models—each operating exclusively on its respective class-specific feature subset $S_k$—generate individual predictions. These are subsequently aggregated through hard voting to determine the predicted transportation mode. 
+
+\begin{algorithm}[htbp]
+\SetAlgoLined
+\caption{Class-Subspace Selection}
+\label{alg:class_subspace}
+
+\KwIn{Training data $D = \{(x_j, y_j)\}_{j=1}^{m}$ with features $i \in \{1, ..., n\};$ \\ 
+\Indp
+\quad\quad Class labels $y_j \in \{1, ..., K\};$ \\ 
+\quad\quad Base learning algorithm $T;$ \\ 
+\quad\quad Subspace contribution threshold $ \rho. $}
+
+\KwOut{ A set of Class-specific feature subsets $\{S_k\}_{k=1}^{K}$\ }
+
+\SetKwInput{Process}{Process}
+
+  \Process{}
+  \Indp
+
+%\BlankLine
+Train  $T$ using $D$\;
+Compute SHAP values $\phi(x_{i,j})$ for all features $ i \in  n$ and instances $j \in m. $
+
+\For{$k \leftarrow 1$ to $K$} {
+    Initialise an empty list $M_k$ for mean absolute SHAP values\;
+    \For{$i \leftarrow 1$ to $n$} {
+        Compute the mean absolute SHAP value for feature $i$ for class $k$:
+        $m_{i,k} \leftarrow \frac{1}{m_k} \sum_{j | y_j = k} \abs{\phi(x_{i,j})}$ \;
+   %%%     Add $(m_{i,k}, i)$ to $M_k$\;
+        Add $(i, m_{i,k})$ to $M_k$\;
+    }
+    Sort $M_k$ in decreasing order\;
+    Initialise an empty set $S_k$ for chosen feature subset for class $k$\;
+    Initialise a cumulative sum $current\_sum \leftarrow 0$\;
+    \For{$(feature\_index, value)$ in $M_k$} {
+        Add $feature\_index$ to $S_k$\;
+        $current\_sum \leftarrow current\_sum + value$\;
+        \If{$current\_sum \geq \rho$} {
+            \textbf{break}\
+        }
+    }
+}
+
+\textbf{return} $\{S_k\}_{k=1}^{K}$.\
+
+\end{algorithm}
+
+
+\section{Experiments and Results} \label{chp4-results}
+\section{Discussion} \label{chp4-discussion}
+\section{Conclusion} \label{chp4-conclusion}
