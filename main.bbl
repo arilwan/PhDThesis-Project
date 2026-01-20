@@ -1,0 +1,844 @@
+\begin{thebibliography}{166}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Aggarwal(2018)]{Aggarwal2018ann}
+Charu~C. Aggarwal.
+\newblock \emph{An Introduction to Neural Networks}, pages 1--52.
+\newblock Springer International Publishing, Cham, 2018.
+\newblock ISBN 978-3-319-94463-0.
+\newblock \doi{10.1007/978-3-319-94463-0_1}.
+\newblock URL \url{https://doi.org/10.1007/978-3-319-94463-0_1}.
+
+\bibitem[Aguiar and Rodrigues(2022)]{aguiar2022sensemycity}
+Ana Aguiar and Jo{\~a}o Rodrigues.
+\newblock Sensemycity: a mobile iot tool for researching intelligent urban mobility.
+\newblock In \emph{2022 14th International Conference on COMmunication Systems \& NETworkS (COMSNETS)}, pages 725--733. IEEE, 2022.
+
+\bibitem[Alam et~al.(2023{\natexlab{a}})Alam, Haque, Hassan, Huda, Hassan, Strickland, and AlQahtani]{alam2023feature}
+Md~Golam~Rabiul Alam, Mahmudul Haque, Md~Rafiul Hassan, Shamsul Huda, Mohammad~Mehedi Hassan, Fred~L Strickland, and Salman~A AlQahtani.
+\newblock Feature cloning and feature fusion based transportation mode detection using convolutional neural network.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 24\penalty0 (4):\penalty0 4671--4681, 2023{\natexlab{a}}.
+
+\bibitem[Alam et~al.(2023{\natexlab{b}})Alam, Ahmed, Hossain, Emo, Bidhan, Reza, Alam, Hassan, Pupo, and Fortino]{alam2023federated}
+Md~Mustakin Alam, Tanjim Ahmed, Meraz Hossain, Mehedi~Hasan Emo, Md~Kausar~Islam Bidhan, Md~Tanzim Reza, Md~Golam~Rabiul Alam, Mohammad~Mehedi Hassan, Francesco Pupo, and Giancarlo Fortino.
+\newblock Federated ensemble-learning for transport mode detection in vehicular edge network.
+\newblock \emph{Future Generation Computer Systems}, 149:\penalty0 89--104, 2023{\natexlab{b}}.
+
+\bibitem[Alaoui et~al.(2021)Alaoui, Fourati, Kibangou, Robu, and Vuillerme]{alaoui2021urban}
+F~Taia Alaoui, Hassen Fourati, Alain Kibangou, Bogdan Robu, and N~Vuillerme.
+\newblock Urban transportation mode detection from inertial and barometric data in pedestrian mobility.
+\newblock \emph{IEEE Sensors Journal}, 22\penalty0 (6):\penalty0 4772--4780, 2021.
+
+\bibitem[Alazeb et~al.(2024)Alazeb, Khan, and Jalal]{alazeb2024intelligent}
+Abdulwahab Alazeb, Danyal Khan, and Ahmad Jalal.
+\newblock Intelligent transportation activity recognition using deep belief network.
+\newblock In \emph{2024 4th Interdisciplinary Conference on Electrics and Computer (INTCEC)}, pages 1--6. IEEE, 2024.
+
+\bibitem[Alcoba{\c{c}}a et~al.(2020)Alcoba{\c{c}}a, Siqueira, Rivolli, Garcia, Oliva, and De~Carvalho]{alcobacca2020mfe}
+Edesio Alcoba{\c{c}}a, Felipe Siqueira, Adriano Rivolli, Lu{\'\i}s~PF Garcia, Jefferson~T Oliva, and Andr{\'e}~CPLF De~Carvalho.
+\newblock Mfe: Towards reproducible meta-feature extraction.
+\newblock \emph{Journal of Machine Learning Research}, 21\penalty0 (111):\penalty0 1--5, 2020.
+
+\bibitem[Alshdaifat et~al.(2013)Alshdaifat, Coenen, and Dures]{alshdaifat2013hierarchical}
+Esra’a Alshdaifat, Frans Coenen, and Keith Dures.
+\newblock Hierarchical classification for solving multi-class problems: A new approach using naive bayesian classification.
+\newblock In \emph{Advanced Data Mining and Applications: 9th International Conference, ADMA 2013, Hangzhou, China, December 14-16, 2013, Proceedings, Part I 9}, pages 493--504. Springer, 2013.
+
+\bibitem[Andrade and Gama(2022)]{andrade2022you}
+Thiago Andrade and Jo{\~a}o Gama.
+\newblock How are you riding? transportation mode identification from raw gps data.
+\newblock In \emph{EPIA Conference on Artificial Intelligence}, pages 648--659. Springer, 2022.
+
+\bibitem[Asci and Guvensan(2019)]{asci2019novel}
+Guven Asci and M~Amac Guvensan.
+\newblock A novel input set for lstm-based transport mode detection.
+\newblock In \emph{2019 IEEE International Conference on Pervasive Computing and Communications Workshops (PerCom Workshops)}, pages 107--112. IEEE, 2019.
+
+\bibitem[Ashqar et~al.(2018)Ashqar, Almannaa, Elhenawy, Rakha, and House]{ashqar2018smartphone}
+Huthaifa~I Ashqar, Mohammed~H Almannaa, Mohammed Elhenawy, Hesham~A Rakha, and Leanna House.
+\newblock Smartphone transportation mode recognition using a hierarchical machine learning classifier and pooled features from time and frequency domains.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 20\penalty0 (1):\penalty0 244--252, 2018.
+
+\bibitem[Assemi et~al.(2016)Assemi, Safi, Mesbah, and Ferreira]{assemi2016developing}
+Behrang Assemi, Hamid Safi, Mahmoud Mesbah, and Luis Ferreira.
+\newblock Developing and validating a statistical model for travel mode identification on smartphones.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 17\penalty0 (7):\penalty0 1920--1931, 2016.
+
+\bibitem[Bachir et~al.(2018)Bachir, Khodabandelou, Gauthier, El~Yacoubi, and Vachon]{bachir2018combining}
+Danya Bachir, Ghazaleh Khodabandelou, Vincent Gauthier, Mounim El~Yacoubi, and Eric Vachon.
+\newblock Combining bayesian inference and clustering for transport mode detection from sparse and noisy geolocation data.
+\newblock In \emph{Joint European conference on machine learning and knowledge discovery in databases}, pages 569--584. Springer, 2018.
+
+\bibitem[Bantis and Haworth(2017)]{bantis2017you}
+Thanos Bantis and James Haworth.
+\newblock Who you are is how you travel: A framework for transportation mode detection using individual and environmental characteristics.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 80:\penalty0 286--309, 2017.
+
+\bibitem[Bi and Zhang(2018)]{bi2018empirical}
+Jingjun Bi and Chongsheng Zhang.
+\newblock An empirical comparison on state-of-the-art multi-class imbalance learning algorithms and a new diversified ensemble learning scheme.
+\newblock \emph{Knowledge-Based Systems}, 158:\penalty0 81--93, 2018.
+
+\bibitem[Biau and Scornet(2016)]{biau2016random}
+G{\'e}rard Biau and Erwan Scornet.
+\newblock A random forest guided tour.
+\newblock \emph{Test}, 25:\penalty0 197--227, 2016.
+
+\bibitem[Biljecki(2010)]{biljecki2010automatic}
+Filip Biljecki.
+\newblock Automatic segmentation and classification of movement trajectories for transportation modes.
+\newblock In \emph{Workshop on Modelling Moving Objects. Informatics Institute, University of Amsterdam, Science Park}, 2010.
+
+\bibitem[Biljecki et~al.(2013)Biljecki, Ledoux, and Van~Oosterom]{biljecki2013transportation}
+Filip Biljecki, Hugo Ledoux, and Peter Van~Oosterom.
+\newblock Transportation mode-based segmentation and classification of movement trajectories.
+\newblock \emph{International Journal of Geographical Information Science}, 27\penalty0 (2):\penalty0 385--407, 2013.
+
+\bibitem[Bohte and Maat(2009)]{bohte2009deriving}
+Wendy Bohte and Kees Maat.
+\newblock Deriving and validating trip purposes and travel modes for multi-day gps-based travel surveys: A large-scale application in the netherlands.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 17\penalty0 (3):\penalty0 285--297, 2009.
+
+\bibitem[Bolbol et~al.(2012)Bolbol, Cheng, Tsapakis, and Haworth]{bolbol2012inferring}
+Adel Bolbol, Tao Cheng, Ioannis Tsapakis, and James Haworth.
+\newblock Inferring hybrid transportation modes from sparse gps data using a moving window svm classification.
+\newblock \emph{Computers, Environment and Urban Systems}, 36\penalty0 (6):\penalty0 526--537, 2012.
+
+\bibitem[Bouckaert(1994)]{bouckaert1994properties}
+Remco~R Bouckaert.
+\newblock Properties of bayesian belief network learning algorithms.
+\newblock In \emph{Uncertainty in Artificial Intelligence}, pages 102--109. Elsevier, 1994.
+
+\bibitem[Capponi et~al.(2019)Capponi, Fiandrino, Kantarci, Foschini, Kliazovich, and Bouvry]{capponi2019survey}
+Andrea Capponi, Claudio Fiandrino, Burak Kantarci, Luca Foschini, Dzmitry Kliazovich, and Pascal Bouvry.
+\newblock A survey on mobile crowdsensing systems: Challenges, solutions, and opportunities.
+\newblock \emph{IEEE communications surveys \& tutorials}, 21\penalty0 (3):\penalty0 2419--2465, 2019.
+
+\bibitem[Cardone et~al.(2013)Cardone, Foschini, Bellavista, Corradi, Borcea, Talasila, and Curtmola]{cardone2013fostering}
+Giuseppe Cardone, Luca Foschini, Paolo Bellavista, Antonio Corradi, Cristian Borcea, Manoop Talasila, and Reza Curtmola.
+\newblock Fostering participaction in smart cities: a geo-social crowdsensing platform.
+\newblock \emph{IEEE Communications Magazine}, 51\penalty0 (6):\penalty0 112--119, 2013.
+
+\bibitem[Chawla et~al.(2002)Chawla, Bowyer, Hall, and Kegelmeyer]{chawla2002smote}
+Nitesh~V Chawla, Kevin~W Bowyer, Lawrence~O Hall, and W~Philip Kegelmeyer.
+\newblock Smote: synthetic minority over-sampling technique.
+\newblock \emph{Journal of artificial intelligence research}, 16:\penalty0 321--357, 2002.
+
+\bibitem[Chawla et~al.(2003)Chawla, Lazarevic, Hall, and Bowyer]{chawla2003smoteboost}
+Nitesh~V Chawla, Aleksandar Lazarevic, Lawrence~O Hall, and Kevin~W Bowyer.
+\newblock Smoteboost: Improving prediction of the minority class in boosting.
+\newblock In \emph{Knowledge Discovery in Databases: PKDD 2003: 7th European Conference on Principles and Practice of Knowledge Discovery in Databases, Cavtat-Dubrovnik, Croatia, September 22-26, 2003. Proceedings 7}, pages 107--119. Springer, 2003.
+
+\bibitem[Chen et~al.(2016)Chen, Ma, Susilo, Liu, and Wang]{chen2016promises}
+Cynthia Chen, Jingtao Ma, Yusak Susilo, Yu~Liu, and Menglin Wang.
+\newblock The promises of big data and small data for travel behavior (aka human mobility) analysis.
+\newblock \emph{Transportation research part C: emerging technologies}, 68:\penalty0 285--299, 2016.
+
+\bibitem[Chen et~al.(2024)Chen, Ho, Wu, Lee, and Chou]{chen2024two}
+Huey-Kuo Chen, Hsiao-Ching Ho, Luo-Yu Wu, Ian Lee, and Huey-Wen Chou.
+\newblock Two-stage procedure for transportation mode detection based on sighting data.
+\newblock \emph{Transportmetrica A: transport science}, 20\penalty0 (1):\penalty0 2118558, 2024.
+
+\bibitem[Chen and Guestrin(2016)]{chen2016xgboost}
+Tianqi Chen and Carlos Guestrin.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In \emph{Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining}, pages 785--794, 2016.
+
+\bibitem[Chen and He(2015)]{chen2015higgs}
+Tianqi Chen and Tong He.
+\newblock Higgs boson discovery with boosted trees.
+\newblock In \emph{NIPS 2014 workshop on high-energy physics and machine learning}, pages 69--80. PMLR, 2015.
+
+\bibitem[Cheng and Greiner(2001)]{cheng2001learning}
+Jie Cheng and Russell Greiner.
+\newblock Learning bayesian belief network classifiers: Algorithms and system.
+\newblock In \emph{Advances in Artificial Intelligence: 14th Biennial Conference of the Canadian Society for Computational Studies of Intelligence, AI 2001 Ottawa, Canada, June 7--9, 2001 Proceedings 14}, pages 141--151. Springer, 2001.
+
+\bibitem[Dabiri and Heaslip(2018)]{dabiri2018inferring}
+Sina Dabiri and Kevin Heaslip.
+\newblock Inferring transportation modes from {GPS} trajectories using a convolutional neural network.
+\newblock \emph{Transportation research part C: emerging technologies}, 86:\penalty0 360--371, 2018.
+
+\bibitem[Dabiri et~al.(2019)Dabiri, Lu, Heaslip, and Reddy]{dabiri2019semi}
+Sina Dabiri, Chang-Tien Lu, Kevin Heaslip, and Chandan~K Reddy.
+\newblock Semi-supervised deep learning approach for transportation mode identification using gps trajectory data.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering}, 32\penalty0 (5):\penalty0 1010--1023, 2019.
+
+\bibitem[Danafar et~al.(2017)Danafar, Piorkowski, and Krysczcuk]{danafar2017bayesian}
+Somayeh Danafar, Michal Piorkowski, and Krzysztof Krysczcuk.
+\newblock Bayesian framework for mobility pattern discovery using mobile network events.
+\newblock In \emph{2017 25th European Signal Processing Conference (EUSIPCO)}, pages 1070--1074. IEEE, 2017.
+
+\bibitem[Das and Winter(2018)]{das2018fuzzy}
+Rahul~Deb Das and Stephan Winter.
+\newblock A fuzzy logic based transport mode detection framework in urban environment.
+\newblock \emph{Journal of Intelligent Transportation Systems}, 22\penalty0 (6):\penalty0 478--489, 2018.
+
+\bibitem[de~Coss{\'\i}o and Sabiron(2023)]{de2023robust}
+Francisco~Gonz{\'a}lez de~Coss{\'\i}o and Guillaume Sabiron.
+\newblock A robust approach for transportation mode detection using smartphone-based gps sensors and road network information.
+\newblock In \emph{2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC)}, pages 959--965. IEEE, 2023.
+
+\bibitem[Demissie et~al.(2016)Demissie, Phithakkitnukoon, Sukhvibul, Antunes, Gomes, and Bento]{demissie2016inferring}
+Merkebe~Getachew Demissie, Santi Phithakkitnukoon, Titipat Sukhvibul, Francisco Antunes, Rui Gomes, and Carlos Bento.
+\newblock Inferring passenger travel demand to improve urban mobility in developing countries using cell phone data: a case study of senegal.
+\newblock \emph{IEEE Transactions on intelligent transportation systems}, 17\penalty0 (9):\penalty0 2466--2478, 2016.
+
+\bibitem[Denil and Trappenberg(2010)]{denil2010overlap}
+Misha Denil and Thomas Trappenberg.
+\newblock Overlap versus imbalance.
+\newblock In \emph{Advances in Artificial Intelligence: 23rd Canadian Conference on Artificial Intelligence, Canadian AI 2010, Ottawa, Canada, May 31--June 2, 2010. Proceedings 23}, pages 220--231. Springer, 2010.
+
+\bibitem[Ding et~al.(2024)Ding, Zhang, Peng, Ge, Qu, Tao, and Chen]{ding2024hybrid}
+Fan Ding, Yongyi Zhang, Jiankun Peng, Yuming Ge, Tao Qu, Xingyuan Tao, and Jun Chen.
+\newblock A hybrid method for intercity transport mode identification based on mobility features and sequential relations mined from cellular signaling data.
+\newblock \emph{Computer-Aided Civil and Infrastructure Engineering}, 2024.
+
+\bibitem[Dong et~al.(2021)Dong, Wang, and Abbas]{dong2021survey}
+Shi Dong, Ping Wang, and Khushnood Abbas.
+\newblock A survey on deep learning and its applications.
+\newblock \emph{Computer Science Review}, 40:\penalty0 100379, 2021.
+
+\bibitem[Drosouli et~al.(2021)Drosouli, Voulodimos, Miaoulis, Mastorocostas, and Ghazanfarpour]{drosouli2021transportation}
+Ifigenia Drosouli, Athanasios Voulodimos, Georgios Miaoulis, Paris Mastorocostas, and Djamchid Ghazanfarpour.
+\newblock Transportation mode detection using an optimized long short-term memory model on multimodal sensor data.
+\newblock \emph{Entropy}, 23\penalty0 (11):\penalty0 1457, 2021.
+
+\bibitem[Drosouli et~al.(2023)Drosouli, Voulodimos, Mastorocostas, Miaoulis, and Ghazanfarpour]{drosouli2023tmd}
+Ifigenia Drosouli, Athanasios Voulodimos, Paris Mastorocostas, Georgios Miaoulis, and Djamchid Ghazanfarpour.
+\newblock Tmd-bert: A transformer-based model for transportation mode detection.
+\newblock \emph{Electronics}, 12\penalty0 (3):\penalty0 581, 2023.
+
+\bibitem[Dutta and Patra(2023)]{dutta2023inferencing}
+Sumanto Dutta and Bidyut~Kr Patra.
+\newblock Inferencing transportation mode using unsupervised deep learning approach exploiting gps point-level characteristics.
+\newblock \emph{Applied Intelligence}, 53\penalty0 (10):\penalty0 12489--12503, 2023.
+
+\bibitem[Eluru et~al.(2012)Eluru, Chakour, and El-Geneidy]{eluru2012travel}
+Naveen Eluru, Vincent Chakour, and Ahmed~M El-Geneidy.
+\newblock Travel mode choice and transit route choice behavior in montreal: insights from mcgill university members commute patterns.
+\newblock \emph{Public Transport}, 4:\penalty0 129--149, 2012.
+
+\bibitem[Endo et~al.(2016)Endo, Toda, Nishida, and Kawanobe]{endo2016deep}
+Yuki Endo, Hiroyuki Toda, Kyosuke Nishida, and Akihisa Kawanobe.
+\newblock Deep feature extraction from trajectories for transportation mode estimation.
+\newblock In \emph{Advances in Knowledge Discovery and Data Mining: 20th Pacific-Asia Conference, PAKDD 2016, Auckland, New Zealand, April 19-22, 2016, Proceedings, Part II 20}, pages 54--66. Springer, 2016.
+
+\bibitem[Erdeli{\'c} et~al.(2019)Erdeli{\'c}, Cari{\'c}, Ivanjko, and Jelu{\v{s}}i{\'c}]{erdelic2019classification}
+Martina Erdeli{\'c}, Ton{\v{c}}i Cari{\'c}, Edouard Ivanjko, and Niko Jelu{\v{s}}i{\'c}.
+\newblock Classification of travel modes using streaming gnss data.
+\newblock \emph{Transportation Research Procedia}, 40:\penalty0 209--216, 2019.
+
+\bibitem[Etemad et~al.(2018)Etemad, Junior, and Matwin]{etemad2018feature}
+Mohammad Etemad, Amilcar~Soares Junior, and Stan Matwin.
+\newblock On feature selection and evaluation of transportation mode prediction strategies.
+\newblock \emph{arXiv preprint arXiv:1808.03096}, 2018.
+
+\bibitem[Fan et~al.(2024)Fan, Li, Jin, and Wu]{fan2024multi}
+Kunkun Fan, Daichao Li, Xinlei Jin, and Sheng Wu.
+\newblock A multi-scale attributes fusion model for travel mode identification using gps trajectories.
+\newblock \emph{Geo-spatial Information Science}, pages 1--15, 2024.
+
+\bibitem[Fawcett(2006)]{fawcett2006introduction}
+Tom Fawcett.
+\newblock An introduction to roc analysis.
+\newblock \emph{Pattern recognition letters}, 27\penalty0 (8):\penalty0 861--874, 2006.
+
+\bibitem[Feng and Timmermans(2013)]{feng2013transportation}
+Tao Feng and Harry~JP Timmermans.
+\newblock Transportation mode recognition using gps and accelerometer data.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 37:\penalty0 118--130, 2013.
+
+\bibitem[Feng et~al.(2021)Feng, Zhou, and Tong]{feng2021imbalanced}
+Yang Feng, Min Zhou, and Xin Tong.
+\newblock Imbalanced classification: A paradigm-based review.
+\newblock \emph{Statistical Analysis and Data Mining: The ASA Data Science Journal}, 14\penalty0 (5):\penalty0 383--406, 2021.
+
+\bibitem[Feng and Zhu(2016)]{feng2016survey}
+Zhenni Feng and Yanmin Zhu.
+\newblock A survey on trajectory data mining: Techniques and applications.
+\newblock \emph{IEEE Access}, 4:\penalty0 2056--2067, 2016.
+
+\bibitem[Ferri et~al.(1994)Ferri, Pudil, Hatef, and Kittler]{ferri1994comparative}
+Francesc~J Ferri, Pavel Pudil, Mohamad Hatef, and Josef Kittler.
+\newblock Comparative study of techniques for large-scale feature selection.
+\newblock In \emph{Machine intelligence and pattern recognition}, volume~16, pages 403--413. Elsevier, 1994.
+
+\bibitem[Flach(2012)]{flach2012machine}
+Peter Flach.
+\newblock \emph{Machine learning: the art and science of algorithms that make sense of data}.
+\newblock Cambridge university press, 2012.
+
+\bibitem[Frej et~al.(2023)Frej, Grabski, Jurecki, and Szumska]{frej2023experimental}
+Damian Frej, Pawe{\l} Grabski, Rafa{\l}~S Jurecki, and Emilia~M Szumska.
+\newblock Experimental study on longitudinal acceleration of urban buses and coaches in different road maneuvers.
+\newblock \emph{Sensors}, 23\penalty0 (6):\penalty0 3125, 2023.
+
+\bibitem[Freund and Schapire(1997)]{freund1997decision}
+Yoav Freund and Robert~E Schapire.
+\newblock A decision-theoretic generalization of on-line learning and an application to boosting.
+\newblock \emph{Journal of computer and system sciences}, 55\penalty0 (1):\penalty0 119--139, 1997.
+
+\bibitem[Garcia et~al.(2021)Garcia, de~S{\'a}, Poel, Carvalho, Mendes-Moreira, Cardoso, de~Carvalho, and Kok]{garcia2021ensemble}
+Kemilly~Dearo Garcia, Cl{\'a}udio~Rebelo de~S{\'a}, Mannes Poel, Tiago Carvalho, Jo{\~a}o Mendes-Moreira, Jo{\~a}o~MP Cardoso, Andr{\'e}~CPLF de~Carvalho, and Joost~N Kok.
+\newblock An ensemble of autonomous auto-encoders for human activity recognition.
+\newblock \emph{Neurocomputing}, 439:\penalty0 271--280, 2021.
+
+\bibitem[Giri et~al.(2022)Giri, Brondeel, El~Aarbaoui, and Chaix]{giri2022application}
+Santosh Giri, Ruben Brondeel, Tarik El~Aarbaoui, and Basile Chaix.
+\newblock Application of machine learning to predict transport modes from gps, accelerometer, and heart rate data.
+\newblock \emph{International Journal of Health Geographics}, 21\penalty0 (1):\penalty0 19, 2022.
+
+\bibitem[Gjoreski et~al.(2018)Gjoreski, Ciliberto, Wang, Morales, Mekki, Valentin, and Roggen]{gjoreski2018university}
+Hristijan Gjoreski, Mathias Ciliberto, Lin Wang, Francisco Javier~Ordonez Morales, Sami Mekki, Stefan Valentin, and Daniel Roggen.
+\newblock The university of sussex-huawei locomotion and transportation dataset for multimodal analytics with mobile devices.
+\newblock \emph{IEEE Access}, 6:\penalty0 42592--42604, 2018.
+
+\bibitem[Gjoreski et~al.(2020)Gjoreski, Janko, Slapni{\v{c}}ar, Mlakar, Re{\v{s}}{\v{c}}i{\v{c}}, Bizjak, Drobni{\v{c}}, Marinko, Mlakar, Lu{\v{s}}trek, et~al.]{gjoreski2020classical}
+Martin Gjoreski, Vito Janko, Ga{\v{s}}per Slapni{\v{c}}ar, Miha Mlakar, Nina Re{\v{s}}{\v{c}}i{\v{c}}, Jani Bizjak, Vid Drobni{\v{c}}, Matej Marinko, Nejc Mlakar, Mitja Lu{\v{s}}trek, et~al.
+\newblock Classical and deep learning methods for recognizing human activities and modes of transportation with smartphone sensors.
+\newblock \emph{Information Fusion}, 62:\penalty0 47--62, 2020.
+
+\bibitem[Hasan et~al.(2022)Hasan, Irshaid, Alhomaidat, Lee, and Oh]{hasan2022transportation}
+Raed~Abdullah Hasan, Hafez Irshaid, Fadi Alhomaidat, Sangwoo Lee, and Jun-Seok Oh.
+\newblock Transportation mode detection by using smartphones and smartwatches with machine learning.
+\newblock \emph{KSCE Journal of Civil Engineering}, 26\penalty0 (8):\penalty0 3578--3589, 2022.
+
+\bibitem[Hein(2020)]{hein2020status}
+Guenter~W Hein.
+\newblock Status, perspectives and trends of satellite navigation.
+\newblock \emph{Satellite Navigation}, 1\penalty0 (1):\penalty0 22, 2020.
+
+\bibitem[Helm et~al.(2021)Helm, Yang, Bharadwaj, Lytvynets, Riva, White, Geisa, and Priebe]{helm2021inducing}
+Hayden~S Helm, Weiwei Yang, Sujeeth Bharadwaj, Kate Lytvynets, Oriana Riva, Christopher White, Ali Geisa, and Carey~E Priebe.
+\newblock Inducing a hierarchy for multi-class classification problems.
+\newblock \emph{arXiv preprint arXiv:2102.10263}, 2021.
+
+\bibitem[Hong et~al.(2023)Hong, St{\"u}deli, and Raubal]{hong2023evaluating}
+Ye~Hong, Emanuel St{\"u}deli, and Martin Raubal.
+\newblock Evaluating geospatial context information for travel mode detection.
+\newblock \emph{Journal of Transport Geography}, 113:\penalty0 103736, 2023.
+
+\bibitem[Huang et~al.(2019)Huang, Cheng, and Weibel]{huang2019transport}
+Haosheng Huang, Yi~Cheng, and Robert Weibel.
+\newblock Transport mode detection based on mobile phone network data: A systematic review.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 101:\penalty0 297--312, 2019.
+
+\bibitem[Huss et~al.(2014)Huss, Beekhuizen, Kromhout, and Vermeulen]{huss2014using}
+Anke Huss, Johan Beekhuizen, Hans Kromhout, and Roel Vermeulen.
+\newblock Using gps-derived speed patterns for recognition of transport modes in adults.
+\newblock \emph{International journal of health geographics}, 13:\penalty0 1--8, 2014.
+
+\bibitem[Ivan et~al.(2012)Ivan, Jonsson, and Borsos]{ivan2012motor}
+John~N Ivan, Thomas Jonsson, and Attila Borsos.
+\newblock Motor vehicle speeds: Recommendations for urban sustainability.
+\newblock \emph{Transportation research record}, 2301\penalty0 (1):\penalty0 1--8, 2012.
+
+\bibitem[Jahangiri and Rakha(2015)]{jahangiri2015applying}
+Arash Jahangiri and Hesham~A Rakha.
+\newblock Applying machine learning techniques to transportation mode recognition using mobile phone sensor data.
+\newblock \emph{IEEE transactions on intelligent transportation systems}, 16\penalty0 (5):\penalty0 2406--2417, 2015.
+
+\bibitem[James(2020{\natexlab{a}})]{james2020semi}
+JQ~James.
+\newblock Semi-supervised deep ensemble learning for travel mode identification.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 112:\penalty0 120--135, 2020{\natexlab{a}}.
+
+\bibitem[James(2020{\natexlab{b}})]{james2020travel}
+JQ~James.
+\newblock Travel mode identification with gps trajectories using wavelet transform and deep learning.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 22\penalty0 (2):\penalty0 1093--1103, 2020{\natexlab{b}}.
+
+\bibitem[Jiang et~al.(2023)Jiang, Huang, Qi, and Guan]{jiang2023framework}
+Zhihuan Jiang, Ailing Huang, Geqi Qi, and Wei Guan.
+\newblock A framework of travel mode identification fusing deep learning and map-matching algorithm.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 24\penalty0 (6):\penalty0 6401--6415, 2023.
+
+\bibitem[Kalatian and Shafahi(2016)]{kalatian2016travel}
+A~Kalatian and Y~Shafahi.
+\newblock Travel mode detection exploiting cellular network data. matec web conf. 81, 03008, 2016.
+
+\bibitem[Khaire and Dhanalakshmi(2022)]{khaire2022stability}
+Utkarsh~Mahadeo Khaire and R~Dhanalakshmi.
+\newblock Stability of feature selection algorithm: A review.
+\newblock \emph{Journal of King Saud University-Computer and Information Sciences}, 34\penalty0 (4):\penalty0 1060--1073, 2022.
+
+\bibitem[Khan et~al.(2019)Khan, Jan, Farman, Ullah, Islam, Abdullah, and Khan]{khan2019future}
+Murad Khan, Bilal Jan, Haleem Farman, Fasee Ullah, Ihtesham~Ul Islam, Abdul~Hanan Abdullah, and Atif Khan.
+\newblock Future of big data and deep learning for wireless body area networks.
+\newblock \emph{Deep Learning: Convergence to Big Data Analytics}, pages 53--77, 2019.
+
+\bibitem[Kleinbaum et~al.(2002)Kleinbaum, Dietz, Gail, Klein, and Klein]{kleinbaum2002logistic}
+David~G Kleinbaum, K~Dietz, M~Gail, Mitchel Klein, and Mitchell Klein.
+\newblock \emph{Logistic regression}.
+\newblock Springer, 2002.
+
+\bibitem[Lango and Stefanowski(2022)]{lango2022makes}
+Mateusz Lango and Jerzy Stefanowski.
+\newblock What makes multi-class imbalanced problems difficult? an experimental study.
+\newblock \emph{Expert Systems with Applications}, 199:\penalty0 116962, 2022.
+
+\bibitem[Li et~al.(2017{\natexlab{a}})Li, Chen, Huang, Chou, Gou, Peng, and Yi]{li2017public}
+Guanyao Li, Chun-Jie Chen, Sheng-Yun Huang, Ai-Jou Chou, Xiaochuan Gou, Wen-Chih Peng, and Chih-Wei Yi.
+\newblock Public transportation mode detection from cellular data.
+\newblock In \emph{Proceedings of the 2017 ACM on Conference on Information and Knowledge Management}, pages 2499--2502, 2017{\natexlab{a}}.
+
+\bibitem[Li et~al.(2021)Li, Pei, Wang, Yao, Zhang, and Yue]{li2021transportation}
+Ji~Li, Xin Pei, Xuejiao Wang, Danya Yao, Yi~Zhang, and Yun Yue.
+\newblock Transportation mode identification with gps trajectory data and gis information.
+\newblock \emph{Tsinghua Science and Technology}, 26\penalty0 (4):\penalty0 403--416, 2021.
+
+\bibitem[Li et~al.(2017{\natexlab{b}})Li, Cheng, Wang, Morstatter, Trevino, Tang, and Liu]{li2017feature}
+Jundong Li, Kewei Cheng, Suhang Wang, Fred Morstatter, Robert~P Trevino, Jiliang Tang, and Huan Liu.
+\newblock Feature selection: A data perspective.
+\newblock \emph{ACM computing surveys (CSUR)}, 50\penalty0 (6):\penalty0 1--45, 2017{\natexlab{b}}.
+
+\bibitem[Li et~al.(2020)Li, Zhu, Zhang, Tan, Du, and Ran]{li2020coupled}
+Linchao Li, Jiasong Zhu, Hailong Zhang, Huachun Tan, Bowen Du, and Bin Ran.
+\newblock Coupled application of generative adversarial networks and conventional neural networks for travel mode detection using gps data.
+\newblock \emph{Transportation Research Part A: Policy and Practice}, 136:\penalty0 282--292, 2020.
+
+\bibitem[Liang and Wang(2017)]{liang2017convolutional}
+Xiaoyuan Liang and Guiling Wang.
+\newblock A convolutional neural network for transportation mode detection based on smartphone platform.
+\newblock In \emph{2017 IEEE 14th international conference on mobile Ad Hoc and sensor systems (MASS)}, pages 338--342. IEEE, 2017.
+
+\bibitem[Liang et~al.(2019)Liang, Zhang, Wang, and Xu]{liang2019deep}
+Xiaoyuan Liang, Yuchuan Zhang, Guiling Wang, and Songhua Xu.
+\newblock A deep learning model for transportation mode detection based on smartphone sensing data.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 21\penalty0 (12):\penalty0 5223--5235, 2019.
+
+\bibitem[Lin et~al.(2013)Lin, Hsu, and Lee]{lin2013detecting}
+Miao Lin, Wen-Jing Hsu, and Zhuo~Qi Lee.
+\newblock Detecting modes of transport from unlabelled positioning sensor data.
+\newblock \emph{Journal of Location Based Services}, 7\penalty0 (4):\penalty0 272--290, 2013.
+
+\bibitem[Liu and Lee(2017)]{liu2017end}
+Hongbin Liu and Ickjai Lee.
+\newblock End-to-end trajectory transportation mode classification using bi-lstm recurrent neural network.
+\newblock In \emph{2017 12th International Conference on Intelligent Systems and Knowledge Engineering (ISKE)}, pages 1--5. IEEE, 2017.
+
+\bibitem[Lundberg and Lee(2017)]{lundberg2017unified}
+Scott~M. Lundberg and Su-In Lee.
+\newblock A unified approach to interpreting model predictions.
+\newblock In \emph{Proceedings of the 31st International Conference on Neural Information Processing Systems}, pages 4766--4777, December 4--9 2017.
+
+\bibitem[Lundberg et~al.(2018)Lundberg, Erion, and Lee]{lundberg2018consistent}
+Scott~M Lundberg, Gabriel~G Erion, and Su-In Lee.
+\newblock Consistent individualized feature attribution for tree ensembles.
+\newblock \emph{arXiv preprint arXiv:1802.03888}, 2018.
+
+\bibitem[Ma et~al.(2023)Ma, Guan, Cao, and Wu]{ma2023multi}
+Yanli Ma, Xuefeng Guan, Jun Cao, and Huayi Wu.
+\newblock A multi-stage fusion network for transportation mode identification with varied scale representation of gps trajectories.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 150:\penalty0 104088, 2023.
+
+\bibitem[Markos and James(2020)]{markos2020unsupervised}
+Christos Markos and JQ~James.
+\newblock Unsupervised deep learning for gps-based transportation mode identification.
+\newblock In \emph{2020 IEEE 23rd international conference on intelligent transportation systems (ITSC)}, pages 1--6. IEEE, 2020.
+
+\bibitem[Moreira et~al.(2018)Moreira, Carvalho, and Horvath]{moreira2018general}
+Jo{\~a}o Moreira, Andre Carvalho, and Tom{\'a}s Horvath.
+\newblock \emph{A general introduction to data analytics}.
+\newblock John Wiley \& Sons, 2018.
+
+\bibitem[Muhammad et~al.()Muhammad, Aguiar, and Mendes-Moreira]{muhammad2026subspace}
+Akilu~Rilwan Muhammad, Ana Aguiar, and Jo{\~a}o Mendes-Moreira.
+\newblock From attribution to selection: Harnessing {SHAP} values for class-subspace feature selection in transportation mode detection.
+\newblock Submitted to International Journal of Data Science and Analytics.
+
+\bibitem[Muhammad et~al.(2021)Muhammad, Aguiar, and Mendes-Moreira]{muhammad2021transportation}
+Akilu~Rilwan Muhammad, Ana Aguiar, and Jo{\~a}o Mendes-Moreira.
+\newblock Transportation mode detection from gps data: A data science benchmark study.
+\newblock In \emph{2021 IEEE International Intelligent Transportation Systems Conference (ITSC)}, pages 3726--3731. IEEE, 2021.
+
+\bibitem[Muhammad et~al.(2023)Muhammad, Aguiar, and Mendes-Moreira]{muhammad2023inferring}
+Akilu~Rilwan Muhammad, Ana Aguiar, and Jo{\~a}o Mendes-Moreira.
+\newblock Inferring transportation mode using pooled features from time and frequency domains.
+\newblock In \emph{2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC)}, pages 3985--3990. IEEE, 2023.
+
+\bibitem[Muhammad et~al.(2024)Muhammad, Aguiar, and Mendes-Moreira]{muhammad2024hierarchical}
+Akilu~Rilwan Muhammad, Ana Aguiar, and Jo{\~a}o Mendes-Moreira.
+\newblock {\emph{HiClass4MD}}: A hierarchical classifier for transportation mode detection.
+\newblock In \emph{2024 IEEE 27th International Conference on Intelligent Transportation Systems (ITSC)}. IEEE, 2024.
+
+\bibitem[Muhammad et~al.(2025)Muhammad, Aguiar, and Mendes-Moreira]{muhammad2025imbalance}
+Akilu~Rilwan Muhammad, Ana Aguiar, and João Mendes-Moreira.
+\newblock Characterising class imbalance in transportation mode detection: An experimental study.
+\newblock In Vicente Julian et~al., editors, \emph{Intelligent Data Engineering and Automated Learning – IDEAL 2024}, volume 15347 of \emph{Lecture Notes in Computer Science}. Springer, Cham, 2025.
+\newblock \doi{10.1007/978-3-031-77738-7_6}.
+\newblock URL \url{https://doi.org/10.1007/978-3-031-77738-7_6}.
+
+\bibitem[Murtagh and Contreras(2012)]{murtagh2012algorithms}
+Fionn Murtagh and Pedro Contreras.
+\newblock Algorithms for hierarchical clustering: an overview.
+\newblock \emph{Wiley Interdisciplinary Reviews: Data Mining and Knowledge Discovery}, 2\penalty0 (1):\penalty0 86--97, 2012.
+
+\bibitem[Nawaz et~al.(2020)Nawaz, Zhiqiu, Senzhang, Hussain, Naseer, Izhar, and Khan]{nawaz2020mode}
+Asif Nawaz, Huang Zhiqiu, Wang Senzhang, Yasir Hussain, Amara Naseer, Muhammad Izhar, and Zaheer Khan.
+\newblock Mode inference using enhanced segmentation and pre-processing on raw global positioning system data.
+\newblock \emph{Measurement and Control}, 53\penalty0 (7-8):\penalty0 1144--1158, 2020.
+
+\bibitem[Park and Kim(2018)]{park2018incremental}
+Ju-Youn Park and Jong-Hwan Kim.
+\newblock Incremental class learning for hierarchical classification.
+\newblock \emph{IEEE transactions on cybernetics}, 50\penalty0 (1):\penalty0 178--189, 2018.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, et~al.]{pedregosa2011scikit}
+Fabian Pedregosa, Ga{\"e}l Varoquaux, Alexandre Gramfort, Vincent Michel, Bertrand Thirion, Olivier Grisel, Mathieu Blondel, Peter Prettenhofer, Ron Weiss, Vincent Dubourg, et~al.
+\newblock Scikit-learn: Machine learning in python.
+\newblock \emph{the Journal of machine Learning research}, 12:\penalty0 2825--2830, 2011.
+
+\bibitem[Pei et~al.(2024)Pei, Yang, Wang, Ding, Xu, Jia, and Sun]{pei2024travel}
+Xiaohui Pei, Xianjun Yang, Tao Wang, Zenghui Ding, Yang Xu, Lin Jia, and Yining Sun.
+\newblock Travel-mode inference based on gps-trajectory data through multi-scale mixed attention mechanism.
+\newblock \emph{Heliyon}, 10\penalty0 (15), 2024.
+
+\bibitem[Phithakkitnukoon et~al.(2017)Phithakkitnukoon, Sukhvibul, Demissie, Smoreda, Natwichai, and Bento]{phithakkitnukoon2017inferring}
+Santi Phithakkitnukoon, Titipat Sukhvibul, Merkebe Demissie, Zbigniew Smoreda, Juggapong Natwichai, and Carlos Bento.
+\newblock Inferring social influence in transport mode choice using mobile phone data.
+\newblock \emph{EPJ Data Science}, 6:\penalty0 1--29, 2017.
+
+\bibitem[Qu et~al.(2015)Qu, Gong, and Wang]{qu2015transportation}
+Yingchun Qu, Hang Gong, and Pu~Wang.
+\newblock Transportation mode split with mobile phone data.
+\newblock In \emph{2015 IEEE 18th international conference on intelligent transportation systems}, pages 285--289. IEEE, 2015.
+
+\bibitem[Rajaby and Sayedi(2022)]{rajaby2022structured}
+Elias Rajaby and Sayed~Masoud Sayedi.
+\newblock A structured review of sparse fast fourier transform algorithms.
+\newblock \emph{Digital Signal Processing}, 123:\penalty0 103403, 2022.
+
+\bibitem[Raschka(2018)]{raschka2018mlxtend}
+Sebastian Raschka.
+\newblock Mlxtend: Providing machine learning and data science utilities and extensions to python’s scientific computing stack.
+\newblock \emph{Journal of open source software}, 3\penalty0 (24):\penalty0 638, 2018.
+
+\bibitem[Reddy et~al.(2008)Reddy, Burke, Estrin, Hansen, and Srivastava]{reddy2008determining}
+Sasank Reddy, Jeff Burke, Deborah Estrin, Mark Hansen, and Mani Srivastava.
+\newblock Determining transportation mode on mobile phones.
+\newblock In \emph{2008 12th IEEE international symposium on wearable computers}, pages 25--28. IEEE, 2008.
+
+\bibitem[Ribeiro et~al.(2024)Ribeiro, Trifan, and Neves]{ribeiro2024deep}
+Ricardo Ribeiro, Alina Trifan, and Ant{\'o}nio~JR Neves.
+\newblock A deep learning approach for transportation mode identification using a transformation of gps trajectory data features into an image representation.
+\newblock \emph{International Journal of Data Science and Analytics}, pages 1--10, 2024.
+
+\bibitem[Richoz et~al.(2020)Richoz, Wang, Birch, and Roggen]{richoz2020transportation}
+Sebastien Richoz, Lin Wang, Philip Birch, and Daniel Roggen.
+\newblock Transportation mode recognition fusing wearable motion, sound, and vision sensors.
+\newblock \emph{IEEE Sensors Journal}, 20\penalty0 (16):\penalty0 9314--9328, 2020.
+
+\bibitem[Rodrigues et~al.(2011)Rodrigues, Aguiar, Vieira, Barros, and Cunha]{rodrigues2011mobile}
+Joao~GP Rodrigues, Ana Aguiar, Fausto Vieira, Joao Barros, and Joao P~Silva Cunha.
+\newblock A mobile sensing architecture for massive urban scanning.
+\newblock In \emph{2011 14th International IEEE Conference on Intelligent Transportation Systems (ITSC)}, pages 1132--1137. IEEE, 2011.
+
+\bibitem[Rodrigues et~al.(2014)Rodrigues, Aguiar, and Barros]{rodrigues2014sensemycity}
+Jo{\~a}o~GP Rodrigues, Ana Aguiar, and Jo{\~a}o Barros.
+\newblock Sensemycity: Crowdsourcing an urban sensor.
+\newblock \emph{arXiv preprint arXiv:1412.2070}, pages 1--10, 12 2014.
+
+\bibitem[Rodrigues et~al.(2017)Rodrigues, Pereira, and Aguiar]{rodrigues2017impact}
+Jo{\~a}o~GP Rodrigues, Jo{\~a}o~P Pereira, and Ana Aguiar.
+\newblock Impact of crowdsourced data quality on travel pattern estimation.
+\newblock In \emph{Proceedings of the First ACM Workshop on Mobile Crowdsensing Systems and Applications}, pages 38--43, 2017.
+
+\bibitem[Rokach and Maimon(2005)]{rokach2005decision}
+Lior Rokach and Oded Maimon.
+\newblock Decision trees.
+\newblock \emph{Data mining and knowledge discovery handbook}, pages 165--192, 2005.
+
+\bibitem[Roy et~al.(2022)Roy, Fuller, Nelson, and Kedron]{roy2022assessing}
+Avipsa Roy, Daniel Fuller, Trisalyn Nelson, and Peter Kedron.
+\newblock Assessing the role of geographic context in transportation mode detection from gps data.
+\newblock \emph{Journal of transport geography}, 100:\penalty0 103330, 2022.
+
+\bibitem[Sadeghian et~al.(2022)Sadeghian, Zhao, Golshan, and H{\aa}kansson]{sadeghian2022stepwise}
+Paria Sadeghian, Xiaoyun Zhao, Arman Golshan, and Johan H{\aa}kansson.
+\newblock A stepwise methodology for transport mode detection in gps tracking data.
+\newblock \emph{Travel Behaviour and Society}, 26:\penalty0 159--167, 2022.
+
+\bibitem[Sadeghian et~al.(2024)Sadeghian, Golshan, Zhao, and H{\aa}kansson]{sadeghian2024deep}
+Paria Sadeghian, Arman Golshan, Mia~Xiaoyun Zhao, and Johan H{\aa}kansson.
+\newblock A deep semi-supervised machine learning algorithm for detecting transportation modes based on gps tracking data.
+\newblock \emph{Transportation}, pages 1--21, 2024.
+
+\bibitem[Santos et~al.(2022)Santos, Abreu, Japkowicz, Fern{\'a}ndez, Soares, Wilk, and Santos]{santos2022joint}
+Miriam~Seoane Santos, Pedro~Henriques Abreu, Nathalie Japkowicz, Alberto Fern{\'a}ndez, Carlos Soares, Szymon Wilk, and Jo{\~a}o Santos.
+\newblock On the joint-effect of class imbalance and overlap: a critical review.
+\newblock \emph{Artificial Intelligence Review}, 55\penalty0 (8):\penalty0 6207--6275, 2022.
+
+\bibitem[Santos et~al.(2018)Santos, Rodrigues, Cruz, Louren{\c{c}}o, d’Orey, Luis, Rocha, Sousa, Cris{\'o}stomo, Queir{\'o}s, et~al.]{santos2018portolivinglab}
+Pedro~M Santos, Jo{\~a}o~GP Rodrigues, Susana~B Cruz, Tiago Louren{\c{c}}o, Pedro~M d’Orey, Yunior Luis, Cec{\'\i}lia Rocha, Sofia Sousa, S{\'e}rgio Cris{\'o}stomo, Cristina Queir{\'o}s, et~al.
+\newblock Portolivinglab: An iot-based sensing platform for smart cities.
+\newblock \emph{IEEE Internet of Things Journal}, 5\penalty0 (2):\penalty0 523--532, 2018.
+
+\bibitem[Sauerl{\"a}nder-Biebl et~al.(2017)Sauerl{\"a}nder-Biebl, Brockfeld, Suske, and Melde]{sauerlander2017evaluation}
+Anke Sauerl{\"a}nder-Biebl, Elmar Brockfeld, David Suske, and Eric Melde.
+\newblock Evaluation of a transport mode detection using fuzzy rules.
+\newblock \emph{Transportation research procedia}, 25:\penalty0 591--602, 2017.
+
+\bibitem[Schmidhuber and Hochreiter(1997)]{schmidhuber1997long}
+J{\"u}rgen Schmidhuber and Sepp Hochreiter.
+\newblock Long short-term memory.
+\newblock \emph{Neural Comput}, 9\penalty0 (8):\penalty0 1735--1780, 1997.
+
+\bibitem[Schuessler and Axhausen(2009)]{schuessler2009processing}
+Nadine Schuessler and Kay~W Axhausen.
+\newblock Processing raw data from global positioning systems without additional information.
+\newblock \emph{Transportation Research Record}, 2105\penalty0 (1):\penalty0 28--36, 2009.
+
+\bibitem[Shen and Stopher(2014)]{shen2014review}
+Li~Shen and Peter~R Stopher.
+\newblock Review of gps travel survey and gps data-processing methods.
+\newblock \emph{Transport reviews}, 34\penalty0 (3):\penalty0 316--334, 2014.
+
+\bibitem[Shin et~al.(2015)Shin, Aliaga, Tun{\c{c}}er, Arisona, Kim, Z{\"u}nd, and Schmitt]{shin2015urban}
+Dongyoun Shin, Daniel Aliaga, Bige Tun{\c{c}}er, Stefan~M{\"u}ller Arisona, Sungah Kim, Dani Z{\"u}nd, and Gerhard Schmitt.
+\newblock Urban sensing: Using smartphones for transportation mode classification.
+\newblock \emph{Computers, Environment and Urban Systems}, 53:\penalty0 76--86, 2015.
+
+\bibitem[Silla and Freitas(2011)]{silla2011survey}
+Carlos~N Silla and Alex~A Freitas.
+\newblock A survey of hierarchical classification across different application domains.
+\newblock \emph{Data mining and knowledge discovery}, 22:\penalty0 31--72, 2011.
+
+\bibitem[Silva-Palacios et~al.(2017)Silva-Palacios, Ferri, and Ram{\'\i}rez-Quintana]{silva2017improving}
+Daniel Silva-Palacios, Cesar Ferri, and Mar{\'\i}a~Jos{\'e} Ram{\'\i}rez-Quintana.
+\newblock Improving performance of multiclass classification by inducing class hierarchies.
+\newblock \emph{Procedia Computer Science}, 108:\penalty0 1692--1701, 2017.
+
+\bibitem[Silva-Palacios et~al.(2018)Silva-Palacios, Ferri, and Ram{\'\i}rez-Quintana]{silva2018probabilistic}
+Daniel Silva-Palacios, C{\`e}sar Ferri, and Mar{\'\i}a~Jos{\'e} Ram{\'\i}rez-Quintana.
+\newblock Probabilistic class hierarchies for multiclass classification.
+\newblock \emph{Journal of computational science}, 26:\penalty0 254--263, 2018.
+
+\bibitem[Song et~al.(2016)Song, Kanasugi, and Shibasaki]{song2016deeptransport}
+Xuan Song, Hiroshi Kanasugi, and Ryosuke Shibasaki.
+\newblock Deeptransport: Prediction and simulation of human mobility and transportation mode at a citywide level.
+\newblock In \emph{Proceedings of the twenty-fifth international joint conference on artificial intelligence}, pages 2618--2624, 2016.
+
+\bibitem[Sowlati et~al.(2024)Sowlati, Ali~Abbaspour, and Chehreghan]{sowlati2024approach}
+Sajjad Sowlati, Rahim Ali~Abbaspour, and Alireza Chehreghan.
+\newblock An approach to assess the role of features in detection of transportation modes.
+\newblock \emph{Transportation}, pages 1--36, 2024.
+
+\bibitem[Spaccapietra et~al.(2013)Spaccapietra, Parent, and Spinsanti]{spaccapietra2013trajectories}
+S.~Spaccapietra, C.~Parent, and L.~Spinsanti.
+\newblock Trajectories and their representations.
+\newblock In Chiara Renso, Stefano Spaccapietra, and Esteban Zimányi, editors, \emph{Mobility Data: Modeling, Management, and Understanding}, pages 3--22. Cambridge University Press, 2013.
+\newblock \doi{10.1017/CBO9781139128926.002}.
+
+\bibitem[Stenneth et~al.(2011)Stenneth, Wolfson, Yu, and Xu]{stenneth2011transportation}
+Leon Stenneth, Ouri Wolfson, Philip~S Yu, and Bo~Xu.
+\newblock Transportation mode detection using mobile phones and gis information.
+\newblock In \emph{Proceedings of the 19th ACM SIGSPATIAL international conference on advances in geographic information systems}, pages 54--63, 2011.
+
+\bibitem[Stopher et~al.(2008)Stopher, FitzGerald, and Zhang]{stopher2008search}
+Peter Stopher, Camden FitzGerald, and Jun Zhang.
+\newblock Search for a global positioning system device to measure person travel.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 16\penalty0 (3):\penalty0 350--369, 2008.
+
+\bibitem[Stopher et~al.(2005)Stopher, Jiang, and FitzGerald]{stopher2005processing}
+Peter~R. Stopher, Q.~Jiang, and C.~FitzGerald.
+\newblock Processing {GPS} data from travel surveys.
+\newblock In \emph{2nd International Colloquium on Behavioral Foundations of Integrated Land-Use and Transportation Models: Frameworks, Models and Applications}, Toronto, Ontario, Canada, June 2005.
+
+\bibitem[Susi et~al.(2013)Susi, Renaudin, and Lachapelle]{susi2013motion}
+Melania Susi, Val{\'e}rie Renaudin, and G{\'e}rard Lachapelle.
+\newblock Motion mode recognition and step detection algorithms for mobile phone users.
+\newblock \emph{Sensors}, 13\penalty0 (2):\penalty0 1539--1562, 2013.
+
+\bibitem[Taherinavid et~al.(2023)Taherinavid, Moravvej, Chen, Yang, Ku, and Por]{taherinavid2023automatic}
+Siavash Taherinavid, Seyed~Vahid Moravvej, Yen-Lin Chen, Jing Yang, Chin~Soon Ku, and Lip~Yee Por.
+\newblock Automatic transportation mode classification using a deep reinforcement learning approach with smartphone sensors.
+\newblock \emph{IEEE Access}, 2023.
+
+\bibitem[Tanha et~al.(2020)Tanha, Abdi, Samadi, Razzaghi, and Asadpour]{tanha2020boosting}
+Jafar Tanha, Yousef Abdi, Negin Samadi, Nazila Razzaghi, and Mohammad Asadpour.
+\newblock Boosting methods for multi-class imbalanced data classification: an experimental review.
+\newblock \emph{Journal of Big data}, 7:\penalty0 1--47, 2020.
+
+\bibitem[United~Nations and Social~Affairs(2019)]{UN2019Population}
+Department of~Economic United~Nations and Population~Division Social~Affairs.
+\newblock \emph{World Population Prospects 2019: Highlights}.
+\newblock ST/ESA/SER.A/423. United Nations, New York, 2019.
+
+\bibitem[{U.S. Government}(2006)]{gpsgov}
+{U.S. Government}.
+\newblock {GPS.gov} – official u.s. government information about the global positioning system (gps) and related topics.
+\newblock \url{http://www.gps.gov/}, 2006.
+\newblock [Online; accessed September 2023].
+
+\bibitem[Vincenty(1975)]{vincenty1975direct}
+Thaddeus Vincenty.
+\newblock Direct and inverse solutions of geodesics on the ellipsoid with application of nested equations.
+\newblock \emph{Survey review}, 23\penalty0 (176):\penalty0 88--93, 1975.
+
+\bibitem[Vogel(2002)]{vogel2002characterizes}
+Katja Vogel.
+\newblock What characterizes a “free vehicle” in an urban area?
+\newblock \emph{Transportation research part F: traffic psychology and behaviour}, 5\penalty0 (1):\penalty0 15--29, 2002.
+
+\bibitem[Wang et~al.(2017)Wang, Gao, and Juan]{wang2017travel}
+Bao Wang, Linjie Gao, and Zhicai Juan.
+\newblock Travel mode detection using gps data and socioeconomic attributes based on a random forest classifier.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 19\penalty0 (5):\penalty0 1547--1558, 2017.
+
+\bibitem[Wang and Japkowicz(2010)]{wang2010boosting}
+Benjamin~X Wang and Nathalie Japkowicz.
+\newblock Boosting support vector machines for imbalanced data sets.
+\newblock \emph{Knowledge and information systems}, 25:\penalty0 1--20, 2010.
+
+\bibitem[Wang et~al.(2010)Wang, Calabrese, Di~Lorenzo, and Ratti]{wang2010transportation}
+Huayong Wang, Francesco Calabrese, Giusy Di~Lorenzo, and Carlo Ratti.
+\newblock Transportation mode inference from anonymized and aggregated mobile phone call detail records.
+\newblock In \emph{13th International IEEE Conference on Intelligent Transportation Systems}, pages 318--323. IEEE, 2010.
+
+\bibitem[Wang et~al.(2004)Wang, Dixon, Li, and Ogle]{wang2004normal}
+Jun Wang, Karen~K Dixon, Hainan Li, and Jennifer Ogle.
+\newblock Normal acceleration behavior of passenger vehicles starting from rest at all-way stop-controlled intersections.
+\newblock \emph{Transportation Research Record}, 1883\penalty0 (1):\penalty0 158--166, 2004.
+
+\bibitem[Wang et~al.(2019)Wang, Gjoreski, Ciliberto, Mekki, Valentin, and Roggen]{wang2019enabling}
+Lin Wang, Hristijan Gjoreski, Mathias Ciliberto, Sami Mekki, Stefan Valentin, and Daniel Roggen.
+\newblock Enabling reproducible research in sensor-based transportation mode recognition with the sussex-huawei dataset.
+\newblock \emph{IEEE Access}, 7:\penalty0 10870--10891, 2019.
+
+\bibitem[Wang et~al.(2020{\natexlab{a}})Wang, Gjoreski, Ciliberto, Lago, Murao, Okita, and Roggen]{wang2020summary}
+Lin Wang, Hristijan Gjoreski, Mathias Ciliberto, Paula Lago, Kazuya Murao, Tsuyoshi Okita, and Daniel Roggen.
+\newblock Summary of the sussex-huawei locomotion-transportation recognition challenge 2020.
+\newblock In \emph{Adjunct proceedings of the 2020 ACM international joint conference on pervasive and ubiquitous computing and proceedings of the 2020 ACM international symposium on wearable computers}, pages 351--358, 2020{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2023)Wang, Liu, He, An, Xia, and Lu]{wang2023bayesian}
+Min Wang, Huan Liu, Jing He, Chengchuan An, Jingxin Xia, and Zhenbo Lu.
+\newblock Bayesian network learning framework for travel mode identification based on cellular signaling data.
+\newblock In \emph{2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC)}, pages 2991--2997. IEEE, 2023.
+
+\bibitem[Wang et~al.(2020{\natexlab{b}})Wang, Cao, and Philip]{wang2020deep}
+Senzhang Wang, Jiannong Cao, and S~Yu Philip.
+\newblock Deep learning for spatio-temporal data mining: A survey.
+\newblock \emph{IEEE transactions on knowledge and data engineering}, 34\penalty0 (8):\penalty0 3681--3700, 2020{\natexlab{b}}.
+
+\bibitem[Weiss(2013)]{weiss2013foundations}
+Gary~M Weiss.
+\newblock Foundations of imbalanced learning.
+\newblock \emph{Imbalanced learning: Foundations, algorithms, and applications}, pages 13--41, 2013.
+
+\bibitem[Xiao et~al.(2019{\natexlab{a}})Xiao, Cheng, and Zhang]{xiao2019detecting}
+Guangnian Xiao, Qin Cheng, and Chunqin Zhang.
+\newblock Detecting travel modes using rule-based classification system and gaussian process classifier.
+\newblock \emph{IEEE Access}, 7:\penalty0 116741--116752, 2019{\natexlab{a}}.
+
+\bibitem[Xiao et~al.(2019{\natexlab{b}})Xiao, Cheng, and Zhang]{xiao2019markovdetecting}
+Guangnian Xiao, Qin Cheng, and Chunqin Zhang.
+\newblock Detecting travel modes from smartphone-based travel surveys with continuous hidden markov models.
+\newblock \emph{International Journal of Distributed Sensor Networks}, 15\penalty0 (4):\penalty0 1550147719844156, 2019{\natexlab{b}}.
+
+\bibitem[Xiao et~al.(2019{\natexlab{c}})Xiao, Cheng, and Zhang]{xiao2019ruledetecting}
+Guangnian Xiao, Qin Cheng, and Chunqin Zhang.
+\newblock Detecting travel modes using rule-based classification system and gaussian process classifier.
+\newblock \emph{IEEE Access}, 7:\penalty0 116741--116752, 2019{\natexlab{c}}.
+
+\bibitem[Xiao et~al.(2017)Xiao, Wang, Fu, and Wu]{xiao2017identifying}
+Zhibin Xiao, Yang Wang, Kun Fu, and Fan Wu.
+\newblock Identifying different transportation modes from trajectory data using tree-based ensemble classifiers.
+\newblock \emph{ISPRS International Journal of Geo-Information}, 6\penalty0 (2):\penalty0 57, 2017.
+
+\bibitem[Xu et~al.(2011)Xu, Song, Gao, Cao, Nie, and Xie]{xu2011transportation}
+Dafeng Xu, Guojie Song, Peng Gao, Rongzeng Cao, Xinwei Nie, and Kunqing Xie.
+\newblock Transportation modes identification from mobile phone data using probabilistic models.
+\newblock In \emph{Advanced Data Mining and Applications: 7th International Conference, ADMA 2011, Beijing, China, December 17-19, 2011, Proceedings, Part II 7}, pages 359--371. Springer, 2011.
+
+\bibitem[Xu(2024)]{xu2024automatic}
+Xiaoyu Xu.
+\newblock Automatic classification of transportation modes using smartphone sensors: addressing imbalanced data and enhancing training with focal loss and artificial bee colony algorithm.
+\newblock \emph{Journal of Optics}, pages 1--15, 2024.
+
+\bibitem[Yang et~al.(2022)Yang, Pan, Darzi, Ghader, Xiong, and Zhang]{yang2022data}
+Mofeng Yang, Yixuan Pan, Aref Darzi, Sepehr Ghader, Chenfeng Xiong, and Lei Zhang.
+\newblock A data-driven travel mode share estimation framework based on mobile device location data.
+\newblock \emph{Transportation}, 49\penalty0 (5):\penalty0 1339--1383, 2022.
+
+\bibitem[Yang et~al.()Yang, Al~Haddad, Yamnenko, and Antoniou]{yang4960556machine}
+Ningkang Yang, Christelle Al~Haddad, Iuliia Yamnenko, and Constantinos Antoniou.
+\newblock Machine learning for data-centric transport mode detection: A systematic review.
+\newblock \emph{Available at SSRN 4960556}.
+
+\bibitem[Yu and Wang(2023)]{yu2023graph}
+Wenhao Yu and Guanwen Wang.
+\newblock Graph based embedding learning of trajectory data for transportation mode recognition by fusing sequence and dependency relations.
+\newblock \emph{International Journal of Geographical Information Science}, 37\penalty0 (12):\penalty0 2514--2537, 2023.
+
+\bibitem[Zeng et~al.(2023)Zeng, Yu, Chen, Yang, Zhang, and Wang]{zeng2023trajectory}
+Jiaqi Zeng, Yi~Yu, Yong Chen, Di~Yang, Lei Zhang, and Dianhai Wang.
+\newblock Trajectory-as-a-sequence: A novel travel mode identification framework.
+\newblock \emph{Transportation Research Part C: Emerging Technologies}, 146:\penalty0 103957, 2023.
+
+\bibitem[Zeng et~al.(2024{\natexlab{a}})Zeng, Huang, Zhang, Cai, and Wang]{zeng2024travel}
+Jiaqi Zeng, Yulang Huang, Guozheng Zhang, Zhengyi Cai, and Dianhai Wang.
+\newblock Travel mode identification for non-uniform passive mobile phone data.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 2024{\natexlab{a}}.
+
+\bibitem[Zeng et~al.(2024{\natexlab{b}})Zeng, Wang, Zhang, Guan, and Yu]{zeng2024masked}
+Ziyi Zeng, Guanwen Wang, Yifan Zhang, Qingfeng Guan, and Wenhao Yu.
+\newblock Masked graph autoencoder for self-supervised transportation mode recognition.
+\newblock \emph{Transactions in GIS}, 2024{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2021)Zhang, Zhu, Markos, Yu, and James]{zhang2021toward}
+Chenhan Zhang, Yuanshao Zhu, Christos Markos, Shui Yu, and JQ~James.
+\newblock Toward crowdsourced transportation mode identification: A semisupervised federated learning approach.
+\newblock \emph{IEEE Internet of Things Journal}, 9\penalty0 (14):\penalty0 11868--11882, 2021.
+
+\bibitem[Zhao et~al.(2020)Zhao, Joshi, Nair, and Sudjianto]{zhao2020shap}
+Wei Zhao, Tarun Joshi, Vijayan~N Nair, and Agus Sudjianto.
+\newblock Shap values for explaining cnn-based text classification models.
+\newblock \emph{arXiv preprint arXiv:2008.11825}, 2020.
+
+\bibitem[Zheng et~al.(2008{\natexlab{a}})Zheng, Li, Chen, Xie, and Ma]{zheng2008understanding}
+Yu~Zheng, Quannan Li, Yukun Chen, Xing Xie, and Wei-Ying Ma.
+\newblock Understanding mobility based on gps data.
+\newblock In \emph{Proceedings of the 10th international conference on Ubiquitous computing}, pages 312--321, 2008{\natexlab{a}}.
+
+\bibitem[Zheng et~al.(2008{\natexlab{b}})Zheng, Liu, Wang, and Xie]{zheng2008learning}
+Yu~Zheng, Like Liu, Longhao Wang, and Xing Xie.
+\newblock Learning transportation mode from raw gps data for geographic applications on the web.
+\newblock In \emph{Proc. 17th Int. Conf. World Wide Web}, pages 247--256, 2008{\natexlab{b}}.
+
+\bibitem[Zheng et~al.(2008{\natexlab{c}})Zheng, Wang, Zhang, Xie, and Ma]{zheng2008geolife}
+Yu~Zheng, Longhao Wang, Ruochi Zhang, Xing Xie, and Wei-Ying Ma.
+\newblock Geolife: Managing and understanding your past life over maps.
+\newblock In \emph{The Ninth International Conference on Mobile Data Management (mdm 2008)}, pages 211--212. IEEE, 2008{\natexlab{c}}.
+
+\bibitem[Zheng et~al.(2010{\natexlab{a}})Zheng, Chen, Li, Xie, and Ma]{zheng2010understanding}
+Yu~Zheng, Yukun Chen, Quannan Li, Xing Xie, and Wei-Ying Ma.
+\newblock Understanding transportation modes based on gps data for web applications.
+\newblock \emph{ACM Transactions on the Web (TWEB)}, 4\penalty0 (1):\penalty0 1--36, 2010{\natexlab{a}}.
+
+\bibitem[Zheng et~al.(2010{\natexlab{b}})Zheng, Xie, Ma, et~al.]{zheng2010geolife}
+Yu~Zheng, Xing Xie, Wei-Ying Ma, et~al.
+\newblock Geolife: A collaborative social networking service among user, location and trajectory.
+\newblock \emph{IEEE Data Eng. Bull.}, 33\penalty0 (2):\penalty0 32--39, 2010{\natexlab{b}}.
+
+\bibitem[Zheng et~al.(2011)Zheng, Fu, Xie, Ma, and Li]{zheng2011geolife}
+Yu~Zheng, Hao Fu, Xing Xie, Wei-Ying Ma, and Quannan Li.
+\newblock \emph{Geolife GPS trajectory dataset - User Guide}, geolife gps trajectories 1.1 edition, July 2011.
+\newblock URL \url{https://www.microsoft.com/en-us/research/publication/geolife-gps-trajectory-dataset-user-guide/}.
+
+\bibitem[Zhu et~al.(2016)Zhu, Zhu, Li, Fu, Huang, Gan, and Zhou]{zhu2016identifying}
+Qiuhui Zhu, Min Zhu, Mingzhao Li, Min Fu, Zhibiao Huang, Qihong Gan, and Zhenghao Zhou.
+\newblock Identifying transportation modes from raw gps data.
+\newblock In \emph{Social Computing: Second International Conference of Young Computer Scientists, Engineers and Educators, ICYCSEE 2016, Harbin, China, August 20-22, 2016, Proceedings, Part I 2}, pages 395--409. Springer, 2016.
+
+\bibitem[Zhu et~al.(2021)Zhu, Liu, James, and Yuan]{zhu2021semi}
+Yuanshao Zhu, Yi~Liu, JQ~James, and Xingliang Yuan.
+\newblock Semi-supervised federated learning for travel mode identification from gps trajectories.
+\newblock \emph{IEEE Transactions on Intelligent Transportation Systems}, 23\penalty0 (3):\penalty0 2380--2391, 2021.
+
+\end{thebibliography}

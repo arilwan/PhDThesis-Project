@@ -1,0 +1,69 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: mymacros.aux
+A level-1 auxiliary file: dedicate.aux
+A level-1 auxiliary file: abstract.aux
+A level-1 auxiliary file: acknows.aux
+A level-1 auxiliary file: quote.aux
+A level-1 auxiliary file: abbrevs.aux
+A level-1 auxiliary file: chapter1.aux
+A level-1 auxiliary file: chapter2.aux
+A level-1 auxiliary file: chapter3.aux
+A level-1 auxiliary file: chapter4-old.aux
+A level-1 auxiliary file: chapter4-new.aux
+A level-1 auxiliary file: chapter5.aux
+A level-1 auxiliary file: chapter6.aux
+A level-1 auxiliary file: chapter7.aux
+The style file: plainnat.bst
+A level-1 auxiliary file: appendix1.aux
+A level-1 auxiliary file: appendix2.aux
+Database file #1: references.bib
+Warning--I didn't find a database entry for "xue2009svm"
+Warning--empty journal in muhammad2026subspace
+Warning--empty year in muhammad2026subspace
+Warning--empty year in muhammad2026subspace
+Warning--empty year in yang4960556machine
+Warning--empty year in yang4960556machine
+You've used 166 entries,
+            2773 wiz_defined-function locations,
+            1489 strings with 41106 characters,
+and the built_in function-call counts, 93318 in all, are:
+= -- 8353
+> -- 6146
+< -- 101
++ -- 2068
+- -- 1892
+* -- 8018
+:= -- 14099
+add.period$ -- 536
+call.type$ -- 166
+change.case$ -- 1118
+chr.to.int$ -- 156
+cite$ -- 337
+duplicate$ -- 3931
+empty$ -- 7044
+format.name$ -- 2132
+if$ -- 19655
+int.to.chr$ -- 11
+int.to.str$ -- 1
+missing$ -- 168
+newline$ -- 844
+num.names$ -- 668
+pop$ -- 2216
+preamble$ -- 1
+purify$ -- 957
+quote$ -- 0
+skip$ -- 3142
+stack$ -- 0
+substring$ -- 4071
+swap$ -- 620
+text.length$ -- 50
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 1801
+warning$ -- 5
+while$ -- 819
+width$ -- 0
+write$ -- 2192
+(There were 6 warnings)

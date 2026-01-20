@@ -1,0 +1,45 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Overview of approaches used in transport mode detection research}}{20}{table.2.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Key Characteristics of the Datasets}}{25}{table.caption.12}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Sessions having $\Delta t > 1hr$ between consecutive GPS traces.}}{26}{table.caption.14}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Trips filtering statistics.}}{26}{table.caption.15}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Distribution of instances in the temporal data split}}{33}{table.caption.20}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces Distribution of instances in conventional 80:20 split}}{33}{table.caption.21}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces Confusion matrix for RF classifier (raw features).}}{34}{table.caption.22}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces Confusion matrix for CNN classifier (raw features).}}{34}{table.caption.23}%
+\contentsline {table}{\numberline {3.8}{\ignorespaces Confusion matrix for EAE classifier (raw features).}}{34}{table.caption.24}%
+\contentsline {table}{\numberline {3.9}{\ignorespaces Confusion matrix for RF classifier (features statistics).}}{35}{table.caption.25}%
+\contentsline {table}{\numberline {3.10}{\ignorespaces Confusion matrix for CNN classifier (features statistics).}}{35}{table.caption.26}%
+\contentsline {table}{\numberline {3.11}{\ignorespaces Confusion matrix for EAE classifier (Features statistics).}}{35}{table.caption.27}%
+\contentsline {table}{\numberline {3.12}{\ignorespaces Summary of the experimental results.}}{36}{table.caption.28}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Summary of TMD studies from GPS data.}}{41}{table.caption.29}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Confusion Matrix.}}{44}{table.caption.32}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Classification Results for SMF2016 and Geolife Datasets}}{49}{table.caption.36}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces SFFS feature Selection by each classifier across the datasets.}}{50}{table.caption.37}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Model evaluations using different feature combinations.\strut }}{50}{table.caption.38}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Segment and trip prediction results (\%).}}{51}{table.caption.39}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Summary of transportation mode detection studies from GPS data.}}{57}{table.5.1}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Sessions having $\Delta t > 1hr$ between consecutive GPS points.}}{62}{table.caption.42}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces Summary of data filtering stages.}}{62}{table.caption.44}%
+\contentsline {table}{\numberline {5.4}{\ignorespaces Instance distribution by transportation mode in both datasets.}}{66}{table.caption.47}%
+\contentsline {table}{\numberline {5.5}{\ignorespaces Confusion Matrix.}}{68}{table.caption.50}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Evaluation metrics for Flat and Hierarchical Classification}}{80}{table.caption.58}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Confusion matrices of the flat classification models}}{81}{table.caption.59}%
+\contentsline {table}{\numberline {6.3}{\ignorespaces Confusion matrices of the hierarchical classification models}}{81}{table.caption.59}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {7.1}{\ignorespaces Proportion of instances by transportation mode in each dataset.}}{85}{table.caption.60}%
+\contentsline {table}{\numberline {7.2}{\ignorespaces Baselines classification results.}}{88}{table.caption.61}%
+\contentsline {table}{\numberline {7.3}{\ignorespaces Experiment 2: Using imbalanced techniques with the SMF2016.}}{88}{table.caption.62}%
+\contentsline {table}{\numberline {7.4}{\ignorespaces Geolife class distribution in the resampled experiments}}{89}{table.caption.63}%
+\contentsline {table}{\numberline {7.5}{\ignorespaces Experiment 3: Geolife resampled.}}{89}{table.caption.64}%
+\contentsline {table}{\numberline {7.6}{\ignorespaces Experiment 4: Geolife resampled to SMF2016 class distribution.}}{90}{table.caption.65}%
+\contentsline {table}{\numberline {7.7}{\ignorespaces Evaluation of class overlap in datasets.}}{91}{table.caption.66}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

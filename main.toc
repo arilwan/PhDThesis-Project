@@ -1,0 +1,150 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Resumo}{ii}{chapter*.1}%
+\contentsline {chapter}{Abstract}{iii}{chapter*.2}%
+\contentsline {chapter}{Acknowledgments}{iv}{chapter*.3}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Research Context and Motivation}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Thesis Statement}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Research Objectives}{3}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Research Contributions}{3}{section.1.4}%
+\contentsline {section}{\numberline {1.5}List of Publications}{4}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Thesis Outline}{4}{section.1.6}%
+\contentsline {chapter}{\numberline {2}State of the Art}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Data Sources}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Mobile Phone Network Data}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Inertial Measurement Sensor Data}{8}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Global Positioning System Data}{9}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Trajectory Data Mining}{10}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Terminology}{10}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}Mode Detection Approaches}{11}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Ruled-based Approaches}{12}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Statistical Methods}{12}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Machine Learning Methods}{12}{subsection.2.3.3}%
+\contentsline {subsubsection}{\numberline {2.3.3.1}Unsupervised Learning Methods}{12}{subsubsection.2.3.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.3.2}Semi-supervised Learning Methods}{13}{subsubsection.2.3.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3.3}Supervised Learning Methods}{14}{subsubsection.2.3.3.3}%
+\contentsline {section}{\numberline {2.4}Transportation Mode Classification}{15}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}k-Nearest Neighbours}{15}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Decision Tree Algorithms}{15}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Support Vector Machines}{16}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Logistic Regression}{16}{subsection.2.4.4}%
+\contentsline {subsection}{\numberline {2.4.5}Bayesian Belief Network}{16}{subsection.2.4.5}%
+\contentsline {subsection}{\numberline {2.4.6}Extreme Gradient Boosting}{17}{subsection.2.4.6}%
+\contentsline {subsection}{\numberline {2.4.7}Random Forest}{17}{subsection.2.4.7}%
+\contentsline {subsection}{\numberline {2.4.8}Deep Learning Algorithms}{18}{subsection.2.4.8}%
+\contentsline {subsubsection}{\numberline {2.4.8.1}Convolutional Neural Networks}{18}{subsubsection.2.4.8.1}%
+\contentsline {subsubsection}{\numberline {2.4.8.2}Long Short-Term Memory}{18}{subsubsection.2.4.8.2}%
+\contentsline {section}{\numberline {2.5}Features for Mode Detection}{19}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Concluding Remark}{22}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Datasets and Preprocessing Tasks}{23}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Datasets Description}{23}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}The SenseMyFEUP Dataset}{23}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}The Geolife Dataset}{24}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Data Preprocessing}{25}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Trip Preprocessing}{25}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Trip Filtering}{26}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Trip Segmentation}{26}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Point-level Attributes}{27}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Outlier Removal}{29}{subsection.3.2.5}%
+\contentsline {section}{\numberline {3.3}Benchmark Study}{29}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Ensemble of Autoencoders}{31}{subsection.3.3.1}%
+\contentsline {section}{\numberline {3.4}Performance Evaluation}{31}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Experimental Results}{33}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Cohort 1: Temporal Split (3-weeks/1-week)}{33}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Cohort 2: Conventional Split (80/20)}{33}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}Summary}{36}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Class-subspace Feature Selection}{38}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{38}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Related Work}{39}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Data Preprocessing}{42}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Time Domain Features}{42}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Frequency Domain Features}{42}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Classification Algorithms}{43}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Evaluation Metrics}{43}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Confusion Matrix}{43}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Accuracy}{44}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Precision}{44}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Recall}{44}{subsection.4.5.4}%
+\contentsline {subsection}{\numberline {4.5.5}F1 score}{44}{subsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.5.6}Receiver Operating Characteristics}{45}{subsection.4.5.6}%
+\contentsline {section}{\numberline {4.6}Feature Selection}{46}{section.4.6}%
+\contentsline {subsubsection}{\numberline {4.6.0.1}Sequential Forward Floating Selection}{46}{subsubsection.4.6.0.1}%
+\contentsline {section}{\numberline {4.7}Proposed Method}{46}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}The Shapley Values}{46}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.2}Class-Subspace Selection}{47}{subsection.4.7.2}%
+\contentsline {section}{\numberline {4.8}Experiments and Results}{48}{section.4.8}%
+\contentsline {section}{\numberline {4.9}Discussion}{51}{section.4.9}%
+\contentsline {section}{\numberline {4.10}Summary}{53}{section.4.10}%
+\contentsline {chapter}{\numberline {5}Class-Subspace Feature Selection for Transportation Mode Detection}{54}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{54}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Related Work}{56}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Materials and Methods}{59}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Terminology}{59}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Datasets }{60}{subsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.2.1}SenseMyFEUP dataset}{60}{subsubsection.5.3.2.1}%
+\contentsline {subsubsection}{\numberline {5.3.2.2}Geolife dataset}{61}{subsubsection.5.3.2.2}%
+\contentsline {subsection}{\numberline {5.3.3}Trip Preprocessing}{61}{subsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.3.1}Data Quality Control and Filtering}{61}{subsubsection.5.3.3.1}%
+\contentsline {subsection}{\numberline {5.3.4}Instances Creation}{63}{subsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.4.1} Trip Segmentation}{63}{subsubsection.5.3.4.1}%
+\contentsline {subsubsection}{\numberline {5.3.4.2}Segments Filtering}{63}{subsubsection.5.3.4.2}%
+\contentsline {subsubsection}{\numberline {5.3.4.3}Time Domain Features}{64}{subsubsection.5.3.4.3}%
+\contentsline {subsubsection}{\numberline {5.3.4.4}Frequency Domain Features}{64}{subsubsection.5.3.4.4}%
+\contentsline {subsubsection}{\numberline {5.3.4.5}Dataset Splitting}{65}{subsubsection.5.3.4.5}%
+\contentsline {subsection}{\numberline {5.3.5}Classification Algorithms}{66}{subsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.5.1}Decision Trees}{66}{subsubsection.5.3.5.1}%
+\contentsline {subsubsection}{\numberline {5.3.5.2}Support Vector Machines (SVMs)}{66}{subsubsection.5.3.5.2}%
+\contentsline {subsubsection}{\numberline {5.3.5.3}Ensemble Methods}{67}{subsubsection.5.3.5.3}%
+\contentsline {paragraph}{Random Forest}{67}{section*.48}%
+\contentsline {paragraph}{Extreme Gradient Boosting}{67}{section*.49}%
+\contentsline {subsection}{\numberline {5.3.6}Features per Instance}{67}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.7}Feature Selection}{67}{subsection.5.3.7}%
+\contentsline {section}{\numberline {5.4}Evaluation Metrics}{68}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Confusion Matrix}{68}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Accuracy}{69}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Precision}{69}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Recall}{69}{subsection.5.4.4}%
+\contentsline {subsection}{\numberline {5.4.5}F1 score}{69}{subsection.5.4.5}%
+\contentsline {subsection}{\numberline {5.4.6}Receiver Operating Characteristics}{69}{subsection.5.4.6}%
+\contentsline {section}{\numberline {5.5}Feature Selection}{70}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Sequential Forward Floating Selection}{71}{subsection.5.5.1}%
+\contentsline {section}{\numberline {5.6}Proposed Feature Selection Method}{71}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}The Shapley Values}{71}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Class-Subspace Selection }{72}{subsection.5.6.2}%
+\contentsline {section}{\numberline {5.7}Experiments and Results}{73}{section.5.7}%
+\contentsline {section}{\numberline {5.8}Discussion}{74}{section.5.8}%
+\contentsline {section}{\numberline {5.9}Conclusion}{74}{section.5.9}%
+\contentsline {chapter}{\numberline {6}Hierarchical Classification Approach to Mode Detection}{75}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Introduction}{75}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Hierarchical Classification}{76}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}The Big-Bang or Global Approach}{76}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2} Local Classifiers Approach}{76}{subsection.6.2.2}%
+\contentsline {section}{\numberline {6.3}Proposed Method}{77}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Class Hierarchy Learning}{77}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2} HiClass4MD for Transportation Mode Detection}{77}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Dataset and Preprocessing}{79}{subsection.6.3.3}%
+\contentsline {subsection}{\numberline {6.3.4}Evaluation Metrics}{79}{subsection.6.3.4}%
+\contentsline {section}{\numberline {6.4}Experimental Results}{80}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Discussion}{80}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Summary}{82}{section.6.6}%
+\contentsline {chapter}{\numberline {7}Characterising Class Imbalance in Transportation Mode Detection}{83}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Introduction}{83}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Related Work}{84}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Materials and Methods}{85}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Preprocessing and Feature Engineering}{85}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Imbalanced Handling Techniques}{86}{subsection.7.3.2}%
+\contentsline {section}{\numberline {7.4}Experimental Analysis}{86}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Baseline Model}{86}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Evaluation Metrics}{86}{subsection.7.4.2}%
+\contentsline {subsection}{\numberline {7.4.3}Experimental Setup}{87}{subsection.7.4.3}%
+\contentsline {subsubsection}{\numberline {7.4.3.1}Experiment 1: Baseline}{87}{subsubsection.7.4.3.1}%
+\contentsline {subsubsection}{\numberline {7.4.3.2}Experiment 2: Addressing Imbalance in SMF2016}{87}{subsubsection.7.4.3.2}%
+\contentsline {subsubsection}{\numberline {7.4.3.3}Experiment 3: Gelife Resampled}{89}{subsubsection.7.4.3.3}%
+\contentsline {subsubsection}{\numberline {7.4.3.4}Experiment 4: Geolife to SMF2016 Class Equivalence}{90}{subsubsection.7.4.3.4}%
+\contentsline {subsection}{\numberline {7.4.4}Class Overlap Evaluation}{90}{subsection.7.4.4}%
+\contentsline {section}{\numberline {7.5}Summary}{91}{section.7.5}%
+\contentsline {chapter}{\numberline {8}Conclusion}{94}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Summary of Findings}{94}{section.8.1}%
+\contentsline {chapter}{References}{97}{section*.69}%
+\contentsline {chapter}{\numberline {A}Features Selected with Class-subspace Selection}{110}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Sensitivity of the Subspace threshold ($\rho $)}{113}{appendix.B}%

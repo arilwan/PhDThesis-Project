@@ -1,0 +1,44 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces An illustration of the mobile network infrastructure and network event handover \cite {huang2019transport}.}}{8}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Participants outfitted with several smartphones and cameras for data acquisition in: (a) SHL dataset \cite {gjoreski2018university}, (b) CAPTIMOVE dataset \cite {alaoui2021urban}.}}{9}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Trajectory segments derived from the overall movement pattern of an object \cite {spaccapietra2013trajectories}.}}{11}{figure.caption.10}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces SMF2016 end of trip survey.}}{24}{figure.caption.11}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces SMF2016 - Distribution of trips per user.}}{25}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Geolife - Distribution of trips per user.}}{25}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Trip distance distribution by travel mode (a) before trip filtering; (b) after filtering to trips covered in Porto region.}}{27}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visual representation of bearing between successive GPS points in a trajectory.}}{28}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces SMF2016 speed distribution per transportation mode.}}{28}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Geolife speed distribution per transportation mode.}}{28}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Conceptual framework of the proposed methodology.}}{30}{figure.caption.19}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Instance distribution by transportation mode.}}{42}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces An instance's time and frequency domains.}}{43}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Area under the Receiver Operating Characteristic (ROC) Curve.}}{45}{figure.caption.33}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces An illustration of the Class-Subspace selection process.}}{47}{figure.caption.34}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Features selected by subspace algorithm for SMF2016 using RF \textbf {(a)} and XGB \textbf {(b)} for $ \rho = 0.6 $. }}{52}{figure.caption.40}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Conceptual framework detailing the overall methodology pipeline.}}{60}{figure.caption.41}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Trip distance distribution by travel mode (a) before trip filtering; (b) after filtering to trips covered in Porto region.}}{62}{figure.caption.43}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Visual representation of bearing between successive GPS points in a trajectory.}}{63}{figure.caption.45}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces An instance's time and frequency domains.}}{65}{figure.caption.46}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Area under the Receiver Operating Characteristic (ROC) Curve.}}{70}{figure.caption.51}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces An illustration of the selection process for individual class in a dataset.}}{72}{figure.caption.52}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces DT learned hierarchy.}}{78}{figure.caption.55}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces RF learned hierarchy.}}{78}{figure.caption.55}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces SVM learned hierarchy.}}{78}{figure.caption.55}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces XGB learned hierarchy.}}{78}{figure.caption.55}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Block diagram of the proposed method.}}{78}{figure.caption.56}%
+\contentsline {figure}{\numberline {6.6}{\ignorespaces An illustration of the prediction process in hierarchical classification.}}{79}{figure.caption.57}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces SMF2016 Fisher discriminant scores of features.}}{92}{figure.caption.67}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Geolfe Fisher discriminant scores of features.}}{92}{figure.caption.68}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Features selected by the Subspace algorithm for the SMF2016 dataset using \textbf {(a)} Random Forest and \textbf {(b)} XGBoost for $\rho = 0.6$.}}{111}{figure.caption.71}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Features selected by the Subspace algorithm for the Geolife dataset using \textbf {(a)} Random Forest and \textbf {(b)} XGBoost for $\rho = 0.6$.}}{112}{figure.caption.72}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Sensitivity of the subspace threshold ($\rho $).}}{114}{figure.caption.73}%
