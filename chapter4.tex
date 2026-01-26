@@ -147,21 +147,15 @@ $$T = \{(x_1, y_1, t_1), (x_2, y_2, t_2), \dots, (x_n, y_n, t_n)\}$$
 \textbf{Segment:} A segment is a continuous subsequence of a trip in which the user travels using a single mode of transportation.
 
 \subsection{Datasets }
-This study utilises two real-world GPS trajectory datasets: the \emph{SenseMyFEUP} \cite{rodrigues2017impact} dataset and the \emph{GeoLife} \cite{zheng2008geolife} dataset, which are described below.
+This study utilises the two real-world GPS trajectory datasets described in \Cref{chap3}, \Cref{chp3-sec1}.
 
-\subsubsection{SenseMyFEUP dataset}
-The \textit{SenseMyFEUP (SMF2016)} dataset is a GPS trajectory dataset of 227 participants collected in Porto - Portugal in April 2016. It was collected using an Android-based mobile application installed on participants' smartphones. The application was designed to record location data whenever user movement is detected automatically and to stop recording when the user stops moving. \textit{SMF2016} dataset has a sampling frequency of approximately 1 sample per second \cite{rodrigues2017impact}. The location data is structured as a tuple containing the following attributes: timestamp, longitude, latitude, altitude, speed, bearing, and GPS accuracy, thus $ L_{i} = <time[t], long, lat, alt, speed, bearing, gps\_acc>$.
-Moreover, the application includes an end-of-trip survey administered after each trip completion, prompting users to indicate their travel mode.   
-This user-annotated data, collected through an end-of-trip survey administered after each trip completion, serves as the ground truth for our analysis. Only trips with a single reported mode of transportation were included in this study. In all, \textit{SMF2016} contains travel mode information for five different transportation modes: \textit{bike, bus, car, foot} and \textit{metro}.
+%\subsubsection{SenseMyFEUP dataset}
+%The \textit{SenseMyFEUP (SMF2016)} dataset is a GPS trajectory dataset of 227 participants collected in Porto - Portugal in April 2016. It was collected using an Android-based mobile application installed on participants' smartphones. The application was designed to record location data whenever user movement is detected automatically and to stop recording when the user stops moving. \textit{SMF2016} dataset has a sampling frequency of approximately 1 sample per second \cite{rodrigues2017impact}. The location data is structured as a tuple containing the following attributes: timestamp, longitude, latitude, altitude, speed, bearing, and GPS accuracy, thus $ L_{i} = <time[t], long, lat, alt, speed, bearing, gps\_acc>$. Moreover, the application includes an end-of-trip survey administered after each trip completion, prompting users to indicate their travel mode. This user-annotated data, collected through an end-of-trip survey administered after each trip completion, serves as the ground truth for our analysis. Only trips with a single reported mode of transportation were included in this study. In all, \textit{SMF2016} contains travel mode information for five different transportation modes: \textit{bike, bus, car, foot} and \textit{metro}.
 
-\subsubsection{Geolife dataset}
-We utilised the publicly accessible \textit{Geolife}  dataset published by Microsoft Research Asia \cite{zheng2010geolife, zheng2008learning, zheng2010understanding} to assess the reliability of our method. This dataset was collected from 182 participants mainly in Beijing - China, primarily over five years (April 2007 - February 2012). The data collection employed various GPS loggers and GPS-enabled phones, capturing movement information at a spatio-temporal granularity of approximately 1-5 seconds or 5-10 meters per data point. According to the \textit{Geolife} user guide \cite{zheng2011geolife}, 73 users have annotated their trajectories with travel mode information. However, we found only 69 users with transportation mode information upon examining the raw data. There are about ten different transportation modes \textit{(walk, bike, bus, car, taxi, train, subway, motorcycle, airplane, boat)} available in the dataset.
+%\subsubsection{Geolife dataset}
+%We utilised the publicly accessible \textit{Geolife}  dataset published by Microsoft Research Asia \cite{zheng2010geolife, zheng2008learning, zheng2010understanding} to assess the reliability of our method. This dataset was collected from 182 participants mainly in Beijing - China, primarily over five years (April 2007 - February 2012). The data collection employed various GPS loggers and GPS-enabled phones, capturing movement information at a spatio-temporal granularity of approximately 1-5 seconds or 5-10 meters per data point. According to the \textit{Geolife} user guide \cite{zheng2011geolife}, 73 users have annotated their trajectories with travel mode information. However, we found only 69 users with transportation mode information upon examining the raw data. There are about ten different transportation modes \textit{(walk, bike, bus, car, taxi, train, subway, motorcycle, airplane, boat)} available in the dataset.
 
-For the purpose of this study, we focus solely on ground transportation modes, even though the dataset includes annotations for other types of transportation. In compliance with the user guide \cite{zheng2011geolife}, we regard the labels of both \textit{taxi} and \textit{car} as \textit{car mode}. Specifically, we consider five transportation modes that correspond to those available in the SMF2016 dataset.
-
-%\section{Trip Preprocessing} \label{chp4-preprocessing}
-%%%This paper utilises the two GPS trajectory datasets described in \Cref{chp3-sec1}.
-%Building upon the  data preprocessing steps outlined in \cref{subsec-trip-preproc,subsec-trip-filtering}, which includes trip preprocessing and the creation of fixed-size instances, this chapter utilises the resulting instances. The distribution of instances by transportation mode is depicted in \Cref{fig:instance-distirb}.
+%For the purpose of this study, we focus solely on ground transportation modes, even though the dataset includes annotations for other types of transportation. In compliance with the user guide \cite{zheng2011geolife}, we regard the labels of both \textit{taxi} and \textit{car} as \textit{car mode}. Specifically, we consider five transportation modes that correspond to those available in the SMF2016 dataset.
 
 \subsection{Trip Preprocessing} \label{trip-preprocessing}This section outlines the process of chaining GPS points into trips in the SMF2016 dataset and subsequently ensuring data quality through a series of preprocessing and filtering steps. For consistency across the datasets used in this study, we adopt the standard methodology for separating user trajectories into trips: a time interval ($\Delta t$) between two successive GPS points that exceeds 30 minutes defines the boundary between two distinct trips, following established literature \cite{dabiri2018inferring}.
 
@@ -174,8 +168,6 @@ Our trip chaining algorithm in the SMF2016 dataset identifies and joins two GPS 
 
 \subsubsection{Data Quality Control and Filtering}
 To ensure the dataset’s integrity for urban mobility analysis, we implemented a series of quality control steps following the initial trip chaining. The first step involved a diagnostic check for temporal anomalies, identifying "unstopped sessions" where the interval between successive GPS points ($\Delta t$) in a trip exceeded the established threshold. These cases, which resulted from data collection persisting despite a lack of recorded movement, are detailed in \Cref{tab:chp4-gap-sessions}. Investigation further revealed that many of these anomalous sessions corresponded to trips exceeding the scope of the study area's urban context. To maintain a focus on urban-scale mobility, we implemented a spatial filter using metropolitan coordinates (41.38786, -8.77034) and (41.04928, -8.4253). This filter removed affected trips extending beyond the functional urban area, ensuring the data characterise only typical city-scale transportation.
-
-%Second, we addressed mode-specific anomalies. We observed several trips manually annotated as "foot" mode that exceeded 10~km, which is statistically improbable for urban pedestrian movement (Fig. \ref{fig:trip-filter}a). Consequently, we applied a conservative 8~km distance cap on all walking trips. As shown in Fig. \ref{fig:trip-filter}b, this targeted filter produced a more plausible distance distribution. The final filtered dataset, used for all subsequent analysis, is summarised in \Cref{tab:trips}.
 
 \begin{table}[htbp]
     \centering
@@ -292,9 +284,6 @@ Metro & 3,553 & 5.30 & 758 & 1.86 & 6,175 & 18.89 & 2,784 & 10.79 \\
 \end{tabular}
 \end{table}
 
-%\subsection{Features per Instance}
-%We use ten descriptive feature statistics \cite{muhammad2021transportation} calculated for every feature of an instance for the time-domain features (mean, median, standard deviation, minimum, maximum, MAD, \nth{25}, \nth{75}, \nth{85} percentiles, and inter-quartile range). For the frequency-domain features, we consider the indexes of the top 10 frequency components for each feature of an instance. Thus, each instance consists of 80 features: time-domain 10 x 4 features and frequency-domain 10 x 4 features.
-
 \subsection{Classification Algorithms} \label{classifiers}
 This section provides an overview of the classification algorithms used in the study.
 
@@ -368,8 +357,6 @@ There is always a trade-off between a machine learning model's precision and rec
 \begin{equation}
     \vn{F1} = \frac{2 \cdot (\vn{Precision} \times \vn{Recall})}{\vn{Precision} + \vn{Recall}}  \label{eq_f1}
 \end{equation}
-
-
 
 \subsection{Receiver Operating Characteristics}
 So far, all the evaluation metrics mentioned above rely on the value of the possible outcomes from the confusion matrix. They are, therefore, sensitive to the class distribution of positive and negative classes. We can see from the confusion matrix (\Cref{tab:confusion_matrix}) that the class distribution is the relationship of the positive class (upper) row to the negative (lower) row \cite{fawcett2006introduction} (see the \textquotedblleft Class Support\textquotedblright~ column in the confusion matrix \Cref{tab:confusion_matrix}). A somewhat better metric insensitive to class distribution is the Receiver Operating Characteristics (ROC). ROC is a graphical representation and a performance measurement tool used in binary classification problems.
