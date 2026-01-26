@@ -2,16 +2,18 @@
 
 \chapter{Class-Subspace Feature Selection for Transportation Mode Detection} \label{chap4}
 
-This chapter addresses a primary objective of this thesis: the development of specialised feature selection techniques to resolve the challenges of overlapping characteristics in transportation mode classification. While the preceding chapters established the fundamental datasets and preprocessing requirements for GPS trajectory analysis, this chapter introduces a more sophisticated methodological layer designed to handle the class-similarity inherent in transportation mode data. By shifting the focus from global feature optimisation to class-specific subspaces, this work provides a targeted solution to the classification bottlenecks identified in the broader Research Objectives of this study.
+This chapter addresses a primary objective of this thesis: the development of specialised feature selection techniques to resolve the challenges of overlapping characteristics in transportation mode classification. While the preceding chapters established the fundamental datasets and preprocessing requirements for GPS trajectory analysis, this chapter introduces a methodological framework designed to isolate the subtle distinctions between overlapping characteristics inherent in transportation modes data. By shifting the focus from global feature optimisation to class-specific subspaces, this work provides a targeted solution to the classification bottlenecks identified in the broader Research Objectives of this study.
 
-The research presented here introduces a novel Class-Subspace feature selection framework utilising Shapley values to isolate bespoke feature subsets for individual transportation modes. By integrating time-domain and frequency-domain features obtained through Fast Fourier Transform, this approach demonstrates how class-aware selection can capture discriminative patterns that are often masked by conventional techniques. This study, which utilises both the SenseMyFEUP and Geolife datasets, has been published in the \textit{International Journal of Data Science and Analytics} under the title \textit{“From Attribution to Selection: Harnessing SHAP values for Class-Subspace Feature Selection in Transportation Mode Detection”} \cite{muhammad2026subspace}. %It is presented here as a core component of the thesis's contribution to improving classification accuracy in challenging multi-class urban mobility scenarios.
+The research presented here introduces a novel Class-Subspace feature selection method utilising Shapley values to isolate bespoke feature subsets for individual transportation modes. By integrating time-domain and frequency-domain features obtained through Fast Fourier Transform, this approach demonstrates how class-aware selection can capture discriminative patterns that are often masked by conventional techniques. This study, which utilises both the SenseMyFEUP and Geolife datasets, has been submitted to the \textit{International Journal of Data Science and Analytics} under the title \textit{“From Attribution to Selection: Harnessing SHAP values for Class-Subspace Feature Selection in Transportation Mode Detection”} \cite{muhammad2026subspace}.
 
 \section{Introduction}\label{sec:chp4-intro}
-Accurate and detailed understanding of complex human mobility patterns, particularly transportation mode choices, is fundamental for effective urban planning and policy development. Traditional data collection approaches, however, face inherent limitations in capturing the necessary scale and granularity for such insights. In this context, mobile crowdsensing \cite{aguiar2022sensemycity, rodrigues2014sensemycity, rodrigues2017impact, santos2018portolivinglab} has emerged as a promising approach for large-scale, automated data collection. This technology enables researchers and planners to monitor diverse human activities, including transportation, with a higher degree of details and granularity, thereby facilitating informed decision-making.
+An accurate, and detailed understanding of complex human mobility patterns, particularly transportation mode choices, is fundamental to effective urban planning and policy development. Traditional data collection approaches, however, face inherent limitations in capturing the necessary scale and granularity for such insights. In this context, mobile crowdsensing \cite{aguiar2022sensemycity, rodrigues2014sensemycity, rodrigues2017impact, santos2018portolivinglab} has emerged as a promising approach for large-scale, automated data collection. This approach enables researchers and planners to monitor diverse human activities, including transportation, greater details and granularity, thereby facilitating informed decision-making.
 
-The capabilities of mobile crowdsensing have been substantially advanced by the widespread adoption of GPS-enabled devices \cite{capponi2019survey, cardone2013fostering}, including smartphones with sophisticated sensor technologies, in parallel with significant progress in machine learning methodologies. As a result, transportation mode detection (TMD) has become an increasingly active research field in recent years. TMD leverages data from various sources—such as GPS, accelerometers, and gyroscopes—to accurately identify individuals’ travel modes. Researchers have developed diverse TMD approaches, ranging from statistical models \cite{assemi2016developing, xiao2019markovdetecting}, rule-based expert systems \cite{biljecki2013transportation, xiao2019ruledetecting, sauerlander2017evaluation} to more recent innovations incorporating machine learning and deep learning architectures \cite{dabiri2018inferring, rodrigues2017impact, endo2016deep}.
+%The capabilities of mobile crowdsensing have been substantially advanced by the widespread adoption of GPS-enabled devices \cite{capponi2019survey, cardone2013fostering}, including smartphones with sophisticated sensor technologies, in parallel with significant progress in machine learning methodologies. As a result, transportation mode detection (TMD) has become an increasingly active research field in recent years. TMD leverages data from various sources—such as GPS, accelerometers, and gyroscopes—to accurately identify individuals’ travel modes. Researchers have developed diverse TMD approaches, ranging from statistical methods \cite{assemi2016developing, xiao2019markovdetecting}, rule-based expert systems \cite{biljecki2013transportation, xiao2019ruledetecting, sauerlander2017evaluation} to more recent innovations incorporating machine learning and deep learning architectures \cite{dabiri2018inferring, rodrigues2017impact, endo2016deep}.
 
-Despite the exploration of diverse sensor data in existing literature, this study focuses exclusively on TMD using GPS trajectory data. This approach is justified by the practical and technical advantages of GPS for wide-coverage data collection. Specifically, GPS data is considered an efficient sensor modality, available not only through ubiquitous consumer smartphones but also via dedicated low-power logging devices. Furthermore, GPS offers rich spatial and temporal movement information highly effective for mode recognition.
+The widespread adoption of GPS-enabled devices has substantially advanced the capabilities of mobile crowdsensing \cite{capponi2019survey, cardone2013fostering}, including smartphones with sophisticated sensor technologies, alongside significant progress in machine learning methodologies. As a result, transportation mode detection (TMD) has become an increasingly active research field in recent years. TMD leverages data from various sources—such as GPS, accelerometers, and gyroscopes—to accurately identify individuals’ travel modes. Researchers have developed diverse TMD approaches, ranging from statistical models \cite{assemi2016developing, xiao2019markovdetecting}, rule-based expert systems \cite{biljecki2013transportation, xiao2019ruledetecting, sauerlander2017evaluation}, to more recent innovations incorporating machine learning and deep learning architectures \cite{dabiri2018inferring, rodrigues2017impact, endo2016deep}.
+
+Despite the exploration of diverse sensor data in existing literature, this study focuses exclusively on TMD using GPS trajectory data. This approach is justified by the practical and technical advantages of GPS for wide-coverage data collection. Specifically, GPS data is considered an efficient sensor modality, available not only through ubiquitous consumer smartphones but also via dedicated low-power logging devices. Furthermore, GPS provides rich spatial and temporal movement information highly effective for mode recognition.
 
 The study addresses the following key research questions within the context of TMD:
 
@@ -20,16 +22,16 @@ The study addresses the following key research questions within the context of T
     \item \textit{What preprocessing workflow is necessary to address the quality of crowdsourced GPS trajectory data for transportation mode detection?} \\
     To address this, we implement a multi-stage preprocessing and data quality handling pipeline to clean and prepare the GPS trajectory data, mitigating common issues such as outliers, noise, and user annotation errors.
  
-    \item \textit{How effective are frequency-domain features, derived from GPS trajectories, in enhancing transportation mode detection?} \\ To address this, we employ Fast Fourier Transform (FFT) to extract frequency-domain features from GPS trajectories, complementing time-domain features.
+    \item \textit{How effective are frequency-domain features, derived from GPS trajectories, in enhancing transportation mode detection?} \\ To address this, we employ the Fast Fourier Transform (FFT) to extract frequency-domain features from GPS trajectories, complementing time-domain features.
 
-    \item \textit{ How can the most relevant features for each transportation mode be identified to foster the development of robust and interpretable models? } \\
+    \item \textit{ How can the most relevant features for each transportation mode be identified to foster the development of robust and interpretable model? } \\
     We propose the \emph{Class-Subspace} feature selection method that utilises Shapley values to identify and retain feature subsets based on attribution to class prediction.
 
 \end{itemize}
 
 We evaluate the performance of our approach on two real-world GPS trajectory datasets collected from smartphones and GPS loggers in two different cities.
 
-This chapter is organised as follows. \Cref{chp4-rlt-work} provides a comprehensive overview of related literature. \Cref{chp4-methodology} presents a detailed description of the experimental procedures employed in this study. \Cref{chp4-framework} introduces our proposed feature selection method. The results are presented in \Cref{chp4-results}, followed by a discussion of their implications in \Cref{chp4-discussion}. Finally, \Cref{chp4-conclusion} concludes the paper by summarising the main findings and outlining directions for future research.
+This chapter is organised as follows. \Cref{chp4-rlt-work} provides a comprehensive overview of related literature. \Cref{chp4-methodology} presents a detailed description of the experimental procedures employed in this study. \Cref{chp4-sec-framework} introduces our proposed feature selection method. The results are presented in \Cref{chp4-results}, followed by a discussion of their implications in \Cref{chp4-discussion}. Finally, \Cref{chp4-conclusion} concludes the paper by summarising the main findings and outlining directions for future research.
 
 \section{Related Work} \label{chp4-rlt-work}
 GPS trajectory data comprises a sequence of location points, each represented as a tuple containing spatial and temporal information, typically including longitude, latitude, and timestamp. Data preprocessing is essential for extracting the raw data's meaningful motion features, such as speed, acceleration, and direction changes. Trip segmentation is a crucial step in preprocessing, involving dividing the trip into segments.
@@ -107,14 +109,17 @@ Study & Population & Duration & Features & Modes & Classifier & Accuracy (\%) \\
 
 \end{longtable}
 
-Feature selection constitutes a critical step in the development of effective learning models. This crucial task can be broadly categorised into three distinct approaches \cite{li2017feature}: filter methods, wrapper-based methods, and embedded methods. Filter methods are independent of any learning algorithms. evaluate the relevance of features based on their statistical relationship with the target variable. Wrapper methods rely on the learning algorithm's performance to evaluate the relevance of features by iteratively selecting subsets of features and training a model on each subset. Embedded methods integrate feature selection directly into the structure of a learning algorithm, utilising its inherent properties (e.g., regularisation models) \cite{li2017feature}.
+%Feature selection constitutes a critical step in the development of effective learning models. This crucial task can be broadly categorised into three distinct approaches \cite{li2017feature}: filter methods, wrapper-based methods, and embedded methods. Filter methods are independent of any learning algorithms and evaluate the relevance of features based on their statistical relationship with the target variable. Wrapper methods rely on the learning algorithm's performance to evaluate the relevance of features by iteratively selecting subsets of features and training a model on each subset. Embedded methods integrate feature selection directly into the structure of a learning algorithm, utilising its inherent properties (e.g., regularisation models) \cite{li2017feature}.
 
-While prior research has recognised the potential of feature selection in TMD, its specific significance remains largely unexplored. This gap necessitates further investigation. 
-The study in \cite{etemad2018feature} explored the efficacy of wrapper and information retrieval methods for selecting optimal feature subsets, demonstrating improved performance. Nevertheless, a key limitation of their work lies in the failure to conduct a comparative analysis with other prominent feature selection techniques. The proposed framework in \cite{susi2013motion} incorporates feature selection based on intra/inter-class feature distances. However, the description of the selection approach lacks clarity and specificity. Furthermore, the study fails to provide empirical evidence demonstrating an improvement in results attributable to the feature selection module.
+%%% new
+Feature selection is a critical step in developing of effective learning models. This crucial task can be broadly categorised into three distinct approaches \cite{li2017feature}: filter methods, wrapper-based methods, and embedded methods. Filter methods are independent of any learning algorithms. Evaluate the relevance of features based on their statistical relationship with the target variable. Wrapper methods rely on the learning algorithm's performance to evaluate feature relevance iteratively selecting features and training a model on each. Embedded methods integrate feature selection directly into the structure of a learning algorithm, utilising its inherent properties (e.g., regularisation models) \cite{li2017feature}.
 
-Alazeb et al. \cite{alazeb2024intelligent} employed a recursive feature elimination method to select the most informative features. However, a significant limitation arises because it is impossible to attribute the observed performance gains solely to the feature selection process, as their proposed framework integrated feature selection and imbalance learning techniques. Isolating the impact of feature selection is crucial for a thorough understanding of its effectiveness and for establishing best practice in TMD. Researchers recognise feature selection as a crucial step for optimising machine learning models, yet its precise contribution within multi-faceted TMD frameworks, such as that of Alazeb et al., is often difficult to determine reliably. This coupling of techniques obscures the distinct impact of the feature selection process itself, making the identification of the most effective features for individual transportation modes challenging.
+While prior research has recognised the potential of feature selection in TMD, its specific significance remains largely unexplored. This gap needs to be looked over. 
+The study in \cite{etemad2018feature} explored the efficacy of wrapper and information retrieval methods for selecting optimal feature subsets, demonstrating improved performance. Nevertheless, a key limitation of their work lies in the failure to conduct a comparative analysis with other prominent feature selection techniques. The proposed framework in \cite{susi2013motion} incorporates feature selection based on intra and inter-class feature distances. However, the description of the selection approach lacks clarity and specificity. Furthermore, the study fails to provide empirical evidence demonstrating an improvement in results attributable to the feature selection module.
 
-To address this gap, the \emph{Class-Subspace} feature selection method is introduced in the current study. The method leverages Shapley values to provide feature interpretability and is explicitly designed to isolate and optimise the relevance of features on a mode-specific basis. The Class-Subspace approach establishes a clear connection between feature subsets and mode accuracy, thereby supporting the design of robust and focused TMD models.
+Alazeb et al. \cite{alazeb2024intelligent} employed a recursive feature elimination method to select the most informative features. However, a significant limitation arises because it is impossible to attribute the observed performance gains solely to the feature selection process, as their proposed framework integrated feature selection and imbalance learning techniques. Isolating the impact of feature selection is crucial for a thorough understanding of its effectiveness and for establishing best practice in TMD. Researchers recognise feature selection as a critical for optimising machine learning models. Yet its precise contribution within multi-faceted TMD frameworks, such as that of Alazeb et al., is often difficult to determine reliably. This coupling of techniques obscures the distinct impact of the feature selection process itself, making  it challenging to identify the most effective features for individual transportation modes challenging.
+
+To address this gap, the \emph{Class-Subspace} feature selection method is introduced in the current study. The method leverages Shapley values to provide feature interpretability and is explicitly designed to isolate and optimise feature relevance on a mode-specific basis. The Class-Subspace approach establishes a clear relationship between feature subsets and mode accuracy, thereby supporting the design of robust and focused TMD models.
 
 \section{Materials and Methods}\label{chp4-methodology}
 This section details the materials and methods used in this study. The overall conceptual framework is shown in Fig. \ref{fig:chp4-framework}.
@@ -389,7 +394,7 @@ We use the ten (10) descriptive feature statistics \cite{muhammad2021transportat
 After generating the pool of features, we applied the \textit{Sequential Forward Floating Selection (SFFS)} \cite{ferri1994comparative, raschka2018mlxtend} technique, a wrapper-based method for feature selection. SFFS begins with an empty feature subset. In the forward selection phase, features are iteratively added to the subset one at a time, with each addition leading to model training and evaluation. The floating operation in SFFS involves removing features from the currently chosen subset if they no longer contribute significantly to the model's performance, even if they were previously selected. The process continues until no further improvement in the evaluation metric, such as accuracy or error rate, is observed on a validation set. This study uses the area under the curve - receiver operating characteristics (ROC-AUC) as the evaluation criterion.
 
 \section{Proposed Feature Selection Method} 
-\label{chp4-sec-framework}
+\label{chp4-sec-framework} 
 This section introduces the proposed feature selection method rooted in Shapley values. We firstly provide a concise overview of Shapley values and their relevance to feature importance assessment.
 
 \subsection{The Shapley Values} \label{shaply_values}
@@ -473,9 +478,153 @@ Compute SHAP values $\phi(x_{i,j})$ for all features $ i \in  n$ and instances $
 \section{Experiments and Results} \label{chp4-results}
 We train the four classification algorithms described in \Cref{classifiers}.
 A comparative analysis of the classification results shows that RF and XGB demonstrated superior performance on both datasets when used with the 80 features initially generated. This is presented in \Cref{tab:combined-results}. 
-Specifically, for the SMF2016 dataset, both RF and XGB achieved a ROC-AUC score of 75\%, while for the Geolife dataset, they both attained an higher ROC-AUC of 88\%,
+Specifically, for the SMF2016 dataset, both RF and XGB achieved a ROC-AUC score of 75\%, while for the Geolife dataset, they both attained an higher ROC-AUC of 88\%.
 
+\begin{sidewaystable}[htbp]
+\caption{Classification Results for SMF2016 and Geolife Datasets} \label{tab:combined-results}
+\centering
+\begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}lcccccccccccc}
+    \toprule
+    \multicolumn{13}{c}{\textbf{SMF2016 Classification Results}} \\
+    \midrule
+    Transportation &
+    \multicolumn{4}{c}{Precision} &
+    \multicolumn{4}{c}{Recall} &
+    \multicolumn{4}{c}{F1-score} \\
+    \cmidrule(r{1ex}){2-5} \cmidrule(r{1ex}){6-9} \cmidrule{10-13}
+    Mode & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB} \\
+    \midrule
+    Foot  & 0.60 & 0.57 & 0.59   & 0.61 & 0.93 & 0.94 & 0.73   & 0.93 & 0.73 & 0.71 & 0.65   & 0.73 \\
+    Bike  & 0.97 & 0.02 & 0.39   & 0.88 & 0.22 & 0.03 & 0.23   & 0.36 & 0.36 & 0.02 & 0.28   & 0.51 \\
+    Bus   & 0.13 & 0.16 & 0.18   & 0.18 & 0.06 & 0.07 & 0.19   & 0.11 & 0.08 & 0.10 & 0.18   & 0.14 \\
+    Car   & 0.74 & 0.73 & 0.71   & 0.75 & 0.80 & 0.69 & 0.64   & 0.77 & 0.77 & 0.71 & 0.67   & 0.76 \\
+    Metro & 0.00 & 0.28 & 0.04   & 0.00 & 0.00 & 0.02 & 0.09   & 0.00 & 0.00 & 0.03 & 0.06   & 0.00 \\
+    \midrule
+    &  \multicolumn{3}{c}{RF}  &  \multicolumn{3}{c}{SVC}   & \multicolumn{3}{c}{DT}  & \multicolumn{3}{c}{XGB}  \\
+   ROC-AUC ** &  \multicolumn{3}{c}{0.75}  &  \multicolumn{3}{c}{0.67}   & \multicolumn{3}{c}{0.64}  & \multicolumn{3}{c}{0.75}  \\
+    \midrule    
+    \multicolumn{13}{c}{\textbf{Geolife Classification Results}} \\
+    \midrule
+    Transportation &
+    \multicolumn{4}{c}{Precision} &
+    \multicolumn{4}{c}{Recall} &
+    \multicolumn{4}{c}{F1-score} \\
+    \cmidrule(r{1ex}){2-5} \cmidrule(r{1ex}){6-9} \cmidrule{10-13}
+    Mode & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB}   & {RF} & {SVC} & {DT}  & {XGB} \\
+    \midrule
+    Foot  & 0.68 & 0.63 & 0.65   & 0.69 & 0.93 & 0.83 & 0.69   & 0.91 & 0.79 & 0.72 & 0.67   & 0.79 \\
+    Bike  & 0.84 & 0.61 & 0.67   & 0.84 & 0.68 & 0.53 & 0.53   & 0.69 & 0.75 & 0.57 & 0.59   & 0.75 \\
+    Bus   & 0.71 & 0.66 & 0.51   & 0.71 & 0.70 & 0.66 & 0.56   & 0.70 & 0.70 & 0.66 & 0.53   & 0.70 \\
+    Car   & 0.67 & 0.57 & 0.37   & 0.65 & 0.46 & 0.34 & 0.46   & 0.51 & 0.55 & 0.42 & 0.41   & 0.57 \\
+    Metro & 0.76 & 0.51 & 0.51   & 0.76 & 0.53 & 0.40 & 0.42   & 0.54 & 0.63 & 0.45 & 0.46   & 0.63 \\
+    \midrule
+    &  \multicolumn{3}{c}{RF}  &  \multicolumn{3}{c}{SVC}   & \multicolumn{3}{c}{DT}  & \multicolumn{3}{c}{XGB}  \\
+   ROC-AUC ** &  \multicolumn{3}{c}{0.88}  &  \multicolumn{3}{c}{0.83}   & \multicolumn{3}{c}{0.72}  & \multicolumn{3}{c}{0.88}  \\    
+    \bottomrule
+\end{tabular*}
+\footnotesize\parbox{0.8\textwidth}{\centering **metric is a weighted average (global).}
+\end{sidewaystable}
 
+We further investigate the impact of different feature combinations to identify the most relevant features through training RF and XGB models with various feature subsets in the following settings:  
+\begin{itemize}
+    \item	\textit{Time-domain:} These models used the 40 features derived from the temporal characteristics of the GPS trajectories (e.g., speed, acceleration, bearing rate) only.
+    \item	\textit{Frequency-domain:} These models used the 40 frequency-domain features obtained from the frequency spectrum of the Fourier transformation of time features.
+    \item	\textit{Combined:} these models are trained using entire 80 features (40 time + 40 frequency).  This setting allowed us to assess the impact of frequency features when combined with time features.
+    \item \textit{SFFS-chosen:} These models are trained using the feature subset selected by the SFFS selector for each classifier and dataset. This setting allows us to evaluate the performance of the models when using only the most informative features identified by the SFFS algorithm.  
+    \item \textit{SFFS-common:} These models are trained using the SFFS-selected features by each classifier, which are common to both datasets. This setting aims to determine whether a standard set of features selected independently for each classifier can improve performance across both datasets.
+    \item \textit{Class-Subspace:} models created using our proposed feature selection subsets. This setting allows us to compare the performance of our proposed feature selection method with the SFFS to determine its effectiveness in identifying the most relevant features for accurate classification.
+\end{itemize}
+\Cref{tab:no-features-selected} shows the summary of the number of SFFS-chosen and common features for each algorithm and dataset. In \Cref{tab:overall-metrics} we present the results obtained for each feature subset and dataset. While yielding only marginal performance gains, our proposed method consistently outperforms other techniques. The only exceptions are the RF model's ROC-AUC score on SMF2016 and the precision and ROC-AUC scores on Geolife.
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % Use symbols for footnotes
+\begin{table}%[htbp]
+    \setlength\tabcolsep{0pt}
+    \caption{Model evaluations using different feature combinations.\strut} \label{tab:overall-metrics}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} ll *{10}{c} }
+    \toprule
+    & & \multicolumn{2}{c}{Precision\textsuperscript{*}} & \multicolumn{2}{c}{Recall\textsuperscript{*}} & \multicolumn{2}{c}{F1-score\textsuperscript{*}} & \multicolumn{2}{c}{ROC-AUC\textsuperscript{*}} & \multicolumn{2}{c}{Accuracy} \\
+    \cmidrule{3-4} \cmidrule{5-6} \cmidrule{7-8} \cmidrule{9-10} \cmidrule{11-12} 
+    & & RF & XGB & RF & XGB & RF & XGB & RF & XGB & RF & XGB \\ 
+    \midrule 
+    & \textit{Time-domain}  & 0.54 & 0.61 & 0.56 & 0.63 & 0.55 & 0.62 & 0.68 & 0.70 & 0.56 & 0.63 \\
+    & \textit{Freq-domain}  & 0.50 & 0.50 & 0.55 & 0.57 & 0.52 & 0.53 & 0.64 & 0.74 & 0.55 & 0.57 \\
+\multirow{2}{*}{SMF2016}  & \textit{Combined} & 0.57 & 0.62 & 0.60 & 0.65 & 0.58 & 0.63 & 0.75 & 0.75 & 0.60 & 0.65 \\
+    & \textit{SFFS-chosen} & 0.59 & 0.61 & 0.62 & 0.64 & 0.60 & 0.61 & \textbf{0.78} & \textbf{0.78} & 0.62 & 0.64 \\  %%% 76  77
+    & \textit{SFFS-common} & 0.58 & 0.62 & 0.61 & 0.64 & 0.58 & 0.63 & 0.75 & 0.76 & 0.61 & 0.64 \\
+     & \textit{Class-Subspace\textsuperscript{**}} & \textbf{0.61} & \textbf{0.64} & \textbf{0.68} & \textbf{0.68} & \textbf{0.64} & \textbf{0.66} & \textbf{0.78} & \textbf{0.78} & \textbf{0.68} & \textbf{0.68} \\
+    \midrule
+    & \textit{Time-domain} & 0.72 & \textbf{0.73} & 0.71 & \textbf{0.72} & 0.70 & 0.72 & 0.88 & 0.88 & 0.71 & \textbf{0.72} \\
+    & \textit{Freq-domain} & 0.43 & 0.41 & 0.40 & 0.40 & 0.41 & 0.40 & 0.71 & 0.69 & 0.40 & 0.40 \\
+Geolife & \textit{Combined} & 0.72 & \textbf{0.73} & \textbf{0.72} & \textbf{0.72} & 0.72 & \textbf{0.72} & \textbf{0.88} & 0.88 & \textbf{0.72} & \textbf{0.72} \\
+    & \textit{SFFS-chosen} & \textbf{0.73} & 0.72 & \textbf{0.72} & 0.71 & \textbf{0.72} & 0.71 & \textbf{0.88} & 0.88 & \textbf{0.72} & 0.71 \\
+    & \textit{SFFS-common} & 0.70 & 0.71 & 0.69 & 0.70 & 0.69 & 0.70 & 0.87 & 0.88 & 0.69 & 0.70 \\
+     & \textit{Class-Subspace\textsuperscript{**}} & 0.72 & 0.72 & \textbf{0.72} & \textbf{0.72} & \textbf{0.72} & \textbf{0.72} & \textbf{0.88} & \textbf{0.89} & \textbf{0.72} & \textbf{0.72} \\
+    \bottomrule
+    \end{tabular*}
+    \vspace{-0.001em} %
+\begin{center}
+    \footnotesize\parbox{0.6\textwidth}{\centering \textsuperscript{*}Weighted average. \quad \textsuperscript{**}Our proposed feature selection method.}
+\end{center}
+\end{table}
+Finally, as our goal is to predict the transportation mode for an entire trip, we aggregated the predicted instances to obtain the overall trip mode. We determined the predicted segments and trips by combining instances and segments through a majority voting strategy. The resulting segment-trip predictions are shown in \Cref{tab:trip-segment-prediction}.
+
+\begin{table}[b]%thp]
+\caption{Segment and trip prediction results (\%).}\label{tab:trip-segment-prediction}%
+\begin{tabular}{llcccccccc}
+\toprule
+   & & \multicolumn{2}{c}{Precision\footnotemark[1]} & \multicolumn{2}{c}{Recall\footnotemark[1]} & \multicolumn{2}{c}{F1-Score\footnotemark[1]} & \multicolumn{2}{c}{Accuracy} \\
+   \cmidrule(r){3-4} \cmidrule(r){5-6} \cmidrule(r){7-8} \cmidrule(r){9-10} 
+%\midrule   
+ & & RF & XGB & RF & XGB & RF & XGB & RF & XGB  \\ 
+ \midrule
+\multirow{2}{*}{SMF2016} & Segment & 65.2 & 71.3 & 69.4 & 70.6 & 60.9 & 63.6 & 69.4 & 70.6 \\
+                        & Trip & 75.5 & 76.1 & 79.5 & 79.0 & 74.1 & 74.7 & 79.5 & 79.0 \\
+\midrule
+\multirow{2}{*}{Geolife} & Segment & 74.4 & 75.4 & 73.9 & 74.9 & 73.8 & 74.8 & 73.9 & 74.9 \\
+                         & Trip & 79.0 & 80.5 & 76.6 & 78.8 & 76.9 & 79.1 & 76.6 & 78.8 \\
+\bottomrule  % 0.713     0.706     0.636
+          % 0.761     0.790     0.747 
+\end{tabular}
+\vspace{-0.5em} % Adjust this value as needed to control spacing
+\begin{center}
+    \footnotesize\parbox{0.5\textwidth}{\centering *Weighted average.}
+\end{center}
+\end{table}
 
 \section{Discussion} \label{chp4-discussion}
+The results presented in \Cref{tab:overall-metrics} show the significance of time-domain features for TMD. This trend is particularly evident in the Geolife dataset, where time-domain features consistently outperform frequency-domain features. In contrast, the performance gains observed in SMF2016 when incorporating frequency features were less substantial. Improvements were generally marginal, ranging from approximately 3\% in most metrics to 5-7\% for the ROC-AUC.
+
+Our proposed method consistently improves classification results, with the exception of a few cases in ROC-AUC scores. The flexibility to select different features per class is perhaps the most compelling aspect of our approach. This selection is directly influenced by each feature’s contribution to the overall model prediction, as illustrated in Fig. \ref{fig:subspace}, which shows the magnitude of these contributions.
+
+We observed that some classes, such as \textit{foot}, can be accurately predicted with only a few features, while others, such as the \textit{metro}, require a greater number of features but still struggle for correct prediction. The specific features chosen for each class, which provide deeper insights into class-specific discriminative patterns, are also detailed  in Fig. \ref{fig:subspace-feature-names} in the supplementary materials. Our method’s ability to tailor feature selection to each class demonstrates its adaptability and potential for enhancing classification performance. The adaptability of this method is a key advantage, as it allows the model to select a class-specific combination of features.
+
+\begin{table}%[h!]
+\caption{Performance comparison with previous studies.}
+\label{tab:performance}
+\centering
+\begin{tabularx}{\textwidth}{X X X X c}
+\toprule
+\textbf{Study} & \textbf{Pre-processing} & \textbf{Data splitting} & \textbf{Feature Selection} & \textbf{Accuracy (\%)} \\
+\midrule
+Dabiri \& Heaslip \cite{dabiri2018inferring} & Point-level motion characteristics & Random & \multicolumn{1}{c}{--} & 84.8 \\
+Endo et al. \cite{endo2016deep} & Trajectory-level motion characteristics & Random & \multicolumn{1}{c}{--} & 67.9 \\
+Etemad et al. \cite{etemad2018feature} & Hybrid & User-based\footnotemark[1] & wrapper search / inform. retrieval & 90.4 \\
+Best model in this work (XGB) & Point-level motion characteristics & Temporal & Class-Subspace & 78.8 \\
+\bottomrule
+\end{tabularx}
+\begin{center}
+    \footnotesize\parbox{0.7\textwidth}{\centering *Each user trajectory can only appear in either the training or test set.}
+\end{center}
+\end{table}
+
+\subsection{Comparison with previous studies}
+To evaluate the proposed method's performance, we compared its accuracy on the Geolife dataset against several previous studies, as summarised in Table \ref{tab:performance}. While the proposed method's 78.8\% accuracy with the XGB classifier is lower than the top results from some previous works, this direct comparison can be misleading due to significant differences in the data evaluation protocols. Earlier studies often used a random data split, which can lead to data leakage and artificially inflate accuracy \cite{muhammad2021transportation} by allowing the model to learn user-specific patterns present in both the training and test sets.
+
+In contrast, our study employed a more robust and realistic temporal data split, ensuring the model's ability to generalise to new, unseen data from different time periods. Employing this methodology allows for rigorous evaluation, thereby providing a credible assessment of the method's potential for real-world deployment. Therefore, despite a lower raw accuracy score, the results demonstrate that our proposed Class-Subspace method can be effective in a challenging and practical evaluation scenario, making its performance a reliable indicator of its potential for real-world applications.
+
+Finally, several studies listed in the related work \Cref{tbl:pre_work} report exceptionally high classification accuracies, frequently exceeding 90\%. However, these figures must be interpreted with caution as they often reflect specific experimental constraints  \cite{fan2024multi,xiao2019detecting} rather than generalisable performance. Furthermore, the use of semi-supervised approaches \cite{zhang2021toward,sadeghian2024deep} in some of these works allows for the inclusion of vast amounts of unlabelled data to smooth decision boundaries; however, without extensive ground-truth validation across diverse geographic regions, the credibility of such high accuracies remain difficult to ascertain.
+
 \section{Conclusion} \label{chp4-conclusion}
+This study introduced a novel feature selection methodology that leverages the principles of game theory to improve transportation mode classification. By applying Shapley values, our approach uniquely identifies a minimal subset of influential features for each distinct class, thereby creating class-specific subspaces that enhance predictive performance. The method was thoroughly evaluated on two real-world GPS trajectory datasets, demonstrating its effectiveness in a challenging, realistic context.
+
+Our results show that the proposed method consistently improves classification outcomes, achieving a final ROC-AUC scores of 78.3\% on the SMF2016 dataset and 88.6\% on the Geolife dataset for the XGBoost classifier. While these performance metrics are robust, particularly given our use of a more rigorous temporal data split, the findings also highlight opportunities for further work. For instance, the method's computational cost, a known limitation of Shapley values, presents a key area for future optimisation. Moreover, the varying sensitivity of different datasets to the feature contribution threshold ($ \rho $) suggests the need to develop adaptive strategies for selecting this parameter. Future research could also explore the application of this class-subspace concept to other domains with imbalanced or complex classification problems.
