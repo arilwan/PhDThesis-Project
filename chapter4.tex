@@ -157,96 +157,100 @@ This study utilises the two real-world GPS trajectory datasets described in \Cre
 
 %For the purpose of this study, we focus solely on ground transportation modes, even though the dataset includes annotations for other types of transportation. In compliance with the user guide \cite{zheng2011geolife}, we regard the labels of both \textit{taxi} and \textit{car} as \textit{car mode}. Specifically, we consider five transportation modes that correspond to those available in the SMF2016 dataset.
 
-\subsection{Trip Preprocessing} \label{trip-preprocessing}This section outlines the process of chaining GPS points into trips in the SMF2016 dataset and subsequently ensuring data quality through a series of preprocessing and filtering steps. For consistency across the datasets used in this study, we adopt the standard methodology for separating user trajectories into trips: a time interval ($\Delta t$) between two successive GPS points that exceeds 30 minutes defines the boundary between two distinct trips, following established literature \cite{dabiri2018inferring}.
+\subsection{Trip Preprocessing} %\label{trip-preprocessing}
+This is described in \Cref{trip-preprocessing} of the preceding chapter. %\Cref{chap3}.
+%This section outlines the process of chaining GPS points into trips in the SMF2016 dataset and subsequently ensuring data quality through a series of preprocessing and filtering steps. For consistency across the datasets used in this study, we adopt the standard methodology for separating user trajectories into trips: a time interval ($\Delta t$) between two successive GPS points that exceeds 30 minutes defines the boundary between two distinct trips, following established literature \cite{dabiri2018inferring}.
 
-Our trip chaining algorithm in the SMF2016 dataset identifies and joins two GPS points within a session into a single trip according to the following criteria \cite{rodrigues2017impact}:
-\begin{itemize}
-    \item the points are associated with a particular user,
-    \item the time interval ($\Delta t$) between a point and its predecessor is no more than 30 minutes,
-    \item the distance between a previous point and the start of a new one is below 200m.
-\end{itemize}
+%Our trip chaining algorithm in the SMF2016 dataset identifies and joins two GPS points within a session into a single trip according to the following criteria \cite{rodrigues2017impact}:
+%\begin{itemize}
+%    \item the points are associated with a particular user,
+%    \item the time interval ($\Delta t$) between a point and its predecessor is no more than 30 minutes,
+%    \item the distance between a previous point and the start of a new one is below 200m.
+%\end{itemize}
 
-\subsubsection{Data Quality Control and Filtering}
-To ensure the dataset’s integrity for urban mobility analysis, we implemented a series of quality control steps following the initial trip chaining. The first step involved a diagnostic check for temporal anomalies, identifying "unstopped sessions" where the interval between successive GPS points ($\Delta t$) in a trip exceeded the established threshold. These cases, which resulted from data collection persisting despite a lack of recorded movement, are detailed in \Cref{tab:chp4-gap-sessions}. Investigation further revealed that many of these anomalous sessions corresponded to trips exceeding the scope of the study area's urban context. To maintain a focus on urban-scale mobility, we implemented a spatial filter using metropolitan coordinates (41.38786, -8.77034) and (41.04928, -8.4253). This filter removed affected trips extending beyond the functional urban area, ensuring the data characterise only typical city-scale transportation.
+%\subsubsection{Data Quality Control and Filtering}
+%To ensure the dataset’s integrity for urban mobility analysis, we implemented a series of quality control steps following the initial trip chaining. The first step involved a diagnostic check for temporal anomalies, identifying "unstopped sessions" where the interval between successive GPS points ($\Delta t$) in a trip exceeded the established threshold. These cases, which resulted from data collection persisting despite a lack of recorded movement, are detailed in \Cref{tab:chp4-gap-sessions}. Investigation further revealed that many of these anomalous sessions corresponded to trips exceeding the scope of the study area's urban context. To maintain a focus on urban-scale mobility, we implemented a spatial filter using metropolitan coordinates (41.38786, -8.77034) and (41.04928, -8.4253). This filter removed affected trips extending beyond the functional urban area, ensuring the data characterise only typical city-scale transportation.
 
-\begin{table}[htbp]
-    \centering
-    \tabcolsep=70pt
-    \caption{Sessions having $\Delta t > 1hr$  between consecutive GPS points.} 
-    \label{tab:chp4-gap-sessions}
-    \begin{tabular}{@{} l*{1}{c} @{}} %{c|c}
-    \toprule
-      Number of cases found    &   58 \\
+%\begin{table}[htbp]
+%    \centering
+%    \tabcolsep=70pt
+%    \caption{Sessions having $\Delta t > 1hr$  between consecutive GPS points.} 
+%    \label{tab:chp4-gap-sessions}
+%    \begin{tabular}{@{} l*{1}{c} @{}} %{c|c}
+%    \toprule
+%      Number of cases found    &   58 \\
     % \hline
-     Number of sessions affected  & 26 \\
+%     Number of sessions affected  & 26 \\
      %\hline
-      Total number of sessions in the dataset  &  5368 \\
+%      Total number of sessions in the dataset  &  5368 \\
      %\hline
-     Number of trips in unstopped sessions  &   25 \\
+%     Number of trips in unstopped sessions  &   25 \\
      %\hline
-     Single mode trips affected       &  15 \\
-    \bottomrule
-    \end{tabular}
-\end{table}
+%     Single mode trips affected       &  15 \\
+%    \bottomrule
+%    \end{tabular}
+%\end{table}
 
-\begin{figure}%[thbp]
-    \centering
-    \includegraphics[width=1.\textwidth]{fig2.pdf} 
-    \caption{Trip distance distribution by travel mode (a) before trip filtering; (b) after filtering to trips covered in Porto region.}
-    \label{fig:trip-filter}
-\end{figure}
+%\begin{figure}%[thbp]
+%    \centering
+%    \includegraphics[width=1.\textwidth]{fig2.pdf} 
+%    \caption{Trip distance distribution by travel mode (a) before trip filtering; (b) after filtering to trips covered in Porto region.}
+%    \label{fig:trip-filter}
+%\end{figure}
 
-Second, we addressed mode-specific anomalies. We observed several trips manually annotated as "foot" mode that exceeded 10~km, which is statistically improbable for urban pedestrian movement (Fig. \ref{fig:trip-filter}a). Consequently, we applied a conservative 8~km distance cap on all walking trips. As shown in Fig. \ref{fig:trip-filter}b, this targeted filter produced a more plausible distance distribution. The final filtered dataset, used for all subsequent analysis, is summarised in \Cref{tab:trips}.
+%Second, we addressed mode-specific anomalies. We observed several trips manually annotated as "foot" mode that exceeded 10~km, which is statistically improbable for urban pedestrian movement (Fig. \ref{fig:trip-filter}a). Consequently, we applied a conservative 8~km distance cap on all walking trips. As shown in Fig. \ref{fig:trip-filter}b, this targeted filter produced a more plausible distance distribution. The final filtered dataset, used for all subsequent analysis, is summarised in \Cref{tab:trips}.
 
-\begin{table}[htbp]
-    \centering\tabcolsep=30pt\caption{Summary of data filtering stages.} \label{tab:trips}
-    \begin{tabular}{@{} l*{1}{c} @{}}
-    \toprule 
-    Initial number of trips &  3730 \\ 
-    Trips with temporal gaps (large $\Delta t$) &  15 \\  
-    Non-urban trips (spatial filter)  & 764 \\ 
+%\begin{table}[htbp]
+%    \centering\tabcolsep=30pt\caption{Summary of data filtering stages.} \label{tab:trips}
+%    \begin{tabular}{@{} l*{1}{c} @{}}
+%    \toprule 
+%    Initial number of trips &  3730 \\ 
+%    Trips with temporal gaps (large $\Delta t$) &  15 \\  
+%    Non-urban trips (spatial filter)  & 764 \\ 
 %    Trips outside the metropolitan area &  \\
-    Remaining urban-scale trips &   2951 \\ Final dataset (foot mode capped at 8~km)   &  2909  \\
-    \bottomrule
-    \end{tabular}
-\end{table}
+%    Remaining urban-scale trips &   2951 \\ Final dataset (foot mode capped at 8~km)   &  2909  \\
+%    \bottomrule
+%    \end{tabular}
+%\end{table}
 
 \subsection{Instances Creation}
 To prepare the dataset for mode detection, each trip trajectory was segmented into alternating sequences of motion and stationary instances. The creation of instances is a multi-step process that involves:
 
-\subsubsection{ Trip Segmentation}
-The trajectory segmentation process begins by identifying stationary segments, which represent periods of user inactivity. We employ a threshold-based method using the $\text{85}^\text{th}$ percentile of instantaneous GPS speed $\cite{rodrigues2017impact}$. A segment is classified as stationary if the user's average speed remains below $0.5 \text{ m/s}$ for a minimum duration of 5 seconds. All remaining segments are categorised as motion segments, representing active travel.
-%
-This process inherently divides each trip into its corresponding single-mode segments. We then finalise the preparation by assigning the ground truth labels to these segments, achieving this by leveraging the manual user annotations of transportation modes. 
+%\subsubsection{ Trip Segmentation}
+%The trajectory segmentation process begins by identifying stationary segments, which represent periods of user inactivity. We employ a threshold-based method using the $\text{85}^\text{th}$ percentile of instantaneous GPS speed $\cite{rodrigues2017impact}$. A segment is classified as stationary if the user's average speed remains below $0.5 \text{ m/s}$ for a minimum duration of 5 seconds. All remaining segments are categorised as motion segments, representing active travel.
+%%
+%This process inherently divides each trip into its corresponding single-mode segments. We then finalise the preparation by assigning the ground truth labels to these segments, achieving this by leveraging the manual user annotations of transportation modes. 
 
 \subsubsection{Segments Filtering}
-Following trip segmentation, the process may generate several short segments that are potentially uninformative and can degrade the performance of the TMD classifiers due to data sparsity $\cite{rodrigues2017impact}$. To ensure only meaningful segments are used for model development, we apply a filtering step, imposing a minimum segment length threshold of $50 \text{m}$. This dual-purpose filter mitigates noise from short, insignificant movements and enhances the classifier’s ability to distinguish between different transportation modes by focusing on more substantial movement patterns. Applying this $50 \text{m}$ length threshold resulted in the removal of 11,060 segments from the SMF2016 dataset (38.7\% of the total segments) and 1,476 segments from the Geolife dataset (14.3\% of the total segments).
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.6\linewidth]{figures/point-bearing.pdf}
-    \caption{Visual representation of bearing between successive GPS points in a trajectory.}
-    \label{fig:point-bearing}
-\end{figure}
+Following trip segmentation as described in \Cref{trip-segmentation} of \Cref{chap3}, the process may generate several short segments that are potentially uninformative and can degrade the performance of the TMD classifiers due to data sparsity $\cite{rodrigues2017impact}$. To ensure only meaningful segments are used for model development, we apply a filtering step, imposing a minimum segment length threshold of $50 \text{m}$. This dual-purpose filter mitigates noise from short, insignificant movements and enhances the classifier’s ability to distinguish between different transportation modes by focusing on more substantial movement patterns. Applying this $50 \text{m}$ length threshold resulted in the removal of 11,060 segments from the SMF2016 dataset (38.7\% of the total segments) and 1,476 segments from the Geolife dataset (14.3\% of the total segments).
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.6\linewidth]{figures/point-bearing.pdf}
+%    \caption{Visual representation of bearing between successive GPS points in a trajectory.}
+%    \label{fig:point-bearing}
+%\end{figure}
 
-\subsubsection{Time Domain Features}
-Our approach involves computing four motion attributes for each location point in the time domain. Because the Geolife dataset lacks instantaneous GPS speed information—unlike the SMF2016 dataset—we first calculate the instantaneous speed value of each point using \cref{eq_spd} for any two consecutive data points ($\vn{P_m, P_n}$). Additionally, we calculate point-level acceleration, jerk, and bearing rate (as illustrated in Fig. $\text{\ref{fig:point-bearing}}$) using \cref{eq_acc}, \cref{eq_jk}, and \cref{eq_br}, respectively.
+\subsection{Time Domain Features} \label{chp4-time-features}
+Our approach involves computing four motion attributes for each location point in the time domain. Because the Geolife dataset lacks instantaneous GPS speed information—unlike the SMF2016 dataset—we first calculate the instantaneous speed value of each point using \cref{eq_spd2} for any two consecutive data points ($\vn{P_m, P_n}$). Additionally, we calculate point-level acceleration, jerk, and bearing rate using \cref{eq_acc2}, \cref{eq_jk2}, and \cref{eq_br2}, respectively.
 \begin{align}
-    S_{P_m}  &= \frac{\vn{Vincenty}(P_m, P_n)}{\Delta t} \label{eq_spd} \\
-    A_{P_m}  &= \frac{S_{P_n} - S_{P_m}}{\Delta t} \label{eq_acc} \\
-    J_{P_m}  &= \frac{A_{P_n} - A_{P_m}}{\Delta t} \label{eq_jk} \\
-    BR_{P_m} &= |\vn{bearing}(P_n) - \vn{bearing}(P_m)| \label{eq_br} \\
-    y  &= \vn{sin}[P_n(\vn{lon})-P_m(\vn{lon})] \times \vn{cos} [P_n(\vn{lat})] \label{geo_br1} \\
-    x &= \vn{cos}[P_m(\vn{lat})] \times \vn{sin}[P_n(\vn{lat})] - \vn{sin}[P_m(\vn{lat})] \times \nonumber %\label{geo_br} 
+    S_{P_m}  &= \frac{\vn{Vincenty}(P_m, P_n)}{\Delta t} \label{eq_spd2} \\
+    A_{P_m}  &= \frac{S_{P_n} - S_{P_m}}{\Delta t} \label{eq_acc2} \\
+    J_{P_m}  &= \frac{A_{P_n} - A_{P_m}}{\Delta t} \label{eq_jk2} \\
+    BR_{P_m} &= |\vn{bearing}(P_n) - \vn{bearing}(P_m)| \label{eq_br2} \\
+    y  &= \vn{sin}[P_n(\vn{lon})-P_m(\vn{lon})] \times \vn{cos} [P_n(\vn{lat})] \label{geo_br21} \\
+    x &= \vn{cos}[P_m(\vn{lat})] \times \vn{sin}[P_n(\vn{lat})] - \vn{sin}[P_m(\vn{lat})] \times \nonumber %\label{geo_br22} 
      \vn{cos}[P_n(\vn{lat})] \times \\ 
-     & \vn{cos}[P_n(\vn{lon}) - P_m(\vn{lon})] \label{geo_br3}  \\
-     \vn{bearing}(P_m) &= \vn{arctan(y,x)}  \label{geo_br4}
+     & \vn{cos}[P_n(\vn{lon}) - P_m(\vn{lon})] \label{geo_br23}  \\
+     \vn{bearing}(P_m) &= \vn{arctan(y,x)}  \label{geo_br24}
 \end{align}
+
+Note that the Geolife lacks instantaneous speed information, we therefore utilise \cref{eq_spd2} to derive point-level speed. Furthermore, it also lacks point bearing information, we first derive the bearing for each point using \cref{geo_br21,geo_br23,geo_br24}, and finally the bearing rate using \cref{eq_br2}.
 
 We divide each segment into fixed-length instances of $N=100$ time steps. This 
 approach ensures a consistent input format for our classification models. We selected this specific value to approximate the median number of data points present within all segments of the SMF2016 (123) and Geolife (200) \cite{dabiri2018inferring} datasets, 
 which allows our separate models to learn from a representative sample of each dataset's characteristics.
 
-\subsubsection{Frequency Domain Features} 
+\subsection{Frequency Domain Features} \label{chp4-fft-features}
 While most GPS-based TMD methodologies focus exclusively on time-domain features, we incorporate frequency domain features to gain a deeper insight into the periodic characteristics of the motion signals. This is because different travel modes possess distinct frequency signatures: for instance, cyclic motion patterns present in modes such as walking or cycling (due to human gait or pedalling) could introduce clear, higher-frequency components in acceleration and jerk. Conversely, modes involving steady mechanical travel, such as car or bus trips, are typically characterised by dominant low-frequency components. We leverage the frequency domain to isolate and quantify these patterns, which we hypothesised could enhance the classifier's ability to discriminate between modes.
 
 To achieve this, we utilised the Fast Fourier Transform (FFT) algorithm $\cite{rajaby2022structured}$ to transform all feature dimensions of each instance from the time domain to the corresponding frequency spectrum. For real-valued input, the FFT produces a symmetric spectrum where the values for positive frequencies are the complex conjugates of the values for negative frequencies. We considered only the absolute value (magnitude) of the positive frequency components for feature creation, which effectively extracts the signal's energy distribution across frequencies while avoiding feature duplication and the complexity of using the raw imaginary values. Fig. \ref{fig:time-freq-dom} shows an example of an instance in the time and frequency domains.
@@ -258,7 +262,7 @@ To achieve this, we utilised the Fast Fourier Transform (FFT) algorithm $\cite{r
     \label{fig:time-freq-dom}
 \end{figure*}
 
-\subsubsection{Dataset Splitting}
+\subsubsection{Dataset Split}
 To prepare the resulting instances for model training and evaluation, we implemented a temporal data split, separating the train and test sets based on the data collection period. This strategy is crucial because the datasets represent a time series of user GPS records. We opted to deviate from the conventional random data split to mitigate the potential risk of data leakage and avoid optimistic performance estimates. The conventional random split does not preserve the chronological order of the trip data, which can lead to models performing unrealistically well on the test set because they have inadvertently seen patterns from the test period during training $\cite{muhammad2021transportation}$. 
 As demonstrated in previous work $\cite{muhammad2021transportation}$, failing to preserve the chronological order can result in accuracy overestimation. Therefore, the temporal data split provided a realistic evaluation of the models' predictive capabilities on future, unseen data by ensuring that the model learned only from previous trip data.
 
@@ -522,6 +526,20 @@ We further investigate the impact of different feature combinations to identify 
     \item \textit{Class-Subspace:} models created using our proposed feature selection subsets. This setting allows us to compare the performance of our proposed feature selection method with the SFFS to determine its effectiveness in identifying the most relevant features for accurate classification.
 \end{itemize}
 \Cref{tab:no-features-selected} shows the summary of the number of SFFS-chosen and common features for each algorithm and dataset. In \Cref{tab:overall-metrics} we present the results obtained for each feature subset and dataset. While yielding only marginal performance gains, our proposed method consistently outperforms other techniques. The only exceptions are the RF model's ROC-AUC score on SMF2016 and the precision and ROC-AUC scores on Geolife.
+\begin{table}[b]
+    \centering
+    \caption{SFFS feature Selection by each classifier across the datasets.}
+    \label{tab:no-features-selected}
+    \begin{tabular}{lccc}
+    \toprule
+    & \multicolumn{2}{c}{Number of SFFS chosen Features} & Number of Features  \\
+    Classifier  &  SMF2016 & Geolife & in Common \\
+    \midrule
+     RF  & 24 & 30 & 10 \\
+     XGB & 55 & 42 & 30 \\
+     \bottomrule
+    \end{tabular}
+\end{table}
 
 \renewcommand{\thefootnote}{\fnsymbol{footnote}} % Use symbols for footnotes
 \begin{table}%[htbp]
@@ -583,7 +601,7 @@ The results presented in \Cref{tab:overall-metrics} show the significance of tim
 
 Our proposed method consistently improves classification results, with the exception of a few cases in ROC-AUC scores. The flexibility to select different features per class is perhaps the most compelling aspect of our approach. This selection is directly influenced by each feature’s contribution to the overall model prediction, as illustrated in Fig. \ref{fig:subspace}, which shows the magnitude of these contributions.
 
-We observed that some classes, such as \textit{foot}, can be accurately predicted with only a few features, while others, such as the \textit{metro}, require a greater number of features but still struggle for correct prediction. The specific features chosen for each class, which provide deeper insights into class-specific discriminative patterns, are also detailed  in Fig. \ref{fig:subspace-feature-names} in the supplementary materials. Our method’s ability to tailor feature selection to each class demonstrates its adaptability and potential for enhancing classification performance. The adaptability of this method is a key advantage, as it allows the model to select a class-specific combination of features.
+We observed that some classes, such as \textit{foot}, can be accurately predicted with only a few features, while others, such as the \textit{metro}, require a greater number of features but still struggle for correct prediction. The specific features chosen for each class, which provide deeper insights into class-specific discriminative patterns, are also shown in Fig. \ref{fig:subspace-smf} and \ref{fig:subspace-geolife} in \Cref{appendix1}. Our method’s ability to tailor feature selection to each class demonstrates its adaptability and potential for enhancing classification performance. The adaptability of this method is a key advantage, as it allows the model to select a class-specific combination of features.
 
 \begin{table}%[h!]
 \caption{Performance comparison with previous studies.}

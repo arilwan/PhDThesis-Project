@@ -83,23 +83,73 @@ Two real-world GPS trajectory datasets are utilised in this thesis, which are de
 \section{Data Preprocessing} \label{data-preprocessing}
 This Section outlines the process of chaining GPS traces into trips in the datasets.  
 
-\subsection{Trip Preprocessing} \label{subsec-trip-preproc}
-Both GPS trajectory datasets are chronologically ordered. We define a trip as a sequence of user GPS points in session, separated by a stop of at least 30 minutes.  A trip is composed of multiple GPS points, each represented as a tuple containing latitude, longitude, and timestamp information. Our SMF2016 trip chaining algorithm identifies and joins two GPS traces within a session into a single trip based on their timestamps and location, according to the following criteria \cite{rodrigues2017impact}:      %\looseness=-1
+%\subsection{Trip Preprocessing} \label{subsec-trip-preproc}
+%Both GPS trajectory datasets are chronologically ordered. We define a trip as a sequence of user GPS points in session, separated by a stop of at least 30 minutes.  A trip is composed of multiple GPS points, each represented as a tuple containing latitude, longitude, and timestamp information. Our SMF2016 trip chaining algorithm identifies and joins two GPS traces within a session into a single trip based on their timestamps and location, according to the following criteria \cite{rodrigues2017impact}:      %\looseness=-1
+%\begin{itemize}
+%    \item The GPS traces are associated with a particular user,
+%    \item The time interval ($\Delta t$)  between a trace  and its predecessor is no more than 30 minutes,
+%    \item The distance between a previous trace and the start of a new one is below 200m.
+%\end{itemize}
+
+\subsection{Trip Preprocessing} \label{trip-preprocessing}
+This section outlines the process of chaining GPS points into trips in the SMF2016 dataset and subsequently ensuring data quality through a series of preprocessing and filtering steps. For consistency across the datasets used in this study, we adopt the standard methodology for separating user trajectories into trips: a time interval ($\Delta t$) between two successive GPS points that exceeds 30 minutes defines the boundary between two distinct trips, following established literature \cite{dabiri2018inferring}.
+
+Our trip chaining algorithm in the SMF2016 dataset identifies and joins two GPS points within a session into a single trip according to the following criteria \cite{rodrigues2017impact}:
 \begin{itemize}
-    \item The GPS traces are associated with a particular user,
-    \item The time interval ($\Delta t$)  between a trace  and its predecessor is no more than 30 minutes,
-    \item The distance between a previous trace and the start of a new one is below 200m.
+    \item the points are associated with a particular user,
+    \item the time interval ($\Delta t$) between a point and its predecessor is no more than 30 minutes,
+    \item the distance between a previous point and the start of a new one is below 200m.
 \end{itemize}
 
-\subsection{Trip Filtering} \label{subsec-trip-filtering}
-However, we observed instances where trips exhibited a significant difference in timestamp between successive GPS points beyond the established threshold. Further investigation revealed the large $\Delta t$ between consecutive traces was caused by "unstopped sessions" where data collection continued without recorded stops. We thoroughly searched through all sessions in the dataset and documented the affected sessions in \Cref{tab:gap-sessions}.
+%\subsection{Trip Filtering} \label{subsec-trip-filtering}
+%However, we observed instances where trips exhibited a significant difference in timestamp between successive GPS points beyond the established threshold. Further investigation revealed the large $\Delta t$ between consecutive traces was caused by "unstopped sessions" where data collection continued without recorded stops. We thoroughly searched through all sessions in the dataset and documented the affected sessions in \Cref{tab:gap-sessions}.
 
-We observed instances where trips exhibited a significant difference in timestamp between successive GPS points, exceeding the established threshold. Further investigation revealed that these large time gaps were due to "unstopped sessions," where data collection continued without recorded stops. We conducted a thorough search of all sessions in the dataset and documented the affected sessions in Table \ref{tab:gap-sessions}.
+%We observed instances where trips exhibited a significant difference in timestamp between successive GPS points, exceeding the established threshold. Further investigation revealed that these large time gaps were due to "unstopped sessions," where data collection continued without recorded stops. We conducted a thorough search of all sessions in the dataset and documented the affected sessions in Table \ref{tab:gap-sessions}.
+%\begin{table}[htbp]
+%    \centering
+%    \tabcolsep=25pt
+%    \caption{Sessions having $\Delta t > 1hr$  between consecutive GPS traces.} 
+%    \label{tab:gap-sessions}
+%    \begin{tabular}{@{} l*{1}{c} @{}} %{c|c}
+%    \toprule
+%      Number of cases found    &   58 \\
+%    % \hline
+%     Number of sessions affected  & 26 \\
+     %\hline
+%      Total number of sessions in the dataset  &  5368 \\
+     %\hline
+%     Number of trips in unstopped sessions  &   25 \\
+     %\hline
+%     Single mode trips affected       &  15 \\
+%    \bottomrule
+%    \end{tabular}
+%\end{table}
+
+%Notably, the trips exhibiting unstopped user sessions originated from trips surpassing the Porto region's boundaries. After excluding these problematic trips and focusing solely on trips within the Porto area, defined by the coordinates  (41.38786, -8.77034) and (41,04928, -8.4253), we still observed some foot trips covering over 10 kilometers (\Cref{fig:trip-filter}a). This deviation from the typical pattern of foot trips in urban areas prompted us to cap foot trips at 8 kilometers or less. This resulted in trip distance distribution shown in  \Cref{fig:trip-filter}b. In \Cref{tab:trips} we present the statistics of filtered trips.% used in this study.
+%\begin{table}[htbp]
+%    \centering
+%    \tabcolsep=12pt
+%    \caption{Trips filtering statistics.} \label{tab:trips}
+%    \begin{tabular}{@{} l*{1}{c} @{}} %{c|c}
+%    \toprule
+ %    Number of trips before filtering &  3730 \\
+%     Trips with large $\Delta t$ between consecutive traces     &  15 \\
+%     Number of trips outside the study area  & 764 \\
+ %    Number of trips within Porto area (after filtering)  &   2951 \\
+%     Total trips (foot mode capped to 8km)   &  2909  \\
+%    \bottomrule
+%    \end{tabular}
+%\end{table}
+%
+
+\subsection{Data Quality Control and Filtering}
+To ensure the dataset’s integrity for urban mobility analysis, we implemented a series of quality control steps following the initial trip chaining. The first step involved a diagnostic check for temporal anomalies, identifying "unstopped sessions" where the interval between successive GPS points ($\Delta t$) in a trip exceeded the established threshold. These cases, which resulted from data collection persisting despite a lack of recorded movement, are detailed in \Cref{tab:chp4-gap-sessions}. Investigation further revealed that many of these anomalous sessions corresponded to trips exceeding the scope of the study area's urban context. To maintain a focus on urban-scale mobility, we implemented a spatial filter using metropolitan coordinates (41.38786, -8.77034) and (41.04928, -8.4253). This filter removed affected trips extending beyond the functional urban area, ensuring the data characterise only typical city-scale transportation.
+
 \begin{table}[htbp]
     \centering
-    \tabcolsep=25pt
-    \caption{Sessions having $\Delta t > 1hr$  between consecutive GPS traces.} 
-    \label{tab:gap-sessions}
+    \tabcolsep=70pt
+    \caption{Sessions having $\Delta t > 1hr$  between consecutive GPS points.} 
+    \label{tab:chp4-gap-sessions}
     \begin{tabular}{@{} l*{1}{c} @{}} %{c|c}
     \toprule
       Number of cases found    &   58 \\
@@ -110,39 +160,49 @@ We observed instances where trips exhibited a significant difference in timestam
      %\hline
      Number of trips in unstopped sessions  &   25 \\
      %\hline
-%     Single mode trips affected       &  15 \\
+     Single mode trips affected       &  15 \\
     \bottomrule
     \end{tabular}
 \end{table}
 
-Notably, the trips exhibiting unstopped user sessions originated from trips surpassing the Porto region's boundaries. After excluding these problematic trips and focusing solely on trips within the Porto area, defined by the coordinates  (41.38786, -8.77034) and (41,04928, -8.4253), we still observed some foot trips covering over 10 kilometers (\Cref{fig:trip-filter}a). This deviation from the typical pattern of foot trips in urban areas prompted us to cap foot trips at 8 kilometers or less. This resulted in trip distance distribution shown in  \Cref{fig:trip-filter}b. In \Cref{tab:trips} we present the statistics of filtered trips.% used in this study.
-\begin{table}[htbp]
+\begin{figure}%[thbp]
     \centering
-    \tabcolsep=12pt
-    \caption{Trips filtering statistics.} \label{tab:trips}
-    \begin{tabular}{@{} l*{1}{c} @{}} %{c|c}
-    \toprule
-     Number of trips before filtering &  3730 \\
-     Trips with large $\Delta t$ between consecutive traces     &  15 \\
-     Number of trips outside the study area  & 764 \\
-     Number of trips within Porto area (after filtering)  &   2951 \\
-     Total trips (foot mode capped to 8km)   &  2909  \\
-    \bottomrule
-    \end{tabular}
-\end{table}
-%
-\begin{figure}%[htbp]
-    \centering
-    \includegraphics[width=1.\textwidth]{figures/trips-subplots.pdf} 
+    \includegraphics[width=1.\textwidth]{fig2.pdf} 
     \caption{Trip distance distribution by travel mode (a) before trip filtering; (b) after filtering to trips covered in Porto region.}
     \label{fig:trip-filter}
 \end{figure}
 
-    \subsection{Trip Segmentation}
-    To capture the dynamic nature of human movement patterns as closely as possible and enhance the accuracy of the TMD algorithms, we split the trips into alternating sequences of motion and stationary segments \cite{muhammad2021transportation, rodrigues2017impact}. This granular representation allows for a more detailed analysis of movement behaviour and facilitates the identification of transportation mode transitions. However, this segmentation process can introduce a significant number of short segments, potentially degrading the performance of the TMD classifiers  \cite{rodrigues2017impact}.
-    We impose a minimum segment length threshold of 50m to mitigate this issue. This ensures only meaningful and informative segments are considered, improving the classifier's ability to distinguish between different transportation modes. The segmentation process begins by identifying stationary segments, representing periods of inactivity. We employ a threshold-based method using \nth{85} percentile of instantaneous GPS speed. Specifically, a stationary segment is established if the user's average speed falls below 0.5m/s for 5 seconds. 
+Second, we addressed mode-specific anomalies. We observed several trips manually annotated as "foot" mode that exceeded 10~km, which is statistically improbable for urban pedestrian movement (Fig. \ref{fig:trip-filter}a). Consequently, we applied a conservative 8~km distance cap on all walking trips. As shown in Fig. \ref{fig:trip-filter}b, this targeted filter produced a more plausible distance distribution. The final filtered dataset, used for all subsequent analysis, is summarised in \Cref{tab:trips}.
 
-    In the Geolife dataset, user GPS trajectories are partitioned into separate trips based on the time interval between two successive GPS points exceeding the predetermined threshold of 30 minutes \cite{dabiri2018inferring}. Each trip is then further divided into single-mode segments based on transportation mode, with the begin and end timestamps of each segment annotated.
+\begin{table}[htbp]
+    \centering\tabcolsep=30pt\caption{Summary of data filtering stages.} \label{tab:trips}
+    \begin{tabular}{@{} l*{1}{c} @{}}
+    \toprule 
+    Initial number of trips &  3730 \\ 
+    Trips with temporal gaps (large $\Delta t$) &  15 \\  
+    Non-urban trips (spatial filter)  & 764 \\ 
+%    Trips outside the metropolitan area &  \\
+    Remaining urban-scale trips &   2951 \\ Final dataset (foot mode capped at 8~km)   &  2909  \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+%\begin{figure}%[htbp]
+%    \centering
+%    \includegraphics[width=1.\textwidth]{figures/trips-subplots.pdf} 
+%    \caption{Trip distance distribution by travel mode (a) before trip filtering; (b) after filtering to trips covered in Porto region.}
+%    \label{fig:trip-filter}
+%\end{figure}
+
+\subsection{Trip Segmentation} \label{trip-segmentation}
+To capture the dynamic nature of human movement patterns as closely as possible and enhance the accuracy of the TMD algorithms, we split the trips into alternating sequences of motion and stationary segments \cite{muhammad2021transportation, rodrigues2017impact}. This granular representation allows for a more detailed analysis of movement behaviour and facilitates the identification of transportation mode transitions. However, this segmentation process can introduce a significant number of short segments, potentially degrading the performance of the TMD classifiers  \cite{rodrigues2017impact}.
+We impose a minimum segment length threshold of 50m to mitigate this issue. This ensures only meaningful and informative segments are considered, improving the classifier's ability to distinguish between different transportation modes. %The segmentation process begins by identifying stationary segments, representing periods of inactivity. We employ a threshold-based method using \nth{85} percentile of instantaneous GPS speed. Specifically, a stationary segment is established if the user's average speed falls below 0.5m/s for 5 seconds. 
+
+The trajectory segmentation process begins by identifying stationary segments, which represent periods of user inactivity. We employ a threshold-based method using the $\text{85}^\text{th}$ percentile of instantaneous GPS speed $\cite{rodrigues2017impact}$. A segment is classified as stationary if the user's average speed remains below $0.5 \text{ m/s}$ for a minimum duration of 5 seconds. All remaining segments are categorised as motion segments, representing active travel.
+%
+This process inherently divides each trip into its corresponding single-mode segments. We then finalise the preparation by assigning the ground truth labels to these segments, achieving this by leveraging the manual user annotations of transportation modes. 
+
+%    In the Geolife dataset, user GPS trajectories are partitioned into separate trips based on the time interval between two successive GPS points exceeding the predetermined threshold of 30 minutes \cite{dabiri2018inferring}. Each trip is then further divided into single-mode segments based on transportation mode, with the begin and end timestamps of each segment annotated.
 
     \subsection{Point-level Attributes}
     To extract meaningful insights, we compute point-level motion attributes for each point in every trajectory, including speed, acceleration, jerk (rate of change of acceleration), and bearing rate. While the SMF2016 dataset provides instantaneous GPS speed for each location point, the Geolife dataset lacks this information. To address this limitation, we estimate speed for Geolife trajectories by calculating the relative geographical distance between consecutive GPS points using the using the Vincenty Formula \cite{vincenty1975direct}  and dividing it by the time elapsed. 
@@ -243,11 +303,12 @@ Notably, the trips exhibiting unstopped user sessions originated from trips surp
      \vn{bearing}(P_m) &= \vn{arctan(y,x)}  \label{geo_br4}
     \end{align}
 
+    Following the calculation of motion characteristics, each location point $P_i$ within a segment is now represented by a vector comprising four attributes: speed ($S_{P_i}$), acceleration ($A_{P_i}$), jerk ($J_{P_i}$), and bearing rate, thus $L_i = <S_{P_i}, A_{P_i}, J_{P_i},  BR_{P_i}>$.
+
     \subsection{Outlier Removal}
     Data quality is of paramount importance for accurate and meaningful analysis. To ensure data quality, we define and apply outlier detection criteria for point-level motion characteristics. 
     Recognising that GPS data can be susceptible to noise and errors, we carefully examined each data point within each trip segment for evidence of physically unrealistic movement in urban scenarios. Building upon the literature \cite{ivan2012motor,vogel2002characterizes}, we defined metric thresholds to identify and remove anomalous data points. Specifically, we considered data points exhibiting speeds higher than 50 m/s \cite{dabiri2018inferring,schuessler2009processing} as outliers. Furthermore, we removed data points with acceleration values falling outside the range of -10 m/s² (deceleration) to 10 m/s² as these values are considered improbable \cite{frej2023experimental,wang2004normal} for typical movement in urban settings. %This outlier detection process resulted in the removal of 69,330 location points, constituting 0.72\% of the total data points within the SMF2016 dataset.
 
-    Following the calculation of motion characteristics, each location point $P_i$ within a segment is now represented by a vector comprising four attributes: speed ($S_{P_i}$), acceleration ($A_{P_i}$), jerk ($J_{P_i}$), and bearing rate, thus $L_i = <S_{P_i}, A_{P_i}, J_{P_i},  BR_{P_i}>$.
 
   %  Ultimately, after calculating the motion characteristics, each location point in a segment is now represented by a vector consisting of four attributes, namely $<S_{P_i}, A_{P_i}, J_{P_i},  BR_{P_i}>$. 
    
